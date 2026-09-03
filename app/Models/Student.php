@@ -40,6 +40,30 @@ final class Student extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<ExamResult, $this>
+     */
+    public function examResults(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ExamResult::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Attendance, $this>
+     */
+    public function attendances(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Attendance::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Fee, $this>
+     */
+    public function fees(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Fee::class);
+    }
+
+    /**
      * @param  \Illuminate\Database\Eloquent\Builder<Student>  $query
      * @return \Illuminate\Database\Eloquent\Builder<Student>
      */
