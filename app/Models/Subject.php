@@ -30,4 +30,12 @@ final class Subject extends Model
     {
         return $this->belongsToMany(StudentClass::class, 'class_subject', 'subject_id', 'student_class_id');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<StaffAssignment, $this>
+     */
+    public function staffAssignments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(StaffAssignment::class, 'subject_id');
+    }
 }

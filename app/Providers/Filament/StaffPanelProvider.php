@@ -38,6 +38,7 @@ final class StaffPanelProvider extends PanelProvider
                 Dashboard::class,
                 \App\Filament\Staff\Pages\MyAssignments::class,
                 \App\Filament\Staff\Pages\MarkAttendance::class,
+                \App\Filament\Staff\Pages\EnterResults::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Staff/Widgets'), for: 'App\Filament\Staff\Widgets')
             ->widgets([

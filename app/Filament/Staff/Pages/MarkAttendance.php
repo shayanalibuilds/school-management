@@ -67,24 +67,50 @@ final class MarkAttendance extends Page
             return collect();
         }
 
-        $students = Student::query()
+        return Student::query()
             ->active()
             ->where('student_class_id', $this->classId)
             ->orderBy('name')
             ->get();
+    }
+
+    /**
+     * Seed the status state from saved records when the class or
+     * date selection changes. Defaults everything to present.
+     */
+    public function loadExistingStatuses(): void
+    {
+        $this->statuses = [];
+
+        if ($this->classId === null) {
+            return;
+        }
 
         $existing = Attendance::query()
             ->where('student_class_id', $this->classId)
             ->whereDate('date', $this->date)
             ->pluck('status', 'student_id');
 
+        $students = Student::query()
+            ->active()
+            ->where('student_class_id', $this->classId)
+            ->get();
+
         foreach ($students as $student) {
             $status = $existing->get($student->getKey());
 
             $this->statuses[$student->getKey()] = $status?->value ?? AttendanceStatus::Present->value;
         }
+    }
 
-        return $students;
+    public function updatedClassId(): void
+    {
+        $this->loadExistingStatuses();
+    }
+
+    public function updatedDate(): void
+    {
+        $this->loadExistingStatuses();
     }
 
     public function setStatus(int|string $studentId, string $status): void
