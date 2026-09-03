@@ -4,7 +4,7 @@ A school management system for admins, teachers, and parents — built on
 [Laravel](https://laravel.com), [Livewire](https://livewire.laravel),
 [Livewire Flux](https://fluxui.dev), and [Filament](https://filamentphp.com).
 
-Repo: `shayanalibuilds/school-managment-system`
+Repo: `shayanalibuilds/school-management-system`
 
 ## Surfaces
 
