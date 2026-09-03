@@ -69,9 +69,7 @@ it('notifies admins when a class has not submitted attendance by the deadline', 
 
     $this->artisan('attendance:check-deadline');
 
-    Notification::assertSentTo($admin, App\Notifications\AttendanceDeadlineNotification::class, function ($notification) use ($pendingClass): bool {
-        return $notification->studentClass->is($pendingClass);
-    });
+    Notification::assertSentTo($admin, App\Notifications\AttendanceDeadlineNotification::class, fn ($notification): bool => $notification->studentClass->is($pendingClass));
     Notification::assertSentToTimes($admin, App\Notifications\AttendanceDeadlineNotification::class, 1);
 });
 

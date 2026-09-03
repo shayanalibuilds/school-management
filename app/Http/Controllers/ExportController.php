@@ -25,10 +25,10 @@ final class ExportController extends Controller
         $filename = str_replace('-', '_', $type).'_'.today()->toDateString().'.csv';
 
         $handle = fopen('php://temp', 'r+');
-        fputcsv($handle, $headers);
+        fputcsv($handle, $headers, escape: '\\');
 
         $query()->each(function ($record) use ($handle, $row): void {
-            fputcsv($handle, $row($record));
+            fputcsv($handle, $row($record), escape: '\\');
         });
 
         rewind($handle);

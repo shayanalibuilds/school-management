@@ -27,7 +27,7 @@ final class StudentLookup
             return collect();
         }
 
-        $students = StudentParent::query()
+        return StudentParent::query()
             ->where('cnic', $cnic)
             ->where('phone', $phone)
             ->with('students')
@@ -43,7 +43,5 @@ final class StudentLookup
             )
             ->unique('id')
             ->values();
-
-        return $students;
     }
 }

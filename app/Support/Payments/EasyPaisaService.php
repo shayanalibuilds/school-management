@@ -94,7 +94,7 @@ final class EasyPaisaService
     {
         $setting = $this->setting();
 
-        if ($setting === null) {
+        if (! $setting instanceof PaymentSetting) {
             throw new RuntimeException('EasyPaisa is not configured.');
         }
 

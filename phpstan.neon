@@ -14,4 +14,4 @@ parameters:
     level: max
 
     excludePaths:
-        - app/Console/Commands/FissionInstall.php
+        - app/Console/Commands/FissionInstall.php (?)

@@ -11,7 +11,7 @@ final class Grades
      *
      * @var array<string, float>
      */
-    private const BOUNDARIES = [
+    private const array BOUNDARIES = [
         'A+' => 90.0,
         'A' => 80.0,
         'B' => 70.0,

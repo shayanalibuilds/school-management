@@ -17,7 +17,7 @@ final class StudentPerformanceChart extends ChartWidget
     /**
      * @return array<int, string>
      */
-    public function getFilters(): array
+    protected function getFilters(): array
     {
         return [
             '5' => 'Last 5 years',

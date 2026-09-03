@@ -1,175 +1,961 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Method App\\Enums\\TeamRole\:\:assignable\(\) should return list\<array\{value\: string, label\: string\}\> but returns array\<int, array\{value\: string, label\: string\}\>\.$#'
-			identifier: return.type
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<Illuminate\\Database\\Eloquent\\Model\>\:\:active\(\)\.$#'
+			identifier: method.notFound
 			count: 1
-			path: app/Enums/TeamRole.php
+			path: app/Console/Commands/CheckAttendanceDeadline.php
 
 		-
-			message: '#^Cannot call method hasVerifiedEmail\(\) on App\\Models\\User\|null\.$#'
-			identifier: method.nonObject
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
 			count: 1
-			path: app/Http/Controllers/Auth/VerifyEmailController.php
+			path: app/Filament/Pages/PaymentSettings.php
 
 		-
-			message: '#^Cannot call method markEmailAsVerified\(\) on App\\Models\\User\|null\.$#'
-			identifier: method.nonObject
+			message: '#^Offset string on array\{\}\|string on left side of \?\? does not exist\.$#'
+			identifier: nullCoalesce.offset
 			count: 1
-			path: app/Http/Controllers/Auth/VerifyEmailController.php
+			path: app/Filament/Pages/PaymentSettings.php
 
 		-
-			message: '#^Parameter \#1 \$user of class Illuminate\\Auth\\Events\\Verified constructor expects Illuminate\\Contracts\\Auth\\MustVerifyEmail, App\\Models\\User\|null given\.$#'
-			identifier: argument.type
+			message: '#^Using nullsafe property access "\?\-\>credentials" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
 			count: 1
-			path: app/Http/Controllers/Auth/VerifyEmailController.php
+			path: app/Filament/Pages/PaymentSettings.php
 
 		-
-			message: '#^Parameter \#1 \$credentials of static method Illuminate\\Support\\Facades\\Auth\:\:attempt\(\) expects array, mixed given\.$#'
-			identifier: argument.type
+			message: '#^Using nullsafe property access "\?\-\>environment" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
 			count: 1
-			path: app/Livewire/Forms/LoginForm.php
+			path: app/Filament/Pages/PaymentSettings.php
 
 		-
-			message: '#^Class App\\Models\\Team uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
+			message: '#^Using nullsafe property access "\?\-\>is_active" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
 			count: 1
-			path: app/Models/Team.php
+			path: app/Filament/Pages/PaymentSettings.php
 
 		-
-			message: '#^Parameter \#1 \$callback of method Illuminate\\Support\\Collection\<\(int\|string\),mixed\>\:\:map\(\) expects callable\(mixed, int\|string\)\: \(int\|null\), Closure\(string\)\: \(int\|null\) given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Models/Team.php
-
-		-
-			message: '#^Strict comparison using \=\=\= between string and null will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
-			count: 1
-			path: app/Models/Team.php
-
-		-
-			message: '#^Cannot call method isPast\(\) on string\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: app/Models/TeamInvitation.php
-
-		-
-			message: '#^Class App\\Models\\TeamInvitation uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/TeamInvitation.php
-
-		-
-			message: '#^Strict comparison using \=\=\= between string and null will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
-			count: 1
-			path: app/Models/TeamInvitation.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Relations\\Pivot\:\:\$role\.$#'
+			message: '#^Access to an undefined property App\\Models\\Student\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Student\>\:\:\$student_class_id\.$#'
 			identifier: property.notFound
 			count: 1
-			path: app/Models/User.php
+			path: app/Filament/Resources/ExamResults/Pages/CreateExamResult.php
 
 		-
-			message: '#^Cannot access property \$id on App\\Models\\Team\|null\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: app/Models/User.php
-
-		-
-			message: '#^Class App\\Models\\User uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: app/Models/User.php
-
-		-
-			message: '#^Cannot access property \$name on App\\Models\\Team\|null\.$#'
-			identifier: property.nonObject
+			message: '#^Cannot cast mixed to float\.$#'
+			identifier: cast.double
 			count: 2
-			path: app/Notifications/Teams/TeamInvitation.php
+			path: app/Filament/Resources/ExamResults/Schemas/ExamResultForm.php
 
 		-
-			message: '#^Cannot access property \$name on App\\Models\\User\|null\.$#'
+			message: '#^Trying to invoke mixed but it''s not a callable\.$#'
+			identifier: callable.nonCallable
+			count: 1
+			path: app/Filament/Resources/ExamResults/Schemas/ExamResultForm.php
+
+		-
+			message: '#^Cannot access property \$marks on mixed\.$#'
 			identifier: property.nonObject
 			count: 1
-			path: app/Notifications/Teams/TeamInvitation.php
+			path: app/Filament/Resources/ExamResults/Tables/ExamResultsTable.php
 
 		-
-			message: '#^Cannot cast mixed to string\.$#'
-			identifier: cast.string
+			message: '#^Cannot access property \$total_marks on mixed\.$#'
+			identifier: property.nonObject
 			count: 1
-			path: app/Rules/TeamName.php
+			path: app/Filament/Resources/ExamResults/Tables/ExamResultsTable.php
 
 		-
-			message: '#^Method App\\Rules\\TeamName\:\:reservedNames\(\) should return list\<string\> but returns array\<int, string\>\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Rules/TeamName.php
-
-		-
-			message: '#^Method App\\Rules\\TeamName\:\:routePrefixes\(\) should return list\<string\> but returns array\<int, non\-empty\-string\>\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Rules/TeamName.php
-
-		-
-			message: '#^Cannot cast mixed to string\.$#'
-			identifier: cast.string
-			count: 1
-			path: app/Rules/UniqueTeamInvitation.php
-
-		-
-			message: '#^Parameter \#1 \$view of function view expects view\-string\|null, string given\.$#'
+			message: '#^Parameter \#1 \$marks of static method App\\Support\\Grades\:\:fromMarks\(\) expects float\|int, mixed given\.$#'
 			identifier: argument.type
 			count: 1
-			path: routes/web.php
+			path: app/Filament/Resources/ExamResults/Tables/ExamResultsTable.php
 
 		-
-			message: '#^Cannot access property \$password on App\\Models\\User\|null\.$#'
+			message: '#^Parameter \#2 \$totalMarks of static method App\\Support\\Grades\:\:fromMarks\(\) expects float\|int, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Filament/Resources/ExamResults/Tables/ExamResultsTable.php
+
+		-
+			message: '#^Cannot access property \$name on App\\Models\\FeeStructure\|null\.$#'
 			identifier: property.nonObject
 			count: 1
-			path: tests/Feature/Auth/ResetPasswordTest.php
+			path: app/Filament/Resources/Payments/Schemas/PaymentForm.php
 
 		-
-			message: '#^Cannot call method middleware\(\) on Illuminate\\Routing\\Route\|null\.$#'
+			message: '#^Cannot access property \$name on App\\Models\\Student\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Filament/Resources/Payments/Schemas/PaymentForm.php
+
+		-
+			message: '#^Possibly invalid array key type mixed\.$#'
+			identifier: array.invalidKey
+			count: 1
+			path: app/Filament/Resources/Payments/Schemas/PaymentForm.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>name" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Filament/Resources/Payments/Schemas/PaymentForm.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\PayrollStatus\:\:Pending will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: app/Filament/Resources/Payrolls/Tables/PayrollsTable.php
+
+		-
+			message: '#^Parameter \#2 \$note of method App\\Models\\StaffAssignmentRequest\:\:reject\(\) expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Filament/Resources/StaffAssignmentRequests/Tables/StaffAssignmentRequestsTable.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\AssignmentRequestStatus\:\:Pending will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 2
+			path: app/Filament/Resources/StaffAssignmentRequests/Tables/StaffAssignmentRequestsTable.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: app/Filament/Staff/Pages/EnterResults.php
+
+		-
+			message: '#^Method App\\Filament\\Staff\\Pages\\EnterResults\:\:getClassesProperty\(\) should return Illuminate\\Support\\Collection\<int, App\\Models\\StudentClass\> but returns Illuminate\\Support\\Collection\<\(int\|string\), mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Filament/Staff/Pages/EnterResults.php
+
+		-
+			message: '#^Method App\\Filament\\Staff\\Pages\\EnterResults\:\:getStudentsProperty\(\) should return Illuminate\\Support\\Collection\<int, App\\Models\\Student\> but returns Illuminate\\Support\\Collection\<\(int\|string\), mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Filament/Staff/Pages/EnterResults.php
+
+		-
+			message: '#^Method App\\Filament\\Staff\\Pages\\EnterResults\:\:getSubjectsProperty\(\) should return Illuminate\\Support\\Collection\<int, App\\Models\\Subject\> but returns Illuminate\\Support\\Collection\<\(int\|string\), mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Filament/Staff/Pages/EnterResults.php
+
+		-
+			message: '#^Method App\\Filament\\Staff\\Pages\\EnterResults\:\:getYearsProperty\(\) should return array\<string, string\> but returns array\<int, string\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Filament/Staff/Pages/EnterResults.php
+
+		-
+			message: '#^Possibly invalid array key type mixed\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 1
+			path: app/Filament/Staff/Pages/EnterResults.php
+
+		-
+			message: '#^Property App\\Filament\\Staff\\Pages\\EnterResults\:\:\$marks \(array\<string, float\|string\|null\>\) does not accept array\<float\|string\|null\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Filament/Staff/Pages/EnterResults.php
+
+		-
+			message: '#^Cannot access property \$value on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Filament/Staff/Pages/MarkAttendance.php
+
+		-
+			message: '#^Method App\\Filament\\Staff\\Pages\\MarkAttendance\:\:getClassesProperty\(\) should return Illuminate\\Support\\Collection\<int, App\\Models\\StudentClass\> but returns Illuminate\\Support\\Collection\<\(int\|string\), mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Filament/Staff/Pages/MarkAttendance.php
+
+		-
+			message: '#^Method App\\Filament\\Staff\\Pages\\MarkAttendance\:\:getStudentsProperty\(\) should return Illuminate\\Support\\Collection\<int, App\\Models\\Student\> but returns Illuminate\\Support\\Collection\<\(int\|string\), mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Filament/Staff/Pages/MarkAttendance.php
+
+		-
+			message: '#^Parameter \#1 \$key of method Illuminate\\Support\\Collection\<\(int\|string\),mixed\>\:\:get\(\) expects int\|string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Filament/Staff/Pages/MarkAttendance.php
+
+		-
+			message: '#^Possibly invalid array key type mixed\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 2
+			path: app/Filament/Staff/Pages/MarkAttendance.php
+
+		-
+			message: '#^Property App\\Filament\\Staff\\Pages\\MarkAttendance\:\:\$statuses \(array\<string, string\>\) does not accept array\<int\|string, string\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Filament/Staff/Pages/MarkAttendance.php
+
+		-
+			message: '#^Property App\\Filament\\Staff\\Pages\\MarkAttendance\:\:\$statuses \(array\<string, string\>\) does not accept array\<mixed\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Filament/Staff/Pages/MarkAttendance.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>value" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Filament/Staff/Pages/MarkAttendance.php
+
+		-
+			message: '#^Cannot cast mixed to float\.$#'
+			identifier: cast.double
+			count: 1
+			path: app/Filament/Widgets/AttendanceChart.php
+
+		-
+			message: '#^Cannot cast mixed to float\.$#'
+			identifier: cast.double
+			count: 1
+			path: app/Filament/Widgets/StudentPerformanceChart.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: app/Filament/Widgets/StudentPerformanceChart.php
+
+		-
+			message: '#^Method App\\Filament\\Widgets\\StudentPerformanceChart\:\:getFilters\(\) should return array\<int, string\> but returns array\<int\|string, string\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Filament/Widgets/StudentPerformanceChart.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 3
+			path: app/Http/Controllers/ExportController.php
+
+		-
+			message: '#^Cannot call method toDateString\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 5
+			path: app/Http/Controllers/ExportController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\ExportController\:\:exporters\(\) should return array\<string, array\{callable\(\)\: Illuminate\\Support\\Collection\<int, mixed\>, list\<string\>, callable\(mixed\)\: list\<string\>\}\> but returns array\{students\: array\{Closure\(\)\: Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Student\>, array\{''sr_no'', ''name'', ''class'', ''joining_date'', ''leaving_date'', ''status''\}, Closure\(App\\Models\\Student\)\: array\{int\<0, max\>\|null, string, string\|null, mixed, mixed, mixed\}\}, staff\: array\{Closure\(\)\: Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Staff\>, array\{''name'', ''cnic'', ''email'', ''phone'', ''joining_date'', ''leaving_date'', ''status''\}, Closure\(App\\Models\\Staff\)\: array\{string, string, string\|null, string\|null, mixed, mixed, mixed\}\}, attendance\: array\{Closure\(\)\: Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Attendance\>, array\{''student_sr_no'', ''student_name'', ''class'', ''date'', ''status'', ''marked_by''\}, Closure\(App\\Models\\Attendance\)\: array\{int\<0, max\>\|null, string\|null, string\|null, mixed, mixed, string\|null\}\}, exam\-results\: array\{Closure\(\)\: Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\ExamResult\>, array\{''student_sr_no'', ''student_name'', ''class'', ''subject'', ''year'', ''marks'', ''total_marks'', ''grade''\}, Closure\(App\\Models\\ExamResult\)\: array\{int\<0, max\>\|null, string\|null, string\|null, string\|null, int\<0, max\>, float, float, string\}\}\}\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Http/Controllers/ExportController.php
+
+		-
+			message: '#^Parameter \#1 \$stream of function fclose expects resource, resource\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/ExportController.php
+
+		-
+			message: '#^Parameter \#1 \$stream of function fputcsv expects resource, resource\|false given\.$#'
+			identifier: argument.type
+			count: 2
+			path: app/Http/Controllers/ExportController.php
+
+		-
+			message: '#^Parameter \#1 \$stream of function rewind expects resource, resource\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/ExportController.php
+
+		-
+			message: '#^Parameter \#1 \$stream of function stream_get_contents expects resource, resource\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/ExportController.php
+
+		-
+			message: '#^Using nullsafe method call on non\-nullable type string\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 2
+			path: app/Http/Controllers/ExportController.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: app/Http/Controllers/ImportController.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 10
+			path: app/Http/Controllers/ImportController.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(string\|null\)\: mixed\)\|null, Closure\(string\)\: lowercase\-string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/ImportController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Payment\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Payment\>\:\:\$provider\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/PaymentCallbackController.php
+
+		-
+			message: '#^Result of \|\| is always true\.$#'
+			identifier: booleanOr.alwaysTrue
+			count: 1
+			path: app/Http/Controllers/PaymentCallbackController.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between string and App\\Enums\\PaymentProvider\|null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Http/Controllers/PaymentCallbackController.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Http/Controllers/PaymentCallbackController.php
+
+		-
+			message: '#^Attribute class App\\Models\\Override does not exist\.$#'
+			identifier: attribute.notFound
+			count: 3
+			path: app/Models/Admin.php
+
+		-
+			message: '#^Class App\\Models\\Admin uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Admin.php
+
+		-
+			message: '#^Attribute class App\\Models\\Override does not exist\.$#'
+			identifier: attribute.notFound
+			count: 1
+			path: app/Models/Attendance.php
+
+		-
+			message: '#^Class App\\Models\\Attendance uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Attendance.php
+
+		-
+			message: '#^Attribute class App\\Models\\Override does not exist\.$#'
+			identifier: attribute.notFound
+			count: 1
+			path: app/Models/ExamResult.php
+
+		-
+			message: '#^Class App\\Models\\ExamResult uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/ExamResult.php
+
+		-
+			message: '#^Attribute class App\\Models\\Override does not exist\.$#'
+			identifier: attribute.notFound
+			count: 1
+			path: app/Models/Expense.php
+
+		-
+			message: '#^Class App\\Models\\Expense uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Expense.php
+
+		-
+			message: '#^Attribute class App\\Models\\Override does not exist\.$#'
+			identifier: attribute.notFound
+			count: 1
+			path: app/Models/Fee.php
+
+		-
+			message: '#^Class App\\Models\\Fee uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Fee.php
+
+		-
+			message: '#^Property App\\Models\\Fee\:\:\$paid_at \(string\|null\) does not accept Carbon\\CarbonImmutable\|string\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Models/Fee.php
+
+		-
+			message: '#^Property App\\Models\\Fee\:\:\$status \(string\) does not accept App\\Enums\\FeeStatus\:\:Paid\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Models/Fee.php
+
+		-
+			message: '#^Property App\\Models\\Fee\:\:\$status \(string\) does not accept App\\Enums\\FeeStatus\:\:Partial\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Models/Fee.php
+
+		-
+			message: '#^Property App\\Models\\Fee\:\:\$status \(string\) does not accept App\\Enums\\FeeStatus\:\:Unpaid\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Models/Fee.php
+
+		-
+			message: '#^Attribute class App\\Models\\Override does not exist\.$#'
+			identifier: attribute.notFound
+			count: 1
+			path: app/Models/FeeStructure.php
+
+		-
+			message: '#^Class App\\Models\\FeeStructure uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/FeeStructure.php
+
+		-
+			message: '#^Class App\\Models\\Guardian uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Guardian.php
+
+		-
+			message: '#^Attribute class App\\Models\\Override does not exist\.$#'
+			identifier: attribute.notFound
+			count: 1
+			path: app/Models/Payment.php
+
+		-
+			message: '#^Cannot call method recordPaymentAmount\(\) on App\\Models\\Fee\|null\.$#'
 			identifier: method.nonObject
 			count: 1
-			path: tests/Feature/Pages/DashboardTest.php
+			path: app/Models/Payment.php
 
 		-
-			message: '#^Cannot access property \$email_verified_at on App\\Models\\User\|null\.$#'
+			message: '#^Class App\\Models\\Payment uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Payment.php
+
+		-
+			message: '#^Method App\\Models\\Payment\:\:complete\(\) has parameter \$payload with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Models/Payment.php
+
+		-
+			message: '#^Method App\\Models\\Payment\:\:fail\(\) has parameter \$payload with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: app/Models/Payment.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\PaymentStatus\:\:Completed will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 2
+			path: app/Models/Payment.php
+
+		-
+			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
+			count: 1
+			path: app/Models/PaymentSetting.php
+
+		-
+			message: '#^Attribute class App\\Models\\Override does not exist\.$#'
+			identifier: attribute.notFound
+			count: 1
+			path: app/Models/PaymentSetting.php
+
+		-
+			message: '#^Cannot call method requiredCredentials\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/PaymentSetting.php
+
+		-
+			message: '#^Class App\\Models\\PaymentSetting uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/PaymentSetting.php
+
+		-
+			message: '#^Attribute class App\\Models\\Override does not exist\.$#'
+			identifier: attribute.notFound
+			count: 1
+			path: app/Models/Payroll.php
+
+		-
+			message: '#^Class App\\Models\\Payroll uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Payroll.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\PayrollStatus\:\:Paid will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: app/Models/Payroll.php
+
+		-
+			message: '#^Attribute class App\\Models\\Override does not exist\.$#'
+			identifier: attribute.notFound
+			count: 3
+			path: app/Models/Staff.php
+
+		-
+			message: '#^Class App\\Models\\Staff uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Staff.php
+
+		-
+			message: '#^Class App\\Models\\StaffAssignment uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/StaffAssignment.php
+
+		-
+			message: '#^Attribute class App\\Models\\Override does not exist\.$#'
+			identifier: attribute.notFound
+			count: 1
+			path: app/Models/StaffAssignmentRequest.php
+
+		-
+			message: '#^Class App\\Models\\StaffAssignmentRequest uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/StaffAssignmentRequest.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between string and App\\Enums\\AssignmentRequestStatus\:\:Pending will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 2
+			path: app/Models/StaffAssignmentRequest.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 2
+			path: app/Models/StaffAssignmentRequest.php
+
+		-
+			message: '#^Attribute class App\\Models\\Override does not exist\.$#'
+			identifier: attribute.notFound
+			count: 1
+			path: app/Models/Student.php
+
+		-
+			message: '#^Class App\\Models\\Student uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Student.php
+
+		-
+			message: '#^Class App\\Models\\StudentClass uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/StudentClass.php
+
+		-
+			message: '#^Class App\\Models\\StudentParent uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/StudentParent.php
+
+		-
+			message: '#^Class App\\Models\\Subject uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/Subject.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: app/Observers/StudentObserver.php
+
+		-
+			message: '#^Property App\\Models\\Student\:\:\$sr_no \(int\<0, max\>\|null\) does not accept int\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: app/Observers/StudentObserver.php
+
+		-
+			message: '#^Cannot access property \$provider on App\\Models\\PaymentSetting\|null\.$#'
 			identifier: property.nonObject
 			count: 1
-			path: tests/Feature/ProfileTest.php
+			path: app/Support/Payments/AvailableProviders.php
 
 		-
-			message: '#^Cannot access property \$password on App\\Models\\User\|null\.$#'
-			identifier: property.nonObject
+			message: '#^Method App\\Support\\Payments\\AvailableProviders\:\:defaultProvider\(\) never returns App\\Enums\\PaymentProvider so it can be removed from the return type\.$#'
+			identifier: return.unusedType
 			count: 1
-			path: tests/Feature/ProfileTest.php
+			path: app/Support/Payments/AvailableProviders.php
 
 		-
-			message: '#^Unable to resolve the template type TComponent in call to method Livewire\\LivewireManager\:\:test\(\)$#'
-			identifier: argument.templateType
-			count: 11
-			path: tests/Feature/ProfileTest.php
-
-		-
-			message: '#^Cannot access property \$accepted_at on App\\Models\\TeamInvitation\|null\.$#'
-			identifier: property.nonObject
+			message: '#^Method App\\Support\\Payments\\AvailableProviders\:\:defaultProvider\(\) should return App\\Enums\\PaymentProvider\|null but returns string\.$#'
+			identifier: return.type
 			count: 1
-			path: tests/Feature/TeamsTest.php
+			path: app/Support/Payments/AvailableProviders.php
 
 		-
-			message: '#^Cannot access property \$current_team_id on App\\Models\\User\|null\.$#'
-			identifier: property.nonObject
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
 			count: 5
-			path: tests/Feature/TeamsTest.php
+			path: app/Support/Payments/EasyPaisaService.php
 
 		-
-			message: '#^Unable to resolve the template type TComponent in call to method Livewire\\LivewireManager\:\:test\(\)$#'
-			identifier: argument.templateType
+			message: '#^Method App\\Support\\Payments\\EasyPaisaService\:\:buildCheckoutFields\(\) should return array\<string, string\> but returns array\<string, mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Support/Payments/EasyPaisaService.php
+
+		-
+			message: '#^Offset ''hash_key'' does not exist on string\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: app/Support/Payments/EasyPaisaService.php
+
+		-
+			message: '#^Offset ''store_id'' does not exist on string\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: app/Support/Payments/EasyPaisaService.php
+
+		-
+			message: '#^Parameter \#1 \$fields of method App\\Support\\Payments\\EasyPaisaService\:\:hashFields\(\) expects array\<string, string\>, array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Support/Payments/EasyPaisaService.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between string and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Support/Payments/EasyPaisaService.php
+
+		-
+			message: '#^Cannot access property \$feeStructure on App\\Models\\Fee\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Support/Payments/JazzCashService.php
+
+		-
+			message: '#^Cannot access property \$name on App\\Models\\FeeStructure\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Support/Payments/JazzCashService.php
+
+		-
+			message: '#^Cannot access property \$sr_no on App\\Models\\Student\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Support/Payments/JazzCashService.php
+
+		-
+			message: '#^Cannot access property \$student on App\\Models\\Fee\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Support/Payments/JazzCashService.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 6
+			path: app/Support/Payments/JazzCashService.php
+
+		-
+			message: '#^Method App\\Support\\Payments\\JazzCashService\:\:buildCheckoutFields\(\) should return array\<string, string\> but returns array\<string, mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Support/Payments/JazzCashService.php
+
+		-
+			message: '#^Offset ''integrity_salt'' does not exist on string\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: app/Support/Payments/JazzCashService.php
+
+		-
+			message: '#^Offset ''merchant_id'' does not exist on string\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: app/Support/Payments/JazzCashService.php
+
+		-
+			message: '#^Offset ''password'' does not exist on string\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: app/Support/Payments/JazzCashService.php
+
+		-
+			message: '#^Parameter \#1 \$fields of method App\\Support\\Payments\\JazzCashService\:\:hashFields\(\) expects array\<string, string\>, array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Support/Payments/JazzCashService.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between string and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Support/Payments/JazzCashService.php
+
+		-
+			message: '#^Cannot cast mixed to float\.$#'
+			identifier: cast.double
+			count: 2
+			path: app/Support/Positions.php
+
+		-
+			message: '#^Method App\\Support\\Positions\:\:forClass\(\) should return Illuminate\\Support\\Collection\<int, int\> but returns Illuminate\\Support\\Collection\<\(int\|string\), mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Support/Positions.php
+
+		-
+			message: '#^Method App\\Support\\StudentLookup\:\:resolve\(\) should return Illuminate\\Support\\Collection\<int, App\\Models\\Student\> but returns Illuminate\\Support\\Collection\<\(int\|string\), mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Support/StudentLookup.php
+
+		-
+			message: '#^Cannot access property \$student_class_id on App\\Models\\Student\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Student\>\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: database/factories/AttendanceFactory.php
+
+		-
+			message: '#^Cannot access property \$student_class_id on App\\Models\\Student\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Student\>\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: database/factories/ExamResultFactory.php
+
+		-
+			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
+			count: 1
+			path: database/seeders/DatabaseSeeder.php
+
+		-
+			message: '#^Cannot access property \$studentClass on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: database/seeders/DatabaseSeeder.php
+
+		-
+			message: '#^Cannot access property \$student_class_id on mixed\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: database/seeders/DatabaseSeeder.php
+
+		-
+			message: '#^Cannot access property \$subjects on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: database/seeders/DatabaseSeeder.php
+
+		-
+			message: '#^Cannot call method getKey\(\) on App\\Models\\Staff\|null\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: database/seeders/DatabaseSeeder.php
+
+		-
+			message: '#^Cannot call method getKey\(\) on App\\Models\\StudentClass\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: database/seeders/DatabaseSeeder.php
+
+		-
+			message: '#^Cannot call method getKey\(\) on App\\Models\\Subject\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: database/seeders/DatabaseSeeder.php
+
+		-
+			message: '#^Cannot call method getKey\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: database/seeders/DatabaseSeeder.php
+
+		-
+			message: '#^Cannot call method students\(\) on App\\Models\\StudentParent\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: database/seeders/DatabaseSeeder.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Support\\Collection\<\(int\|string\),mixed\>\:\:each\(\) expects callable\(mixed, int\|string\)\: mixed, Closure\(App\\Models\\Student, int\)\: void given\.$#'
+			identifier: argument.type
+			count: 2
+			path: database/seeders/DatabaseSeeder.php
+
+		-
+			message: '#^Parameter \#1 \$timezone of method Illuminate\\Console\\Scheduling\\Event\:\:timezone\(\) expects DateTimeZone\|string\|UnitEnum, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: routes/console.php
+
+		-
+			message: '#^Cannot call method is\(\) on App\\Models\\StudentClass\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/AcademicCoreTest.php
+
+		-
+			message: '#^Anonymous function should return bool but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: tests/Feature/AttendanceTest.php
+
+		-
+			message: '#^Binary operation "\." between ''statuses\.'' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 3
+			path: tests/Feature/AttendanceTest.php
+
+		-
+			message: '#^Cannot access property \$status on App\\Models\\Attendance\|null\.$#'
+			identifier: property.nonObject
+			count: 3
+			path: tests/Feature/AttendanceTest.php
+
+		-
+			message: '#^Cannot access property \$studentClass on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/AttendanceTest.php
+
+		-
+			message: '#^Cannot call method getKey\(\) on App\\Models\\Student\|null\.$#'
+			identifier: method.nonObject
 			count: 7
-			path: tests/Feature/TeamsTest.php
+			path: tests/Feature/AttendanceTest.php
+
+		-
+			message: '#^Cannot call method is\(\) on App\\Models\\Student\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/AttendanceTest.php
+
+		-
+			message: '#^Cannot call method is\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/AttendanceTest.php
+
+		-
+			message: '#^Cannot access property \$name on App\\Models\\Student\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/CardsAndCsvTest.php
+
+		-
+			message: '#^Cannot access property \$student_class_id on App\\Models\\Student\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/CardsAndCsvTest.php
+
+		-
+			message: '#^Parameter \#1 \$haystack of function str_contains expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 2
+			path: tests/Feature/CardsAndCsvTest.php
+
+		-
+			message: '#^Part \$student\-\>getKey\(\) \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 2
+			path: tests/Feature/CardsAndCsvTest.php
+
+		-
+			message: '#^Binary operation "\." between ''marks\.'' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 2
+			path: tests/Feature/ExamResultsTest.php
+
+		-
+			message: '#^Cannot access property \$student_class_id on App\\Models\\ExamResult\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/ExamResultsTest.php
+
+		-
+			message: '#^Cannot access property \$credentials on App\\Models\\PaymentSetting\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/FinanceTest.php
+
+		-
+			message: '#^Cannot call method getRawOriginal\(\) on App\\Models\\PaymentSetting\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/FinanceTest.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: tests/Feature/FinanceTest.php
+
+		-
+			message: '#^Offset ''merchant_id'' does not exist on string\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: tests/Feature/FinanceTest.php
+
+		-
+			message: '#^Parameter \#1 \$fields of method App\\Support\\Payments\\EasyPaisaService\:\:hashFields\(\) expects array\<string, string\>, array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Feature/FinanceTest.php
+
+		-
+			message: '#^Parameter \#1 \$value of method Illuminate\\Testing\\TestResponse\<Symfony\\Component\\HttpFoundation\\Response\>\:\:assertSee\(\) expects list\<string\>\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Feature/FinanceTest.php
+
+		-
+			message: '#^Part \$payment\-\>getKey\(\) \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: tests/Feature/FinanceTest.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function expect$#'
+			identifier: argument.templateType
+			count: 1
+			path: tests/Feature/FinanceTest.php
+
+		-
+			message: '#^Parameter \#1 \$value of method Illuminate\\Testing\\TestResponse\<Symfony\\Component\\HttpFoundation\\Response\>\:\:assertSee\(\) expects list\<string\>\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Feature/Pages/HomeTest.php
+
+		-
+			message: '#^Cannot call method is\(\) on App\\Models\\Staff\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/StaffAssignmentsTest.php
+
+		-
+			message: '#^Cannot call method is\(\) on App\\Models\\StudentClass\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/StaffAssignmentsTest.php
+
+		-
+			message: '#^Cannot call method is\(\) on App\\Models\\Subject\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/StaffAssignmentsTest.php

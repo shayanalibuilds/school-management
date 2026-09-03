@@ -104,7 +104,7 @@ final class ImportController extends Controller
 
         $header = null;
 
-        while (($data = fgetcsv($handle)) !== false) {
+        while (($data = fgetcsv($handle, escape: '\\')) !== false) {
             if ($header === null) {
                 $header = array_map(fn (string $column): string => mb_strtolower(mb_trim($column)), $data);
 

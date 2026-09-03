@@ -103,7 +103,7 @@ final class JazzCashService
     {
         $setting = $this->setting();
 
-        if ($setting === null) {
+        if (! $setting instanceof PaymentSetting) {
             throw new RuntimeException('JazzCash is not configured.');
         }
 

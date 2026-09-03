@@ -19,7 +19,7 @@ final class MyAssignments extends Page
     /**
      * @return array<string, mixed>
      */
-    public function getViewData(): array
+    protected function getViewData(): array
     {
         $staff = auth('staff')->user();
 
