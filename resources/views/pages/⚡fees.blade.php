@@ -128,7 +128,7 @@ new #[Layout('layouts::app')] class extends Component {
 <div class="py-8 space-y-6">
     <div>
         <flux:heading size="lg">Fees & Payments</flux:heading>
-        <flux:subheading>Check dues for any year and pay online via EasyPaisa or JazzCash.</flux:subheading>
+        <flux:subheading>Check dues for any year and pay online through your preferred provider.</flux:subheading>
     </div>
 
     <flux:card>
