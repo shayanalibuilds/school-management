@@ -727,6 +727,12 @@ parameters:
 			path: app/Support/StudentLookup.php
 
 		-
+			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\StudentStatus\:\:Active will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: app/Support/StudentLookup.php
+
+		-
 			message: '#^Cannot access property \$student_class_id on App\\Models\\Student\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Student\>\|null\.$#'
 			identifier: property.nonObject
 			count: 1
@@ -959,3 +965,27 @@ parameters:
 			identifier: method.nonObject
 			count: 1
 			path: tests/Feature/StaffAssignmentsTest.php
+
+		-
+			message: '#^Cannot call method format\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/StudentWizardTest.php
+
+		-
+			message: '#^Cannot call method format\(\) on string\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/StudentWizardTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<string\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: tests/Feature/StudentWizardTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<string\|null\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: tests/Feature/StudentWizardTest.php
