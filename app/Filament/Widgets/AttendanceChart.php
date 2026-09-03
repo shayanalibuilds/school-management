@@ -7,7 +7,9 @@ namespace App\Filament\Widgets;
 use App\Enums\AttendanceStatus;
 use App\Models\Attendance;
 use App\Models\StudentClass;
+use App\Support\ChartScope;
 use Filament\Widgets\ChartWidget;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 
 final class AttendanceChart extends ChartWidget
 {
@@ -27,7 +29,11 @@ final class AttendanceChart extends ChartWidget
      */
     protected function getData(): array
     {
-        $classes = StudentClass::query()->withCount('students')->orderBy('name')->get();
+        $classes = StudentClass::query()
+            ->withCount('students')
+            ->orderBy('name')
+            ->when(is_array($scope = ChartScope::assignedClassIds()), fn (Builder $query): Builder => $query->whereIn('id', $scope))
+            ->get();
 
         if ($classes->isEmpty()) {
             return [

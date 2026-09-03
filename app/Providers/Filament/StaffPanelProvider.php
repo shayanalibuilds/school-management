@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Providers\Filament;
 
+use App\Filament\Widgets\AttendanceChart;
+use App\Filament\Widgets\StudentPerformanceChart;
 use App\Filament\Widgets\WelcomeWidget;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -43,6 +45,8 @@ final class StaffPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Staff/Widgets'), for: 'App\Filament\Staff\Widgets')
             ->widgets([
                 WelcomeWidget::class,
+                StudentPerformanceChart::class,
+                AttendanceChart::class,
             ])
             ->middleware([
                 EncryptCookies::class,

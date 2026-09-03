@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Filament\Widgets;
 
 use App\Models\ExamResult;
+use App\Support\ChartScope;
 use Filament\Widgets\ChartWidget;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
 final class StudentPerformanceChart extends ChartWidget
@@ -49,6 +51,7 @@ final class StudentPerformanceChart extends ChartWidget
 
         $averages = ExamResult::query()
             ->whereIn('year', $years->values()->all())
+            ->when(is_array($scope = ChartScope::assignedClassIds()), fn (Builder $query): Builder => $query->whereIn('student_class_id', $scope))
             ->selectRaw('year, AVG(marks * 100.0 / NULLIF(total_marks, 0)) as average_percentage')
             ->groupBy('year')
             ->orderBy('year')
