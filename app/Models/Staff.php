@@ -58,6 +58,14 @@ final class Staff extends Authenticatable implements FilamentUser, HasName
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<StaffAssignment, $this>
+     */
+    public function assignments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(StaffAssignment::class, 'staff_id');
+    }
+
+    /**
      * @return array<string, string>
      */
     #[Override]

@@ -36,6 +36,7 @@ final class StaffPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Staff/Pages'), for: 'App\Filament\Staff\Pages')
             ->pages([
                 Dashboard::class,
+                \App\Filament\Staff\Pages\MyAssignments::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Staff/Widgets'), for: 'App\Filament\Staff\Widgets')
             ->widgets([
