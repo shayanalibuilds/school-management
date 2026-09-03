@@ -14,6 +14,8 @@ final class StudentPerformanceChart extends ChartWidget
 
     protected ?string $maxHeight = '280px';
 
+    protected static ?int $sort = -2;
+
     /**
      * @return array<int, string>
      */
@@ -46,8 +48,8 @@ final class StudentPerformanceChart extends ChartWidget
         }
 
         $averages = ExamResult::query()
-            ->whereIn('year', $years->keys()->all())
-            ->selectRaw('year, AVG(marks / NULLIF(total_marks, 0) * 100) as average_percentage')
+            ->whereIn('year', $years->values()->all())
+            ->selectRaw('year, AVG(marks * 100.0 / NULLIF(total_marks, 0)) as average_percentage')
             ->groupBy('year')
             ->orderBy('year')
             ->pluck('average_percentage', 'year');

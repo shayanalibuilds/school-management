@@ -15,6 +15,8 @@ final class AttendanceChart extends ChartWidget
 
     protected ?string $maxHeight = '280px';
 
+    protected static ?int $sort = -1;
+
     protected function getType(): string
     {
         return 'bar';
