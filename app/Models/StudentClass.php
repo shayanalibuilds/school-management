@@ -41,4 +41,20 @@ final class StudentClass extends Model
     {
         return $this->belongsToMany(Subject::class, 'class_subject', 'student_class_id', 'subject_id');
     }
+
+    /**
+     * @return HasMany<Attendance, $this>
+     */
+    public function attendances(): HasMany
+    {
+        return $this->hasMany(Attendance::class, 'student_class_id');
+    }
+
+    /**
+     * @return HasMany<StaffAssignment, $this>
+     */
+    public function staffAssignments(): HasMany
+    {
+        return $this->hasMany(StaffAssignment::class, 'student_class_id');
+    }
 }
