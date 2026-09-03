@@ -97,7 +97,10 @@ it('lets staff mark attendance for their assigned class', function (): void {
         ->assertNotified()
         ->assertSuccessful();
 
-    expect(Attendance::query()->where('student_class_id', $class->getKey())->whereDate('date', today())->count())->toBe(3);
+    expect(Attendance::query()->where('student_class_id', $class->getKey())->whereDate('date', today())->count())->toBe(3)
+        ->and(Attendance::query()->where('student_id', $students[0]->getKey())->first()->status)->toBe(AttendanceStatus::Present)
+        ->and(Attendance::query()->where('student_id', $students[1]->getKey())->first()->status)->toBe(AttendanceStatus::Absent)
+        ->and(Attendance::query()->where('student_id', $students[2]->getKey())->first()->status)->toBe(AttendanceStatus::Leave);
 });
 
 it('blocks staff from saving attendance for a class they are not assigned to', function (): void {
