@@ -54,6 +54,7 @@ it('lets an admin create a student through the panel', function (): void {
     Livewire::test(CreateStudent::class)
         ->fillForm([
             'sr_no' => 42,
+            'gr_no' => 'GR-2026-0042',
             'name' => 'Aisha Khan',
             'student_class_id' => $class->getKey(),
             'joining_date' => '2026-09-01',

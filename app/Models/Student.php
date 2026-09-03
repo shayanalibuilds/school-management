@@ -24,7 +24,15 @@ final class Student extends Model
      */
     protected $fillable = [
         'sr_no',
+        'gr_no',
         'name',
+        'father_name',
+        'date_of_birth',
+        'gender',
+        'b_form_cnic',
+        'phone',
+        'previous_school',
+        'address',
         'student_class_id',
         'joining_date',
         'leaving_date',
@@ -37,6 +45,22 @@ final class Student extends Model
     public function studentClass(): BelongsTo
     {
         return $this->belongsTo(StudentClass::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<StudentParent, $this>
+     */
+    public function parents(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(StudentParent::class, 'parent_student', 'student_id', 'parent_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<Guardian, $this>
+     */
+    public function guardians(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Guardian::class, 'guardian_student', 'student_id', 'guardian_id');
     }
 
     /**
@@ -81,6 +105,7 @@ final class Student extends Model
         return [
             'joining_date' => 'date',
             'leaving_date' => 'date',
+            'date_of_birth' => 'date',
             'status' => StudentStatus::class,
         ];
     }
