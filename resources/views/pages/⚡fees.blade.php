@@ -12,10 +12,7 @@ use Livewire\Component;
 
 new #[Layout('layouts::app')] class extends Component {
     #[Url]
-    public ?string $cnic = null;
-
-    #[Url]
-    public ?string $phone = null;
+    public ?string $identifier = null;
 
     #[Url]
     public ?string $year = null;
@@ -40,11 +37,11 @@ new #[Layout('layouts::app')] class extends Component {
      */
     public function getStudentsProperty(): \Illuminate\Support\Collection
     {
-        if ($this->cnic === null || $this->phone === null) {
+        if ($this->identifier === null) {
             return collect();
         }
 
-        $students = StudentLookup::resolve($this->cnic, $this->phone);
+        $students = StudentLookup::resolve($this->identifier);
 
         return $students->map(fn ($student): array => [
             'student' => $student,
@@ -96,10 +93,11 @@ new #[Layout('layouts::app')] class extends Component {
 
         $due = (float) $fee->amount - (float) $fee->amount_paid;
 
+        $digits = preg_replace('/[^0-9]/', '', (string) $this->identifier);
+
         $payment = $fee->payments()->create([
             'provider' => $provider->value,
-            'payer_cnic' => $this->cnic,
-            'payer_phone' => $this->phone,
+            'payer_cnic' => $digits !== null && mb_strlen($digits) === 13 ? $digits : null,
             'amount' => $due,
             'status' => PaymentStatus::Pending->value,
         ]);
@@ -128,13 +126,12 @@ new #[Layout('layouts::app')] class extends Component {
 <div class="py-8 space-y-6">
     <div>
         <flux:heading size="lg">Fees & Payments</flux:heading>
-        <flux:subheading>Check dues for any year and pay online through your preferred provider.</flux:subheading>
+        <flux:subheading>Enter the parent or guardian CNIC, or the student roll number (SR #), to check dues and pay online.</flux:subheading>
     </div>
 
     <flux:card>
         <form wire:submit="search" class="grid gap-4 sm:grid-cols-3">
-            <flux:input wire:model="cnic" label="CNIC" placeholder="35202-1234567-1" />
-            <flux:input wire:model="phone" label="Phone" placeholder="03001234567" />
+            <flux:input wire:model="identifier" label="CNIC or roll number" placeholder="35202-1234567-1 or 42" />
             <div>
                 <flux:label>Year</flux:label>
                 <flux:select wire:model="year">
@@ -144,7 +141,7 @@ new #[Layout('layouts::app')] class extends Component {
                     @endforeach
                 </flux:select>
             </div>
-            <div class="sm:col-span-3">
+            <div class="flex items-end">
                 <flux:button variant="primary" type="submit" icon="magnifying-glass">Search</flux:button>
             </div>
         </form>
@@ -197,10 +194,10 @@ new #[Layout('layouts::app')] class extends Component {
         </flux:card>
     @endforeach
 
-    @if ($cnic !== null && $phone !== null && $this->students->isEmpty())
+    @if ($identifier !== null && $this->students->isEmpty())
         <flux:callout variant="warning">
             <flux:callout.heading>No records found</flux:callout.heading>
-            <flux:callout.text>Check the CNIC and phone number and try again.</flux:callout.text>
+            <flux:callout.text>Check the CNIC or roll number and try again.</flux:callout.text>
         </flux:callout>
     @endif
 
