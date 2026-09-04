@@ -1,21 +1,46 @@
-#!/bin/bash
+#!/usr/bin/env php
+<?php
 
-# Find an available port starting from 8000
-PORT=8000
-while ! php -r "exit(@stream_socket_server('tcp://127.0.0.1:$PORT') ? 0 : 1);" 2>/dev/null; do
-    PORT=$((PORT + 1))
-done
+$port = 8000;
 
-URL="http://localhost:$PORT"
+while (true) {
+    $socket = @stream_socket_server("tcp://127.0.0.1:{$port}");
+    if ($socket !== false) {
+        fclose($socket);
+        break;
+    }
+    $port++;
+    if ($port > 65535) {
+        fwrite(STDERR, "No available port found.\n");
+        exit(1);
+    }
+}
 
-# Open browser after a short delay to let the server start
-(sleep 2 && open "$URL") &
+$url = "http://localhost:{$port}";
 
-# Run all dev services with the determined port
-npx concurrently -k \
-    -c "#93c5fd,#c4b5fd,#fb7185,#fdba74" \
-    --names=server,queue,logs,vite \
-    "php artisan serve --port=$PORT" \
-    "php artisan queue:listen --tries=1" \
-    "php artisan pail" \
-    "bun run dev"
+$browse = PHP_OS_FAMILY === 'Windows'
+    ? 'sleep(2); pclose(popen(' . var_export('start "" ' . $url, true) . ', "r"));'
+    : 'sleep(2); exec(' . var_export(
+        (PHP_OS_FAMILY === 'Darwin' ? 'open ' : 'xdg-open ') . escapeshellarg($url)
+      , true) . ');';
+
+if (PHP_OS_FAMILY === 'Windows') {
+    pclose(popen(
+        'start /B "" ' . escapeshellarg(PHP_BINARY) . ' -r ' . escapeshellarg($browse),
+        'r'
+    ));
+} else {
+    exec(escapeshellarg(PHP_BINARY) . ' -r ' . escapeshellarg($browse) . ' >/dev/null 2>&1 &');
+}
+
+$cmd = sprintf(
+    'npx concurrently -k -c %s --names=server,queue,logs,vite %s %s %s %s',
+    escapeshellarg('#93c5fd,#c4b5fd,#fb7185,#fdba74'),
+    escapeshellarg("php artisan serve --port={$port}"),
+    escapeshellarg('php artisan queue:listen --tries=1'),
+    escapeshellarg('php artisan pail'),
+    escapeshellarg('bun run dev')
+);
+
+passthru($cmd, $exitCode);
+exit($exitCode);
