@@ -6,9 +6,12 @@ namespace App\Filament\Resources\Payments\Tables;
 
 use App\Enums\PaymentProvider;
 use App\Enums\PaymentStatus;
+use App\Models\Payment;
+use Filament\Actions\BulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
 
 final class PaymentsTable
 {
@@ -62,6 +65,24 @@ final class PaymentsTable
             ])
             ->recordActions([
                 //
+            ])
+            ->toolbarActions([
+                // Payments are financial records, so there is no bulk delete;
+                // completed payments credit their fee, failed ones stay listed.
+                BulkAction::make('markCompleted')
+                    ->label('Mark completed')
+                    ->icon('heroicon-m-check-circle')
+                    ->color('success')
+                    ->action(function (Collection $records): void {
+                        $records
+                            ->filter(fn (Payment $record): bool => $record->status !== PaymentStatus::Completed)
+                            ->each(function (Payment $record): void {
+                                $reference = $record->reference ?? 'manual-'.$record->getKey();
+
+                                $record->complete($reference, ['source' => 'bulk']);
+                            });
+                    })
+                    ->deselectRecordsAfterCompletion(),
             ]);
     }
 }
