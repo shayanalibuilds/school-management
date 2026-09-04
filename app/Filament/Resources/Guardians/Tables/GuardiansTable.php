@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Guardians\Tables;
 
-use App\Models\Guardian;
+use App\Filament\Support\BulkEdit;
 use Filament\Actions\BulkAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -59,9 +59,7 @@ final class GuardiansTable
                             ->maxLength(255),
                     ])
                     ->action(function (Collection $records, array $data): void {
-                        $payload = collect($data)->filter(fn (mixed $value): bool => filled($value))->all();
-
-                        $records->each(fn (Guardian $record) => $record->update($payload));
+                        BulkEdit::apply($records, $data);
                     })
                     ->deselectRecordsAfterCompletion(),
                 DeleteBulkAction::make(),

@@ -10,17 +10,29 @@ use Livewire\Livewire;
 
 use function Pest\Laravel\actingAs;
 
+/**
+ * Read the page's protected form action list without leaking mixed types.
+ *
+ * @return array<int, string>
+ */
+function formActionNames(object $page): array
+{
+    $method = new ReflectionMethod($page, 'getFormActions');
+
+    /** @var array<int, Filament\Actions\Action> $actions */
+    $actions = $method->invoke($page);
+
+    return collect($actions)
+        ->map(fn (Filament\Actions\Action $action): string => (string) $action->getName())
+        ->all();
+}
+
 it('keeps only the cancel action in the create page footer on every wizard step', function (): void {
     actingAs(Admin::factory()->create(), 'admin');
 
-    $actions = invade(Livewire::test(CreateStudent::class)->instance())
-        ->getFormActions();
+    $page = Livewire::test(CreateStudent::class)->instance();
 
-    $names = collect($actions)
-        ->map(fn ($action): string => $action->getName())
-        ->all();
-
-    expect($names)->toBe(['cancel']);
+    expect(formActionNames($page))->toBe(['cancel']);
 });
 
 it('renders create and create another inside the wizard so they only appear on the final step', function (): void {
@@ -43,12 +55,7 @@ it('keeps save changes and cancel visible at every step on the edit page', funct
     actingAs(Admin::factory()->create(), 'admin');
     $student = Student::factory()->create();
 
-    $actions = invade(Livewire::test(EditStudent::class, ['record' => $student->getKey()])->instance())
-        ->getFormActions();
+    $page = Livewire::test(EditStudent::class, ['record' => $student->getKey()])->instance();
 
-    $names = collect($actions)
-        ->map(fn ($action): string => $action->getName())
-        ->all();
-
-    expect($names)->toBe(['save', 'cancel']);
+    expect(formActionNames($page))->toBe(['save', 'cancel']);
 });

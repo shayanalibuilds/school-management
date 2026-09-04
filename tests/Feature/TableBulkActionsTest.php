@@ -37,11 +37,6 @@ use Livewire\Livewire;
 
 use function Pest\Laravel\actingAs;
 
-function adminForTables(): Admin
-{
-    return actingAs(Admin::factory()->create(), 'admin')->getArgument(0);
-}
-
 it('bulk changes the status of many students at once', function (): void {
     actingAs(Admin::factory()->create(), 'admin');
     $students = Student::factory()->count(3)->create();
@@ -49,7 +44,7 @@ it('bulk changes the status of many students at once', function (): void {
     Livewire::test(ListStudents::class)
         ->callTableBulkAction('changeStatus', $students, ['status' => StudentStatus::Left->value]);
 
-    $students->each(fn (Student $student) => expect($student->fresh()->status)->toBe(StudentStatus::Left));
+    $students->each(fn (Student $student) => expect($student->refresh()->status)->toBe(StudentStatus::Left));
 });
 
 it('bulk edits the class of many students at once', function (): void {
@@ -60,7 +55,7 @@ it('bulk edits the class of many students at once', function (): void {
     Livewire::test(ListStudents::class)
         ->callTableBulkAction('bulkEdit', $students, ['student_class_id' => $newClass->getKey()]);
 
-    $students->each(fn (Student $student) => expect($student->fresh()->student_class_id)->toBe($newClass->getKey()));
+    $students->each(fn (Student $student) => expect($student->refresh()->student_class_id)->toBe($newClass->getKey()));
 });
 
 it('bulk deletes students into the trash', function (): void {
@@ -71,7 +66,7 @@ it('bulk deletes students into the trash', function (): void {
         ->callTableBulkAction('delete', $students);
 
     $students->each(fn (Student $student) => expect(Student::query()->find($student->getKey()))->toBeNull()
-        ->and(Student::withTrashed()->find($student->getKey())->trashed())->toBeTrue());
+        ->and(Student::withTrashed()->findOrFail($student->getKey())->trashed())->toBeTrue());
 });
 
 it('bulk edits attendance status and date', function (): void {
@@ -84,7 +79,7 @@ it('bulk edits attendance status and date', function (): void {
             'date' => '2026-08-20',
         ]);
 
-    $attendances->each(fn (Attendance $attendance) => expect($attendance->fresh()->status)->toBe(AttendanceStatus::Present)
+    $attendances->each(fn (Attendance $attendance) => expect($attendance->refresh()->status)->toBe(AttendanceStatus::Present)
         ->and($attendance->fresh()->date->format('Y-m-d'))->toBe('2026-08-20'));
 });
 
@@ -99,7 +94,7 @@ it('bulk edits exam result subject and year', function (): void {
             'year' => '2026',
         ]);
 
-    $results->each(fn (ExamResult $result) => expect($result->fresh()->subject_id)->toBe($subject->getKey())
+    $results->each(fn (ExamResult $result) => expect($result->refresh()->subject_id)->toBe($subject->getKey())
         ->and($result->fresh()->year)->toBe(2026));
 });
 
@@ -113,7 +108,7 @@ it('bulk edits fee year and due date', function (): void {
             'due_date' => '2026-09-30',
         ]);
 
-    $fees->each(fn (Fee $fee) => expect($fee->fresh()->year)->toBe(2026)
+    $fees->each(fn (Fee $fee) => expect($fee->refresh()->year)->toBe(2026)
         ->and($fee->fresh()->due_date?->format('Y-m-d'))->toBe('2026-09-30'));
 });
 
@@ -127,7 +122,7 @@ it('bulk edits fee structure type and amount', function (): void {
             'amount' => '12000',
         ]);
 
-    $structures->each(fn (FeeStructure $structure) => expect($structure->fresh()->type)->toBe(FeeStructureType::OneTime)
+    $structures->each(fn (FeeStructure $structure) => expect($structure->refresh()->type)->toBe(FeeStructureType::OneTime)
         ->and((float) $structure->fresh()->amount)->toBe(12000.0));
 });
 
@@ -141,7 +136,7 @@ it('bulk edits expense recurrence and amount', function (): void {
             'amount' => '3500',
         ]);
 
-    $expenses->each(fn (Expense $expense) => expect($expense->fresh()->recurrence)->toBe(ExpenseRecurrence::Monthly)
+    $expenses->each(fn (Expense $expense) => expect($expense->refresh()->recurrence)->toBe(ExpenseRecurrence::Monthly)
         ->and((float) $expense->fresh()->amount)->toBe(3500.0));
 });
 
@@ -157,9 +152,9 @@ it('bulk marks pending payments as completed and credits the fee', function (): 
     Livewire::test(ListPayments::class)
         ->callTableBulkAction('markCompleted', $payments);
 
-    expect((float) $fee->fresh()->amount_paid)->toBe(2000.0);
+    expect((float) $fee->refresh()->amount_paid)->toBe(2000.0);
 
-    $payments->each(fn (Payment $payment) => expect($payment->fresh()->status)->toBe(PaymentStatus::Completed));
+    $payments->each(fn (Payment $payment) => expect($payment->refresh()->status)->toBe(PaymentStatus::Completed));
 });
 
 it('bulk marks pending payrolls as paid', function (): void {
@@ -169,16 +164,17 @@ it('bulk marks pending payrolls as paid', function (): void {
     Livewire::test(ListPayrolls::class)
         ->callTableBulkAction('markPaid', $payrolls);
 
-    $payrolls->each(fn (Payroll $payroll) => expect($payroll->fresh()->status->value)->toBe('paid')
+    $payrolls->each(fn (Payroll $payroll) => expect($payroll->refresh()->status->value)->toBe('paid')
         ->and($payroll->fresh()->paid_at)->not->toBeNull());
 });
 
 it('shows and searches the student SR # on fees, attendance and results tables', function (): void {
     actingAs(Admin::factory()->create(), 'admin');
     $student = Student::factory()->create(['sr_no' => 4242]);
-    $fee = Fee::factory()->create(['student_id' => $student->getKey()]);
+    $subject = Subject::factory()->create(['name' => 'Bulk Subject']);
+    Fee::factory()->create(['student_id' => $student->getKey()]);
     Attendance::factory()->create(['student_id' => $student->getKey()]);
-    ExamResult::factory()->create(['student_id' => $student->getKey()]);
+    ExamResult::factory()->create(['student_id' => $student->getKey(), 'subject_id' => $subject->getKey()]);
 
     Livewire::test(ListFees::class)
         ->assertSee('4242')
@@ -190,7 +186,7 @@ it('shows and searches the student SR # on fees, attendance and results tables',
 
     Livewire::test(ListExamResults::class)
         ->assertSee('4242')
-        ->assertSee(ExamResult::query()->where('student_id', $student->getKey())->first()->subject->name);
+        ->assertSee('Bulk Subject');
 });
 
 it('bulk edits the class of many staff assignments at once', function (): void {
@@ -204,7 +200,7 @@ it('bulk edits the class of many staff assignments at once', function (): void {
     Livewire::test(ListStaffAssignments::class)
         ->callTableBulkAction('bulkEdit', $assignments, ['student_class_id' => $newClass->getKey()]);
 
-    $assignments->each(fn (StaffAssignment $assignment) => expect($assignment->fresh()->student_class_id)->toBe($newClass->getKey()));
+    $assignments->each(fn (StaffAssignment $assignment) => expect($assignment->refresh()->student_class_id)->toBe($newClass->getKey()));
 });
 
 it('bulk approves and rejects assignment requests with an admin note', function (): void {
@@ -217,7 +213,7 @@ it('bulk approves and rejects assignment requests with an admin note', function 
     Livewire::test(ListStaffAssignmentRequests::class)
         ->callTableBulkAction('approve', $requests);
 
-    $requests->each(fn (StaffAssignmentRequest $request) => expect($request->fresh()->status)->toBe(AssignmentRequestStatus::Approved));
+    $requests->each(fn (StaffAssignmentRequest $request) => expect($request->refresh()->status)->toBe(AssignmentRequestStatus::Approved));
 
     $pending = StaffAssignmentRequest::factory()->create([
         'action' => AssignmentAction::Remove->value,
@@ -227,6 +223,6 @@ it('bulk approves and rejects assignment requests with an admin note', function 
     Livewire::test(ListStaffAssignmentRequests::class)
         ->callTableBulkAction('reject', [$pending], ['admin_note' => 'Already covered by another teacher.']);
 
-    expect($pending->fresh()->status)->toBe(AssignmentRequestStatus::Rejected)
+    expect($pending->refresh()->status)->toBe(AssignmentRequestStatus::Rejected)
         ->and($pending->fresh()->admin_note)->toBe('Already covered by another teacher.');
 });

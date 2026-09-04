@@ -103,6 +103,12 @@ parameters:
 			path: app/Filament/Resources/Payments/Schemas/PaymentForm.php
 
 		-
+			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\PaymentStatus\:\:Completed will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: app/Filament/Resources/Payments/Tables/PaymentsTable.php
+
+		-
 			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\PayrollStatus\:\:Pending will always evaluate to false\.$#'
 			identifier: identical.alwaysFalse
 			count: 1
@@ -989,3 +995,81 @@ parameters:
 			identifier: argument.templateType
 			count: 1
 			path: tests/Feature/StudentWizardTest.php
+
+		-
+			message: '#^Call to an undefined method App\\Models\\Student\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Student\>\:\:trashed\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: tests/Feature/TableBulkActionsTest.php
+
+		-
+			message: '#^Cannot access property \$admin_note on App\\Models\\StaffAssignmentRequest\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/TableBulkActionsTest.php
+
+		-
+			message: '#^Cannot access property \$amount on App\\Models\\Expense\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/TableBulkActionsTest.php
+
+		-
+			message: '#^Cannot access property \$amount on App\\Models\\FeeStructure\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/TableBulkActionsTest.php
+
+		-
+			message: '#^Cannot access property \$date on App\\Models\\Attendance\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/TableBulkActionsTest.php
+
+		-
+			message: '#^Cannot access property \$due_date on App\\Models\\Fee\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/TableBulkActionsTest.php
+
+		-
+			message: '#^Cannot access property \$paid_at on App\\Models\\Payroll\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/TableBulkActionsTest.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/TableBulkActionsTest.php
+
+		-
+			message: '#^Cannot access property \$year on App\\Models\\ExamResult\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/TableBulkActionsTest.php
+
+		-
+			message: '#^Cannot call method format\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: tests/Feature/TableBulkActionsTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\<0, max\>\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: tests/Feature/TableBulkActionsTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<string\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: tests/Feature/TableBulkActionsTest.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function expect$#'
+			identifier: argument.templateType
+			count: 1
+			path: tests/Feature/TableBulkActionsTest.php

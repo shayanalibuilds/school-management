@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Fees\Tables;
 
 use App\Enums\FeeStatus;
-use App\Models\Fee;
+use App\Filament\Support\BulkEdit;
 use App\Models\StudentClass;
 use Filament\Actions\BulkAction;
 use Filament\Actions\DeleteAction;
@@ -16,7 +16,7 @@ use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
 final class FeesTable
@@ -73,7 +73,7 @@ final class FeesTable
                     ->query(function (Builder $query, array $data): Builder {
                         return $query->when(
                             $data['value'] ?? null,
-                            fn (Builder $query, string $classId): Builder => $query->whereHas(
+                            fn (Builder $query, mixed $classId): Builder => $query->whereHas(
                                 'student',
                                 fn (Builder $studentQuery): Builder => $studentQuery->where('student_class_id', $classId),
                             ),
@@ -101,9 +101,7 @@ final class FeesTable
                         DatePicker::make('due_date'),
                     ])
                     ->action(function (Collection $records, array $data): void {
-                        $payload = collect($data)->filter(fn (mixed $value): bool => filled($value))->all();
-
-                        $records->each(fn (Fee $record) => $record->update($payload));
+                        BulkEdit::apply($records, $data);
                     })
                     ->deselectRecordsAfterCompletion(),
                 DeleteBulkAction::make(),

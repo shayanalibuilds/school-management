@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Expenses\Tables;
 
 use App\Enums\ExpenseRecurrence;
-use App\Models\Expense;
+use App\Filament\Support\BulkEdit;
 use Filament\Actions\BulkAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -62,9 +62,7 @@ final class ExpensesTable
                                 ->all()),
                     ])
                     ->action(function (Collection $records, array $data): void {
-                        $payload = collect($data)->filter(fn (mixed $value): bool => filled($value))->all();
-
-                        $records->each(fn (Expense $record) => $record->update($payload));
+                        BulkEdit::apply($records, $data);
                     })
                     ->deselectRecordsAfterCompletion(),
                 DeleteBulkAction::make(),

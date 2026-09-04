@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Attendances\Tables;
 
 use App\Enums\AttendanceStatus;
-use App\Models\Attendance;
+use App\Filament\Support\BulkEdit;
 use Filament\Actions\BulkAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -15,7 +15,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
 final class AttendancesTable
@@ -65,15 +65,18 @@ final class AttendancesTable
                         DatePicker::make('until'),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
-                        return $query
-                            ->when(
-                                $data['from'] ?? null,
-                                fn (Builder $query, string $from): Builder => $query->whereDate('date', '>=', $from),
-                            )
-                            ->when(
-                                $data['until'] ?? null,
-                                fn (Builder $query, string $until): Builder => $query->whereDate('date', '<=', $until),
-                            );
+                        $from = $data['from'] ?? null;
+                        $until = $data['until'] ?? null;
+
+                        if (is_string($from) && $from !== '') {
+                            $query->whereDate('date', '>=', $from);
+                        }
+
+                        if (is_string($until) && $until !== '') {
+                            $query->whereDate('date', '<=', $until);
+                        }
+
+                        return $query;
                     }),
             ])
             ->recordActions([
@@ -92,9 +95,7 @@ final class AttendancesTable
                                 ->all()),
                     ])
                     ->action(function (Collection $records, array $data): void {
-                        $payload = collect($data)->filter(fn (mixed $value): bool => filled($value))->all();
-
-                        $records->each(fn (Attendance $record) => $record->update($payload));
+                        BulkEdit::apply($records, $data);
                     })
                     ->deselectRecordsAfterCompletion(),
                 DeleteBulkAction::make(),

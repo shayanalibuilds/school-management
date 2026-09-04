@@ -71,13 +71,22 @@ final class PayrollsTable
                     ->label('Mark paid')
                     ->icon('heroicon-m-check')
                     ->color('success')
-                    ->action(function (Collection $records): void {
-                        if (! auth('admin')->user() instanceof Admin) {
-                            throw new AuthorizationException();
-                        }
+                    ->action(
+                        /** @param Collection<int, Payroll> $records */
+                        function (Collection $records): void {
+                            if (! auth('admin')->user() instanceof Admin) {
+                                throw new AuthorizationException();
+                            }
 
-                        $records->each(fn (Payroll $record) => $record->markPaid());
-                    })
+                            foreach ($records as $record) {
+                                if (! $record instanceof Payroll) {
+                                    continue;
+                                }
+
+                                $record->markPaid();
+                            }
+                        },
+                    )
                     ->deselectRecordsAfterCompletion(),
                 DeleteBulkAction::make(),
             ]);

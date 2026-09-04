@@ -26,10 +26,9 @@ it('creates a parent through the wizard form', function (): void {
         ->call('create')
         ->assertHasNoFormErrors();
 
-    expect(StudentParent::query()->where('cnic', '35202-7777777-7')->first())
-        ->not->toBeNull()
-        ->and(StudentParent::query()->where('cnic', '35202-7777777-7')->first()->name)
-        ->toBe('Tariq Mehmood');
+    $parent = StudentParent::query()->where('cnic', '35202-7777777-7')->firstOrFail();
+
+    expect($parent->name)->toBe('Tariq Mehmood');
 });
 
 it('requires name, cnic and phone for a parent', function (): void {
@@ -59,7 +58,7 @@ it('bulk deletes parents', function (): void {
         ->callTableBulkAction('delete', $parents);
 
     $parents->each(fn (StudentParent $parent) => expect(StudentParent::query()->find($parent->getKey()))->toBeNull()
-        ->and(StudentParent::withTrashed()->find($parent->getKey())->trashed())->toBeTrue());
+        ->and($parent->refresh()->trashed())->toBeTrue());
 });
 
 it('creates a guardian through the wizard form', function (): void {
@@ -75,10 +74,9 @@ it('creates a guardian through the wizard form', function (): void {
         ->call('create')
         ->assertHasNoFormErrors();
 
-    expect(Guardian::query()->where('cnic', '35202-8888888-8')->first())
-        ->not->toBeNull()
-        ->and(Guardian::query()->where('cnic', '35202-8888888-8')->first()->relation)
-        ->toBe('Uncle');
+    $guardian = Guardian::query()->where('cnic', '35202-8888888-8')->firstOrFail();
+
+    expect($guardian->relation)->toBe('Uncle');
 });
 
 it('requires name, cnic and phone for a guardian', function (): void {

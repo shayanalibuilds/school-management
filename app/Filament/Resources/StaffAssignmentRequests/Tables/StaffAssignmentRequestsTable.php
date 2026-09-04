@@ -106,15 +106,24 @@ final class StaffAssignmentRequestsTable
                     ->icon('heroicon-m-check')
                     ->color('success')
                     ->requiresConfirmation()
-                    ->action(function (Collection $records): void {
-                        $admin = auth('admin')->user();
+                    ->action(
+                        /** @param Collection<int, StaffAssignmentRequest> $records */
+                        function (Collection $records): void {
+                            $admin = auth('admin')->user();
 
-                        if (! $admin instanceof Admin) {
-                            throw new AuthorizationException();
-                        }
+                            if (! $admin instanceof Admin) {
+                                throw new AuthorizationException();
+                            }
 
-                        $records->each(fn (StaffAssignmentRequest $record) => $record->approve($admin));
-                    })
+                            foreach ($records as $record) {
+                                if (! $record instanceof StaffAssignmentRequest) {
+                                    continue;
+                                }
+
+                                $record->approve($admin);
+                            }
+                        },
+                    )
                     ->deselectRecordsAfterCompletion(),
                 BulkAction::make('reject')
                     ->label('Reject')
@@ -125,15 +134,28 @@ final class StaffAssignmentRequestsTable
                             ->label('Reason for rejection')
                             ->maxLength(500),
                     ])
-                    ->action(function (Collection $records, array $data): void {
-                        $admin = auth('admin')->user();
+                    ->action(
+                        /** @param Collection<int, StaffAssignmentRequest> $records */
+                        function (Collection $records, array $data): void {
+                            $admin = auth('admin')->user();
 
-                        if (! $admin instanceof Admin) {
-                            throw new AuthorizationException();
-                        }
+                            if (! $admin instanceof Admin) {
+                                throw new AuthorizationException();
+                            }
 
-                        $records->each(fn (StaffAssignmentRequest $record) => $record->reject($admin, $data['admin_note'] ?? null));
-                    })
+                            $note = isset($data['admin_note']) && is_string($data['admin_note'])
+                                ? $data['admin_note']
+                                : null;
+
+                            foreach ($records as $record) {
+                                if (! $record instanceof StaffAssignmentRequest) {
+                                    continue;
+                                }
+
+                                $record->reject($admin, $note);
+                            }
+                        },
+                    )
                     ->deselectRecordsAfterCompletion(),
                 DeleteBulkAction::make(),
             ]);

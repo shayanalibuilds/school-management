@@ -73,15 +73,20 @@ final class PaymentsTable
                     ->label('Mark completed')
                     ->icon('heroicon-m-check-circle')
                     ->color('success')
-                    ->action(function (Collection $records): void {
-                        $records
-                            ->filter(fn (Payment $record): bool => $record->status !== PaymentStatus::Completed)
-                            ->each(function (Payment $record): void {
-                                $reference = $record->reference ?? 'manual-'.$record->getKey();
+                    ->action(
+                        /** @param Collection<int, Payment> $records */
+                        function (Collection $records): void {
+                            foreach ($records as $record) {
+                                if (! $record instanceof Payment || $record->status === PaymentStatus::Completed) {
+                                    continue;
+                                }
+
+                                $reference = $record->reference ?? uniqid('manual-', true);
 
                                 $record->complete($reference, ['source' => 'bulk']);
-                            });
-                    })
+                            }
+                        },
+                    )
                     ->deselectRecordsAfterCompletion(),
             ]);
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Students\Tables;
 
 use App\Enums\StudentStatus;
+use App\Filament\Support\BulkEdit;
 use App\Models\Student;
 use Filament\Actions\BulkAction;
 use Filament\Actions\DeleteAction;
@@ -78,9 +79,7 @@ final class StudentsTable
                         DatePicker::make('leaving_date'),
                     ])
                     ->action(function (Collection $records, array $data): void {
-                        $payload = collect($data)->filter(fn (mixed $value): bool => filled($value))->all();
-
-                        $records->each(fn (Student $record) => $record->update($payload));
+                        BulkEdit::apply($records, $data);
                     })
                     ->deselectRecordsAfterCompletion(),
                 BulkAction::make('changeStatus')
@@ -93,9 +92,14 @@ final class StudentsTable
                                 ->all())
                             ->required(),
                     ])
-                    ->action(function (Collection $records, array $data): void {
-                        $records->each(fn (Student $record) => $record->update(['status' => $data['status']]));
-                    })
+                    ->action(
+                        /** @param Collection<int, Student> $records */
+                        function (Collection $records, array $data): void {
+                            foreach ($records as $record) {
+                                $record->update(['status' => $data['status']]);
+                            }
+                        },
+                    )
                     ->deselectRecordsAfterCompletion(),
                 DeleteBulkAction::make(),
             ]);
