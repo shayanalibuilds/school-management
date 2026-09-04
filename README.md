@@ -28,7 +28,7 @@ their children via parent/guardian CNIC + phone number.
 
 ```bash
 composer setup          # install, .env, key, sqlite, migrate, seed, assets
-composer dev            # server + queue + logs + vite
+composer dev            # server + queue + vite
 ```
 
 Seeded logins (local):
