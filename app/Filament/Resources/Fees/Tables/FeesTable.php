@@ -5,12 +5,19 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Fees\Tables;
 
 use App\Enums\FeeStatus;
+use App\Models\Fee;
+use App\Models\StudentClass;
+use Filament\Actions\BulkAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 final class FeesTable
 {
@@ -20,6 +27,10 @@ final class FeesTable
 
         return $table
             ->columns([
+                TextColumn::make('student.sr_no')
+                    ->label('SR #')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('student.name')
                     ->label('Student')
                     ->searchable()
@@ -56,6 +67,18 @@ final class FeesTable
                     ->options(collect(FeeStatus::cases())
                         ->mapWithKeys(fn (FeeStatus $status): array => [$status->value => $status->label()])
                         ->all()),
+                SelectFilter::make('class')
+                    ->label('Class')
+                    ->options(fn (): array => StudentClass::query()->orderBy('name')->pluck('name', 'id')->all())
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when(
+                            $data['value'] ?? null,
+                            fn (Builder $query, string $classId): Builder => $query->whereHas(
+                                'student',
+                                fn (Builder $studentQuery): Builder => $studentQuery->where('student_class_id', $classId),
+                            ),
+                        );
+                    }),
                 SelectFilter::make('year')
                     ->options(collect(range($currentYear - 9, $currentYear + 1))
                         ->mapWithKeys(fn (int $year): array => [$year => (string) $year])
@@ -66,6 +89,23 @@ final class FeesTable
                 DeleteAction::make(),
             ])
             ->toolbarActions([
+                BulkAction::make('bulkEdit')
+                    ->label('Bulk edit')
+                    ->icon('heroicon-m-pencil-square')
+                    ->form([
+                        Select::make('year')
+                            ->options(collect(range($currentYear - 9, $currentYear + 1))
+                                ->mapWithKeys(fn (int $year): array => [$year => (string) $year])
+                                ->all())
+                            ->helperText('Only filled fields are applied to the selected fees.'),
+                        DatePicker::make('due_date'),
+                    ])
+                    ->action(function (Collection $records, array $data): void {
+                        $payload = collect($data)->filter(fn (mixed $value): bool => filled($value))->all();
+
+                        $records->each(fn (Fee $record) => $record->update($payload));
+                    })
+                    ->deselectRecordsAfterCompletion(),
                 DeleteBulkAction::make(),
             ]);
     }

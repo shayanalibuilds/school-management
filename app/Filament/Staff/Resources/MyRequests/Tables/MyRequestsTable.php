@@ -7,6 +7,7 @@ namespace App\Filament\Staff\Resources\MyRequests\Tables;
 use App\Enums\AssignmentAction;
 use App\Enums\AssignmentRequestStatus;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 final class MyRequestsTable
@@ -45,7 +46,10 @@ final class MyRequestsTable
                     ->toggleable(),
             ])
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->options(collect(AssignmentRequestStatus::cases())
+                        ->mapWithKeys(fn (AssignmentRequestStatus $status): array => [$status->value => $status->label()])
+                        ->all()),
             ])
             ->recordActions([
                 //

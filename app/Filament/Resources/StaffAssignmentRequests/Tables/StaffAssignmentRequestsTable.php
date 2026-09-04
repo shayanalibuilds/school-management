@@ -9,10 +9,14 @@ use App\Enums\AssignmentRequestStatus;
 use App\Models\Admin;
 use App\Models\StaffAssignmentRequest;
 use Filament\Actions\Action;
+use Filament\Actions\BulkAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\Collection;
 
 final class StaffAssignmentRequestsTable
 {
@@ -82,7 +86,7 @@ final class StaffAssignmentRequestsTable
                     ->color('danger')
                     ->visible(fn (StaffAssignmentRequest $record): bool => $record->status === AssignmentRequestStatus::Pending)
                     ->form([
-                        \Filament\Forms\Components\Textarea::make('admin_note')
+                        Textarea::make('admin_note')
                             ->label('Reason for rejection')
                             ->maxLength(500),
                     ])
@@ -95,6 +99,43 @@ final class StaffAssignmentRequestsTable
 
                         $record->reject($admin, $data['admin_note'] ?? null);
                     }),
+            ])
+            ->toolbarActions([
+                BulkAction::make('approve')
+                    ->label('Approve')
+                    ->icon('heroicon-m-check')
+                    ->color('success')
+                    ->requiresConfirmation()
+                    ->action(function (Collection $records): void {
+                        $admin = auth('admin')->user();
+
+                        if (! $admin instanceof Admin) {
+                            throw new AuthorizationException();
+                        }
+
+                        $records->each(fn (StaffAssignmentRequest $record) => $record->approve($admin));
+                    })
+                    ->deselectRecordsAfterCompletion(),
+                BulkAction::make('reject')
+                    ->label('Reject')
+                    ->icon('heroicon-m-x-mark')
+                    ->color('danger')
+                    ->form([
+                        Textarea::make('admin_note')
+                            ->label('Reason for rejection')
+                            ->maxLength(500),
+                    ])
+                    ->action(function (Collection $records, array $data): void {
+                        $admin = auth('admin')->user();
+
+                        if (! $admin instanceof Admin) {
+                            throw new AuthorizationException();
+                        }
+
+                        $records->each(fn (StaffAssignmentRequest $record) => $record->reject($admin, $data['admin_note'] ?? null));
+                    })
+                    ->deselectRecordsAfterCompletion(),
+                DeleteBulkAction::make(),
             ]);
     }
 }

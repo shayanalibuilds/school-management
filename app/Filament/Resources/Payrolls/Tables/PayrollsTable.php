@@ -8,10 +8,13 @@ use App\Enums\PayrollStatus;
 use App\Models\Admin;
 use App\Models\Payroll;
 use Filament\Actions\Action;
+use Filament\Actions\BulkAction;
+use Filament\Actions\DeleteBulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\Collection;
 
 final class PayrollsTable
 {
@@ -62,6 +65,21 @@ final class PayrollsTable
 
                         $record->markPaid();
                     }),
+            ])
+            ->toolbarActions([
+                BulkAction::make('markPaid')
+                    ->label('Mark paid')
+                    ->icon('heroicon-m-check')
+                    ->color('success')
+                    ->action(function (Collection $records): void {
+                        if (! auth('admin')->user() instanceof Admin) {
+                            throw new AuthorizationException();
+                        }
+
+                        $records->each(fn (Payroll $record) => $record->markPaid());
+                    })
+                    ->deselectRecordsAfterCompletion(),
+                DeleteBulkAction::make(),
             ]);
     }
 }
