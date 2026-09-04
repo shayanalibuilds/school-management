@@ -7,13 +7,13 @@ namespace App\Filament\Staff\Resources\MyRequests\Pages;
 use App\Enums\AssignmentAction;
 use App\Enums\AssignmentRequestStatus;
 use App\Filament\Staff\Resources\MyRequests\MyRequestResource;
+use App\Filament\Support\CreateWizardRecord;
 use App\Models\Staff;
 use App\Models\StaffAssignment;
-use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\Model;
 
-final class CreateMyRequest extends CreateRecord
+final class CreateMyRequest extends CreateWizardRecord
 {
     protected static string $resource = MyRequestResource::class;
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Students\Schemas;
 
 use App\Enums\StudentStatus;
+use App\Filament\Support\WizardSubmitActions;
 use App\Models\Guardian;
 use App\Models\StudentParent;
 use Filament\Forms\Components\DatePicker;
@@ -92,6 +93,7 @@ final class StudentForm
                                     TextInput::make('relation')->maxLength(255),
                                 ])
                                 ->helperText('Optional. A guardian CNIC also works on the public pages.'),
+                            WizardSubmitActions::make(),
                         ]),
                 ])
                     ->columnSpanFull(),
