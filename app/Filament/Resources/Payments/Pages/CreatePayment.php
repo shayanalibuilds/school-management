@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Payments\Pages;
 
 use App\Filament\Resources\Payments\PaymentResource;
-use Filament\Resources\Pages\CreateRecord;
+use App\Filament\Support\CreateWizardRecord;
 
-final class CreatePayment extends CreateRecord
+final class CreatePayment extends CreateWizardRecord
 {
     protected static string $resource = PaymentResource::class;
 }
