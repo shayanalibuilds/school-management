@@ -1,18 +1,3 @@
 @import 'tailwindcss';
-@import '../../vendor/livewire/flux/dist/flux.css';
 
 @custom-variant dark (&:where(.dark, .dark *));
-
-/* Blue as the accent color across the public web (Flux buttons, links,
-   badges, inputs, and the navigation bar all read these variables). */
-:root {
-    --color-accent: var(--color-blue-600);
-    --color-accent-content: var(--color-blue-600);
-    --color-accent-foreground: var(--color-white);
-}
-
-.dark {
-    --color-accent: var(--color-blue-500);
-    --color-accent-content: var(--color-blue-500);
-    --color-accent-foreground: var(--color-white);
-}
