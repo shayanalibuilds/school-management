@@ -34,7 +34,7 @@ if (PHP_OS_FAMILY === 'Windows') {
 }
 
 $cmd = sprintf(
-    'npx concurrently -k -c %s --names=server,queue,vite %s %s %s %s',
+    'npx concurrently -k -c %s --names=server,queue,vite %s %s %s',
     escapeshellarg('#93c5fd,#c4b5fd,#fdba74'),
     escapeshellarg("php artisan serve --port={$port}"),
     escapeshellarg('php artisan queue:listen --tries=1'),
