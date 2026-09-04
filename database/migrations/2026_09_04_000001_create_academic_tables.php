@@ -40,7 +40,7 @@ return new class extends Migration
             $table->foreignUuid('student_class_id')->constrained('student_classes')->restrictOnDelete();
             $table->date('joining_date');
             $table->date('leaving_date')->nullable();
-            $table->string('status');
+            $table->string('status')->nullable()->default('active');
             $table->timestamps();
             $table->softDeletes();
         });
