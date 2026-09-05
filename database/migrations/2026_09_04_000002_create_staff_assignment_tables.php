@@ -6,8 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -30,7 +29,7 @@ return new class extends Migration
             $table->foreignUuid('target_staff_assignment_id')->nullable()->constrained('staff_class_subject')->nullOnDelete();
             $table->string('action');
             $table->text('reason')->nullable();
-            $table->string('status');
+            $table->string('status')->nullable()->default('active');
             $table->foreignUuid('reviewed_by')->nullable()->constrained('admins')->nullOnDelete();
             $table->timestamp('reviewed_at')->nullable();
             $table->text('admin_note')->nullable();

@@ -6,8 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -28,7 +27,7 @@ return new class extends Migration
             $table->foreignUuid('student_class_id')->constrained('student_classes')->cascadeOnDelete();
             $table->foreignUuid('staff_id')->nullable()->constrained('staffs')->nullOnDelete();
             $table->date('date');
-            $table->string('status');
+            $table->string('status')->nullable()->default('active');
             $table->timestamps();
             $table->unique(['student_id', 'date']);
             $table->index(['student_class_id', 'date']);

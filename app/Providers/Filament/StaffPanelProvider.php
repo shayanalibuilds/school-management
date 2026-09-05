@@ -61,6 +61,8 @@ final class StaffPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->spa()
+            ->unsavedChangesAlerts();
     }
 }

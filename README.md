@@ -10,11 +10,11 @@
 A complete school management system for **admins**, **teachers**, and
 **parents** — two role-separated panels and a public portal that needs no
 account at all. Built on [Laravel](https://laravel.com),
-[Livewire](https://livewire.laravel), [Livewire Flux](https://fluxui.dev),
-and [Filament v5](https://filamentphp.com), with custom views composed from
+[Livewire](https://livewire.laravel), and
+[Filament v5](https://filamentphp.com), with custom views composed from
 Filament components so every page shares one design system.
 
-Repo: `shayanalibuilds/school-management-system`
+Repo: `shayanalibuilds/school-management`
 
 ## Screenshots
 
@@ -89,8 +89,8 @@ edit, multi delete, multi status change), and every create/edit form is a
 **Requirements:** PHP 8.4 with `intl`, Composer, Node.js 22+, SQLite.
 
 ```bash
-git clone https://github.com/shayanalibuilds/school-management-system.git
-cd school-management-system
+git clone https://github.com/shayanalibuilds/school-management.git
+cd school-management
 
 composer install
 npm install
@@ -102,7 +102,7 @@ touch database/database.sqlite
 php artisan migrate --seed
 
 npm run build
-php artisan serve
+composer dev   # server + queue + vite, then opens the browser
 ```
 
 **Demo accounts** (seeded):
