@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\StudentStatus;
-use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-#[ObservedBy(\App\Observers\StudentObserver::class)]
 final class Student extends Model
 {
     use HasFactory;
@@ -23,10 +21,8 @@ final class Student extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'sr_no',
         'gr_no',
         'name',
-        'father_name',
         'date_of_birth',
         'gender',
         'b_form_cnic',
@@ -38,6 +34,21 @@ final class Student extends Model
         'leaving_date',
         'status',
     ];
+
+    /**
+     * Rich label used by every student select in the admin and staff
+     * panels: two students can share a name, so the class and the
+     * GR # are always part of the label.
+     */
+    public function selectLabel(): string
+    {
+        return sprintf(
+            '%s — %s — GR #%s',
+            $this->name,
+            $this->studentClass?->name ?? 'No class',
+            (string) $this->gr_no,
+        );
+    }
 
     /**
      * @return BelongsTo<StudentClass, $this>

@@ -47,43 +47,49 @@ it('computes class positions for a year with competition ranking', function (): 
         ->and($positions[$d->getKey()])->toBe(4);
 });
 
-it('lets an admin record an exam result through the panel', function (): void {
-    actingAs(Admin::factory()->create(), 'admin');
-
-    $student = Student::factory()->create();
+it('lets an admin insert results for a whole class at once', function (): void {
+    $admin = Admin::factory()->create();
+    $class = StudentClass::factory()->create();
     $subject = Subject::factory()->create();
+    $students = Student::factory()->count(2)->create(['student_class_id' => $class->getKey()]);
 
-    Livewire::test(App\Filament\Resources\ExamResults\Pages\CreateExamResult::class)
-        ->fillForm([
-            'student_id' => $student->getKey(),
-            'subject_id' => $subject->getKey(),
-            'year' => (string) today()->year,
-            'marks' => 88,
-            'total_marks' => 100,
-        ])
-        ->call('create')
-        ->assertHasNoFormErrors();
+    actingAs($admin, 'admin');
+    Filament\Facades\Filament::setCurrentPanel('admin');
 
-    expect(ExamResult::query()->where('student_id', $student->getKey())->where('subject_id', $subject->getKey())->exists())->toBeTrue()
-        ->and(ExamResult::query()->first()->student_class_id)->toBe($student->student_class_id);
+    Livewire::test(App\Filament\Pages\FillExamResults::class)
+        ->set('classId', $class->getKey())
+        ->set('subjectId', $subject->getKey())
+        ->set('year', (string) today()->year)
+        ->set('marks.'.$students[0]->getKey(), '88')
+        ->set('marks.'.$students[1]->getKey(), '92')
+        ->call('save')
+        ->assertSuccessful()
+        ->assertNotified();
+
+    $rows = ExamResult::query()->where('subject_id', $subject->getKey())->get();
+
+    expect($rows)->toHaveCount(2)
+        ->and($rows->firstWhere('student_id', $students[0]->getKey())->marks)->toBe(88.0)
+        ->and($rows->firstWhere('student_id', $students[0]->getKey())->student_class_id)->toBe($class->getKey())
+        ->and($rows->firstWhere('student_id', $students[1]->getKey())->marks)->toBe(92.0);
 });
 
-it('rejects marks above total marks', function (): void {
-    actingAs(Admin::factory()->create(), 'admin');
-
-    $student = Student::factory()->create();
+it('rejects marks above the total when an admin fills results', function (): void {
+    $class = StudentClass::factory()->create();
     $subject = Subject::factory()->create();
+    $student = Student::factory()->create(['student_class_id' => $class->getKey()]);
 
-    Livewire::test(App\Filament\Resources\ExamResults\Pages\CreateExamResult::class)
-        ->fillForm([
-            'student_id' => $student->getKey(),
-            'subject_id' => $subject->getKey(),
-            'year' => (string) today()->year,
-            'marks' => 120,
-            'total_marks' => 100,
-        ])
-        ->call('create')
-        ->assertHasFormErrors(['marks']);
+    actingAs(Admin::factory()->create(), 'admin');
+    Filament\Facades\Filament::setCurrentPanel('admin');
+
+    Livewire::test(App\Filament\Pages\FillExamResults::class)
+        ->set('classId', $class->getKey())
+        ->set('subjectId', $subject->getKey())
+        ->set('year', (string) today()->year)
+        ->set('marks.'.$student->getKey(), '120')
+        ->call('save');
+
+    expect(ExamResult::query()->count())->toBe(0);
 });
 
 it('auto-derives the student class when staff enter results', function (): void {
@@ -100,7 +106,7 @@ it('auto-derives the student class when staff enter results', function (): void 
     actingAs($staff, 'staff');
     Filament\Facades\Filament::setCurrentPanel('staff');
 
-    Livewire::test(App\Filament\Staff\Pages\EnterResults::class)
+    Livewire::test(App\Filament\Staff\Pages\FillExamResults::class)
         ->set('classId', $class->getKey())
         ->set('subjectId', $subject->getKey())
         ->set('year', (string) today()->year)
@@ -123,7 +129,7 @@ it('blocks staff from entering results for unassigned class-subject pairs', func
     actingAs($staff, 'staff');
     Filament\Facades\Filament::setCurrentPanel('staff');
 
-    Livewire::test(App\Filament\Staff\Pages\EnterResults::class)
+    Livewire::test(App\Filament\Staff\Pages\FillExamResults::class)
         ->set('classId', $class->getKey())
         ->set('subjectId', $subject->getKey())
         ->set('year', (string) today()->year)
@@ -139,8 +145,8 @@ it('shows the exam results resource to admins', function (): void {
     get('/dashboard/exam-results')->assertOk();
 });
 
-it('shows the enter results page to staff', function (): void {
+it('shows the fill exam results page to staff', function (): void {
     actingAs(Staff::factory()->create(), 'staff');
 
-    get('/staff/enter-results')->assertOk();
+    get('/staff/fill-exam-results')->assertOk();
 });

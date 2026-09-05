@@ -46,7 +46,7 @@
         <div class="meta">
             <div>
                 <div class="label">Student</div>
-                <div>{{ $payment->fee->student->name }} (SR #{{ $payment->fee->student->sr_no }})</div>
+                <div>{{ $payment->fee->student->name }} (GR #{{ $payment->fee->student->gr_no }})</div>
                 <div class="label" style="margin-top: 6px;">Class</div>
                 <div>{{ $payment->fee->student->studentClass?->name ?? '—' }}</div>
             </div>

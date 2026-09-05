@@ -29,8 +29,7 @@ it('creates a student through the wizard with only the required fields', functio
 
     $student = Student::query()->where('gr_no', 'GR-2026-0001')->firstOrFail();
 
-    expect($student->sr_no)->not->toBeNull()
-        ->and($student->status)->toBe(StudentStatus::Active)
+    expect($student->status)->toBe(StudentStatus::Active)
         ->and($student->joining_date->format('Y-m-d'))->toBe('2026-09-01')
         ->and($student->parents)->toBeEmpty()
         ->and($student->guardians)->toBeEmpty();
@@ -48,7 +47,6 @@ it('links parents and guardians through the wizard steps', function (): void {
             'name' => 'Zainab Khan',
             'student_class_id' => $class->getKey(),
             'joining_date' => '2026-09-01',
-            'father_name' => 'Imran Khan',
             'parents' => [$parent->getKey()],
             'guardians' => [$guardian->getKey()],
         ])
@@ -57,8 +55,7 @@ it('links parents and guardians through the wizard steps', function (): void {
 
     $student = Student::query()->where('gr_no', 'GR-2026-0002')->firstOrFail();
 
-    expect($student->father_name)->toBe('Imran Khan')
-        ->and($student->parents->pluck('id'))->toContain($parent->getKey())
+    expect($student->parents->pluck('id'))->toContain($parent->getKey())
         ->and($student->guardians->pluck('id'))->toContain($guardian->getKey());
 });
 
@@ -72,7 +69,6 @@ it('saves every optional profile field from the wizard', function (): void {
             'name' => 'Bilal Ahmed',
             'student_class_id' => $class->getKey(),
             'joining_date' => '2026-09-01',
-            'father_name' => 'Tariq Ahmed',
             'date_of_birth' => '2015-04-12',
             'gender' => 'male',
             'b_form_cnic' => '35202-1111111-1',
@@ -85,8 +81,7 @@ it('saves every optional profile field from the wizard', function (): void {
 
     $student = Student::query()->where('gr_no', 'GR-2026-0003')->firstOrFail();
 
-    expect($student->father_name)->toBe('Tariq Ahmed')
-        ->and($student->date_of_birth->format('Y-m-d'))->toBe('2015-04-12')
+    expect($student->date_of_birth->format('Y-m-d'))->toBe('2015-04-12')
         ->and($student->gender)->toBe('male')
         ->and($student->b_form_cnic)->toBe('35202-1111111-1')
         ->and($student->phone)->toBe('03001112223')

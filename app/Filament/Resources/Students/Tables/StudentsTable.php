@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Students\Tables;
 
 use App\Enums\StudentStatus;
-use App\Filament\Support\BulkEdit;
 use App\Models\Student;
 use Filament\Actions\BulkAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -24,8 +22,8 @@ final class StudentsTable
     {
         return $table
             ->columns([
-                TextColumn::make('sr_no')
-                    ->label('SR #')
+                TextColumn::make('gr_no')
+                    ->label('GR #')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('name')
@@ -34,6 +32,12 @@ final class StudentsTable
                 TextColumn::make('studentClass.name')
                     ->label('Class')
                     ->badge(),
+                TextColumn::make('parents.name')
+                    ->label('Parents')
+                    ->badge()
+                    ->color('gray')
+                    ->limit(30)
+                    ->toggleable(),
                 TextColumn::make('status')
                     ->badge()
                     ->formatStateUsing(fn (StudentStatus $state): string => $state->label())
@@ -66,22 +70,6 @@ final class StudentsTable
                 DeleteAction::make(),
             ])
             ->toolbarActions([
-                BulkAction::make('bulkEdit')
-                    ->label('Bulk edit')
-                    ->icon('heroicon-m-pencil-square')
-                    ->form([
-                        Select::make('student_class_id')
-                            ->label('Class')
-                            ->relationship('studentClass', 'name')
-                            ->searchable()
-                            ->preload()
-                            ->helperText('Only filled fields are applied to the selected students.'),
-                        DatePicker::make('leaving_date'),
-                    ])
-                    ->action(function (Collection $records, array $data): void {
-                        BulkEdit::apply($records, $data);
-                    })
-                    ->deselectRecordsAfterCompletion(),
                 BulkAction::make('changeStatus')
                     ->label('Change status')
                     ->icon('heroicon-m-flag')

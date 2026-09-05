@@ -18,21 +18,33 @@ Repo: `shayanalibuilds/school-management`
 
 ## Screenshots
 
-| Admin dashboard | Teacher dashboard |
-| --- | --- |
-| ![Admin dashboard](docs/screenshots/admin-dashboard.png) | ![Staff dashboard](docs/screenshots/staff-dashboard.png) |
+<div align="center">
 
-| Mark attendance | Enter results |
-| --- | --- |
-| ![Mark attendance](docs/screenshots/mark-attendance.png) | ![Enter results](docs/screenshots/enter-results.png) |
+**Admin dashboard**
 
-| Students with bulk actions | Public results lookup |
-| --- | --- |
-| ![Students table](docs/screenshots/students-table.png) | ![Public results](docs/screenshots/public-results.png) |
+![Admin dashboard](docs/screenshots/admin-dashboard.png)
 
-| Public fees & online payment | Student creation wizard |
+</div>
+
+| Fill attendance — a whole class at once | Fill exam results — marks per class |
 | --- | --- |
-| ![Public fees](docs/screenshots/public-fees.png) | ![Student wizard](docs/screenshots/student-wizard.png) |
+| ![Fill attendance](docs/screenshots/fill-attendance.png) | ![Fill exam results](docs/screenshots/fill-exam-results.png) |
+
+| Students — GR #, class, parents | Classes — assign subjects inline |
+| --- | --- |
+| ![Students table](docs/screenshots/students-table.png) | ![Class subjects](docs/screenshots/class-subjects.png) |
+
+| Parents — link children with one select | Import / Export — CSV in, CSV out |
+| --- | --- |
+| ![Parent children](docs/screenshots/parent-children.png) | ![Import export](docs/screenshots/import-export.png) |
+
+| Teacher workspace, scoped to assignments | Public portal — no login needed |
+| --- | --- |
+| ![Staff dashboard](docs/screenshots/staff-dashboard.png) | ![Public home](docs/screenshots/public-home.png) |
+
+| Public results lookup | Public fees with online payment |
+| --- | --- |
+| ![Public results](docs/screenshots/public-results.png) | ![Public fees](docs/screenshots/public-fees.png) |
 
 ## Surfaces
 
@@ -42,20 +54,21 @@ Repo: `shayanalibuilds/school-management`
 | Teachers | `/staff` | A focused workspace scoped to their own assignments |
 | Parents | `/` | Public lookups for results, attendance, and fees — no login |
 
-Every table across both panels ships **filters and bulk actions** (multi
-edit, multi delete, multi status change), and every create/edit form is a
-**step-by-step wizard** whose submit buttons appear only on the final step.
+Every create/edit form is a **step-by-step wizard** whose submit buttons
+appear only on the final step. Attendance and exam results are entered as a
+**whole class in one table**, and every dataset moves in and out through the
+built-in **CSV import / export** page.
 
 ## Features
 
 **Academics**
-- Classes, subjects, and students (SR #, joining date, joining class, status)
-- Student profiles created through a three-step wizard: student → parent → guardian
-- Dedicated parents and guardians books, linked to students, CNIC-unique
-- Staff directory with staff assignments (subject × class) and a change-request workflow
+- Classes, subjects, and students identified by a single **GR #**
+- Student profiles created through a wizard; parents and guardians linked as relations, never duplicated
+- Class ↔ subject assignment from both directions, with inline create
+- Staff assignments (subject × class) and a change-request workflow
 
 **Attendance**
-- Daily attendance per class with present / late / absent states
+- Whole-class attendance entry on one screen (admin and teacher pages)
 - Automated 8:20 AM deadline check — admins are notified when attendance is missing
 
 **Exams**
@@ -70,11 +83,11 @@ edit, multi delete, multi status change), and every create/edit form is a
 
 **People & tools**
 - ID cards and staff cards, ready to print
-- CSV import/export for students, staff, attendance, and exam results
+- CSV import for students, staff, parents, and guardians; CSV export for ten datasets
 - Gateway-agnostic payment settings guarded to admins
 
 **Public portal**
-- Parents look up records by **parent/guardian CNIC** or **student roll number (SR #)**,
+- Parents look up records by **parent/guardian CNIC** or **student GR #**,
   active students only
 - Results (grades or class positions), 30-day attendance history, and fee dues
 - Outstanding fees payable in-place through the configured gateway

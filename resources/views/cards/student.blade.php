@@ -33,7 +33,7 @@
                 <div><span class="label">Name</span><br>{{ $student->name }}</div>
                 <div><span class="label">Class</span><br>{{ $student->studentClass?->name ?? '—' }}</div>
                 <div><span class="label">Joined</span><br>{{ $student->joining_date?->format('d M Y') }}</div>
-                <span class="sr">SR-{{ str_pad((string) $student->sr_no, 4, '0', STR_PAD_LEFT) }}</span>
+                <span class="sr">{{ $student->gr_no }}</span>
             </div>
         </div>
         <div class="footer">This card is the property of the school. If found, please return to the school office.</div>

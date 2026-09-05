@@ -2,20 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\Staff\Pages;
+namespace App\Filament\Pages;
 
 use App\Models\ExamResult;
-use App\Models\Staff;
 use App\Models\Student;
 use App\Models\StudentClass;
 use App\Models\Subject;
 use BackedEnum;
 use Filament\Notifications\Notification as FilamentNotification;
 use Filament\Pages\Page;
-use Filament\Support\Exceptions\Halt;
 use Illuminate\Support\Collection;
+use UnitEnum;
 
-final class EnterResults extends Page
+final class FillExamResults extends Page
 {
     public ?string $classId = null;
 
@@ -28,11 +27,13 @@ final class EnterResults extends Page
      */
     public array $marks = [];
 
-    protected string $view = 'filament.staff.pages.enter-results';
+    protected string $view = 'filament.admin.pages.fill-exam-results';
 
-    protected static ?string $navigationLabel = 'Enter Results';
+    protected static ?string $navigationLabel = 'Fill exam results';
 
     protected static string|BackedEnum|null $navigationIcon = \Filament\Support\Icons\Heroicon::OutlinedPencilSquare;
+
+    protected static string|UnitEnum|null $navigationGroup = 'Academics';
 
     public function mount(): void
     {
@@ -40,41 +41,19 @@ final class EnterResults extends Page
     }
 
     /**
-     * Classes the signed-in staff member is assigned to teach.
-     *
      * @return Collection<int, StudentClass>
      */
     public function getClassesProperty(): Collection
     {
-        $staff = auth('staff')->user();
-
-        if (! $staff instanceof Staff) {
-            return collect();
-        }
-
-        return StudentClass::query()
-            ->whereRelation('staffAssignments', 'staff_id', $staff->getKey())
-            ->orderBy('name')
-            ->get();
+        return StudentClass::query()->orderBy('name')->get();
     }
 
     /**
-     * Subjects the signed-in staff member is assigned to teach.
-     *
      * @return Collection<int, Subject>
      */
     public function getSubjectsProperty(): Collection
     {
-        $staff = auth('staff')->user();
-
-        if (! $staff instanceof Staff) {
-            return collect();
-        }
-
-        return Subject::query()
-            ->whereRelation('staffAssignments', 'staff_id', $staff->getKey())
-            ->orderBy('name')
-            ->get();
+        return Subject::query()->orderBy('name')->get();
     }
 
     /**
@@ -85,6 +64,7 @@ final class EnterResults extends Page
     public function getStudentsProperty(): Collection
     {
         if ($this->classId === null) {
+            /** @var Collection<int, Student> */
             return collect();
         }
 
@@ -135,7 +115,7 @@ final class EnterResults extends Page
     }
 
     /**
-     * @return array<string, string>
+     * @return array<int, string>
      */
     public function getYearsProperty(): array
     {
@@ -148,25 +128,16 @@ final class EnterResults extends Page
 
     public function save(): void
     {
-        $staff = auth('staff')->user();
+        $admin = auth('admin')->user();
 
-        if (! $staff instanceof Staff) {
-            throw new Halt('Not signed in.');
-        }
-
-        if ($this->classId === null || $this->subjectId === null || $this->year === null) {
-            $this->addError('classId', 'Select a class, subject and year first.');
+        if (! $admin instanceof \App\Models\Admin) {
+            $this->addError('classId', 'Only admins can record results here.');
 
             return;
         }
 
-        $isAssigned = $staff->assignments()
-            ->where('student_class_id', $this->classId)
-            ->where('subject_id', $this->subjectId)
-            ->exists();
-
-        if (! $isAssigned) {
-            $this->addError('classId', 'You are not assigned to teach this subject to this class.');
+        if ($this->classId === null || $this->subjectId === null || $this->year === null) {
+            $this->addError('classId', 'Select a class, subject and year first.');
 
             return;
         }
@@ -210,7 +181,7 @@ final class EnterResults extends Page
         }
 
         FilamentNotification::make()
-            ->title("Results saved for {$saved} students")
+            ->title("Results inserted for {$saved} students")
             ->success()
             ->send();
     }

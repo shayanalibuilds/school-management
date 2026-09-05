@@ -6,8 +6,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Attendance;
 use App\Models\ExamResult;
+use App\Models\Expense;
+use App\Models\Fee;
+use App\Models\Guardian;
+use App\Models\Payment;
+use App\Models\Payroll;
 use App\Models\Staff;
 use App\Models\Student;
+use App\Models\StudentParent;
 use Illuminate\Http\Response;
 
 final class ExportController extends Controller
@@ -42,16 +48,16 @@ final class ExportController extends Controller
     }
 
     /**
-     * @return array<string, array{0: callable(): \Illuminate\Support\Collection<int, mixed>, 1: list<string>, 2: callable(mixed): list<string>}>
+     * @return array<string, array{0: callable(): \Illuminate\Database\Eloquent\Collection<int, mixed>, 1: list<string>, 2: callable(mixed): list<string>}>
      */
     private function exporters(): array
     {
         return [
             'students' => [
-                fn (): \Illuminate\Support\Collection => Student::query()->with('studentClass')->orderBy('sr_no')->get(),
-                ['sr_no', 'name', 'class', 'joining_date', 'leaving_date', 'status'],
+                fn (): \Illuminate\Support\Collection => Student::query()->with('studentClass')->orderBy('gr_no')->get(),
+                ['gr_no', 'name', 'class', 'joining_date', 'leaving_date', 'status'],
                 fn (Student $student): array => [
-                    $student->sr_no,
+                    $student->gr_no,
                     $student->name,
                     $student->studentClass?->name,
                     $student->joining_date?->toDateString(),
@@ -73,22 +79,22 @@ final class ExportController extends Controller
                 ],
             ],
             'attendance' => [
-                fn (): \Illuminate\Support\Collection => Attendance::query()->with(['student', 'studentClass', 'markedBy'])->orderByDesc('date')->get(),
-                ['student_sr_no', 'student_name', 'class', 'date', 'status', 'marked_by'],
+                fn (): \Illuminate\Support\Collection => Attendance::query()->with(['student.studentClass', 'markedBy', 'markedByAdmin'])->orderByDesc('date')->get(),
+                ['student_gr_no', 'student_name', 'class', 'date', 'status', 'marked_by'],
                 fn (Attendance $attendance): array => [
-                    $attendance->student?->sr_no,
+                    $attendance->student?->gr_no,
                     $attendance->student?->name,
                     $attendance->studentClass?->name,
                     $attendance->date->toDateString(),
                     $attendance->status->value,
-                    $attendance->markedBy?->name,
+                    $attendance->markerName(),
                 ],
             ],
             'exam-results' => [
-                fn (): \Illuminate\Support\Collection => ExamResult::query()->with(['student', 'studentClass', 'subject'])->orderByDesc('year')->get(),
-                ['student_sr_no', 'student_name', 'class', 'subject', 'year', 'marks', 'total_marks', 'grade'],
+                fn (): \Illuminate\Support\Collection => ExamResult::query()->with(['student.studentClass', 'subject'])->orderByDesc('year')->get(),
+                ['student_gr_no', 'student_name', 'class', 'subject', 'year', 'marks', 'total_marks', 'grade'],
                 fn (ExamResult $result): array => [
-                    $result->student?->sr_no,
+                    $result->student?->gr_no,
                     $result->student?->name,
                     $result->studentClass?->name,
                     $result->subject?->name,
@@ -96,6 +102,80 @@ final class ExportController extends Controller
                     $result->marks,
                     $result->total_marks,
                     $result->grade(),
+                ],
+            ],
+            'fees' => [
+                fn (): \Illuminate\Support\Collection => Fee::query()->with(['student.studentClass', 'feeStructure'])->orderByDesc('year')->get(),
+                ['student_gr_no', 'student_name', 'class', 'fee', 'year', 'amount', 'amount_paid', 'status', 'due_date'],
+                fn (Fee $fee): array => [
+                    $fee->student?->gr_no,
+                    $fee->student?->name,
+                    $fee->student?->studentClass?->name,
+                    $fee->feeStructure?->name,
+                    $fee->year,
+                    $fee->amount,
+                    $fee->amount_paid,
+                    $fee->status->value,
+                    $fee->due_date?->toDateString(),
+                ],
+            ],
+            'payments' => [
+                fn (): \Illuminate\Support\Collection => Payment::query()->with(['fee.student.studentClass', 'fee.feeStructure'])->orderByDesc('created_at')->get(),
+                ['reference', 'student_gr_no', 'student_name', 'fee', 'amount', 'provider', 'status', 'payer_name', 'paid_at'],
+                fn (Payment $payment): array => [
+                    $payment->reference,
+                    $payment->fee?->student?->gr_no,
+                    $payment->fee?->student?->name,
+                    $payment->fee?->feeStructure?->name,
+                    $payment->amount,
+                    $payment->provider->value,
+                    $payment->status->value,
+                    $payment->payer_name,
+                    $payment->paid_at?->toDateTimeString(),
+                ],
+            ],
+            'payrolls' => [
+                fn (): \Illuminate\Support\Collection => Payroll::query()->with('staff')->orderByDesc('month')->get(),
+                ['staff_name', 'staff_cnic', 'month', 'amount', 'status', 'paid_at'],
+                fn (Payroll $payroll): array => [
+                    $payroll->staff?->name,
+                    $payroll->staff?->cnic,
+                    $payroll->month,
+                    $payroll->amount,
+                    $payroll->status->value,
+                    $payroll->paid_at?->toDateString(),
+                ],
+            ],
+            'expenses' => [
+                fn (): \Illuminate\Support\Collection => Expense::query()->orderBy('name')->get(),
+                ['name', 'description', 'amount', 'recurrence'],
+                fn (Expense $expense): array => [
+                    $expense->name,
+                    $expense->description,
+                    $expense->amount,
+                    $expense->recurrence->value,
+                ],
+            ],
+            'parents' => [
+                fn (): \Illuminate\Support\Collection => StudentParent::query()->with('students')->orderBy('name')->get(),
+                ['name', 'cnic', 'phone', 'occupation', 'children'],
+                fn (StudentParent $parent): array => [
+                    $parent->name,
+                    $parent->cnic,
+                    $parent->phone,
+                    $parent->occupation,
+                    $parent->students->map(fn (Student $student): string => $student->name.' (GR #'.$student->gr_no.')')->implode('; '),
+                ],
+            ],
+            'guardians' => [
+                fn (): \Illuminate\Support\Collection => Guardian::query()->with('students')->orderBy('name')->get(),
+                ['name', 'cnic', 'phone', 'relation', 'students'],
+                fn (Guardian $guardian): array => [
+                    $guardian->name,
+                    $guardian->cnic,
+                    $guardian->phone,
+                    $guardian->relation,
+                    $guardian->students->map(fn (Student $student): string => $student->name.' (GR #'.$student->gr_no.')')->implode('; '),
                 ],
             ],
         ];

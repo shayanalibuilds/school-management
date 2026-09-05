@@ -12,13 +12,13 @@ use function Pest\Laravel\get;
 use function Pest\Laravel\post;
 
 it('shows a printable student id card to admins', function (): void {
-    $student = Student::factory()->create(['sr_no' => 7]);
+    $student = Student::factory()->create(['gr_no' => 'GR-77']);
 
     actingAs(Admin::factory()->create(), 'admin')
         ->get("/cards/student/{$student->getKey()}")
         ->assertOk()
         ->assertSee($student->name)
-        ->assertSee('SR-0007');
+        ->assertSee('GR-77');
 });
 
 it('blocks staff from student id cards', function (): void {
@@ -40,7 +40,7 @@ it('shows staff their own staff card', function (): void {
 });
 
 it('exports students as csv', function (): void {
-    Student::factory()->create(['sr_no' => 1, 'name' => 'Export Kid']);
+    Student::factory()->create(['gr_no' => 'GR-1000', 'name' => 'Export Kid']);
 
     $response = actingAs(Admin::factory()->create(), 'admin')->get('/exports/students');
 
@@ -48,7 +48,7 @@ it('exports students as csv', function (): void {
 
     $csv = $response->getContent();
 
-    expect(str_contains($csv, 'sr_no,name,class,joining_date'))->toBeTrue()
+    expect(str_contains($csv, 'gr_no,name,class,joining_date'))->toBeTrue()
         ->and(str_contains($csv, 'Export Kid'))->toBeTrue();
 });
 
@@ -63,7 +63,7 @@ it('exports staff attendance and exam results as csv', function (): void {
 });
 
 it('imports students from an uploaded csv', function (): void {
-    $csv = "sr_no,name,class,joining_date,status\n101,Imported Kid,Nursery,2026-08-15,active\n";
+    $csv = "gr_no,name,class,joining_date,status\nGR-101,Imported Kid,Nursery,2026-08-15,active\n";
 
     $class = App\Models\StudentClass::factory()->create(['name' => 'Nursery']);
 
@@ -73,7 +73,7 @@ it('imports students from an uploaded csv', function (): void {
         'csv' => UploadedFile::fake()->createWithContent('students.csv', $csv),
     ])->assertRedirect();
 
-    $student = Student::query()->where('sr_no', 101)->first();
+    $student = Student::query()->where('gr_no', 'GR-101')->first();
 
     expect($student)->not->toBeNull()
         ->and($student->name)->toBe('Imported Kid')
@@ -92,9 +92,10 @@ it('imports staff from an uploaded csv', function (): void {
     expect(Staff::query()->where('cnic', '11111-1111111-1')->exists())->toBeTrue();
 });
 
-it('shows the import page to admins', function (): void {
+it('shows the import export page to admins', function (): void {
     actingAs(Admin::factory()->create(), 'admin')
-        ->get('/imports')
+        ->get('/dashboard/import-export')
         ->assertOk()
-        ->assertSee('Import students');
+        ->assertSee('Import students')
+        ->assertSee('Export to CSV');
 });

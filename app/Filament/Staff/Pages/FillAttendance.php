@@ -15,7 +15,7 @@ use Filament\Pages\Page;
 use Filament\Support\Exceptions\Halt;
 use Illuminate\Support\Collection;
 
-final class MarkAttendance extends Page
+final class FillAttendance extends Page
 {
     public ?string $classId = null;
 
@@ -26,9 +26,9 @@ final class MarkAttendance extends Page
      */
     public array $statuses = [];
 
-    protected string $view = 'filament.staff.pages.mark-attendance';
+    protected string $view = 'filament.staff.pages.fill-attendance';
 
-    protected static ?string $navigationLabel = 'Mark Attendance';
+    protected static ?string $navigationLabel = 'Fill attendance';
 
     protected static string|BackedEnum|null $navigationIcon = \Filament\Support\Icons\Heroicon::OutlinedClipboardDocumentList;
 
@@ -174,7 +174,7 @@ final class MarkAttendance extends Page
         }
 
         Notification::make()
-            ->title('Attendance saved')
+            ->title('Attendance inserted')
             ->success()
             ->send();
     }

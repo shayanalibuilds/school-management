@@ -37,17 +37,20 @@ Route::middleware('auth:admin')->group(function (): void {
         ->name('cards.student');
 
     Route::get('/exports/{type}', ExportController::class)
-        ->where('type', 'students|staff|attendance|exam-results')
+        ->where('type', 'students|staff|attendance|exam-results|fees|payments|payrolls|expenses|parents|guardians')
         ->name('exports');
-
-    Route::get('/imports', [ImportController::class, 'show'])
-        ->name('imports.show');
 
     Route::post('/imports/students', [ImportController::class, 'students'])
         ->name('imports.students');
 
     Route::post('/imports/staff', [ImportController::class, 'staff'])
         ->name('imports.staff');
+
+    Route::post('/imports/parents', [ImportController::class, 'parents'])
+        ->name('imports.parents');
+
+    Route::post('/imports/guardians', [ImportController::class, 'guardians'])
+        ->name('imports.guardians');
 });
 
 Route::middleware('auth:staff')->group(function (): void {

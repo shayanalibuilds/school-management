@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Payrolls\Pages;
 
 use App\Filament\Resources\Payrolls\PayrollResource;
+use App\Filament\Support\ExportCsvAction;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
@@ -16,6 +17,7 @@ final class ListPayrolls extends ListRecords
     {
         return [
             CreateAction::make(),
+            ExportCsvAction::make('payrolls'),
         ];
     }
 }

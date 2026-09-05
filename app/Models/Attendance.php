@@ -22,6 +22,7 @@ final class Attendance extends Model
         'student_id',
         'student_class_id',
         'staff_id',
+        'admin_id',
         'date',
         'status',
     ];
@@ -48,6 +49,22 @@ final class Attendance extends Model
     public function markedBy(): BelongsTo
     {
         return $this->belongsTo(Staff::class, 'staff_id');
+    }
+
+    /**
+     * @return BelongsTo<Admin, $this>
+     */
+    public function markedByAdmin(): BelongsTo
+    {
+        return $this->belongsTo(Admin::class, 'admin_id');
+    }
+
+    /**
+     * Who recorded the attendance, whichever panel it came from.
+     */
+    public function markerName(): ?string
+    {
+        return $this->markedBy?->name ?? $this->markedByAdmin?->name;
     }
 
     /**

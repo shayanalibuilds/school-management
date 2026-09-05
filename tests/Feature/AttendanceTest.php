@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use App\Enums\AttendanceStatus;
-use App\Filament\Staff\Pages\MarkAttendance;
+use App\Filament\Staff\Pages\FillAttendance;
 use App\Models\Admin;
 use App\Models\Attendance;
 use App\Models\Staff;
@@ -85,7 +85,7 @@ it('lets staff mark attendance for their assigned class', function (): void {
     actingAs($staff, 'staff');
     Filament\Facades\Filament::setCurrentPanel('staff');
 
-    Livewire::test(MarkAttendance::class)
+    Livewire::test(FillAttendance::class)
         ->set('classId', $class->getKey())
         ->set('date', today()->toDateString())
         ->set('statuses.'.$students[0]->getKey(), AttendanceStatus::Present->value)
@@ -109,7 +109,7 @@ it('blocks staff from saving attendance for a class they are not assigned to', f
     actingAs($staff, 'staff');
     Filament\Facades\Filament::setCurrentPanel('staff');
 
-    Livewire::test(MarkAttendance::class)
+    Livewire::test(FillAttendance::class)
         ->set('classId', $class->getKey())
         ->set('date', today()->toDateString())
         ->call('save');
@@ -123,8 +123,8 @@ it('shows the attendance resource to admins', function (): void {
     get('/dashboard/attendances')->assertOk();
 });
 
-it('shows the mark attendance page to staff', function (): void {
+it('shows the fill attendance page to staff', function (): void {
     actingAs(Staff::factory()->create(), 'staff');
 
-    get('/staff/mark-attendance')->assertOk();
+    get('/staff/fill-attendance')->assertOk();
 });

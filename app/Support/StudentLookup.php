@@ -14,7 +14,7 @@ final class StudentLookup
 {
     /**
      * Resolve the students a public visitor may see for one identifier:
-     * a parent/guardian CNIC or a student roll number (SR #).
+     * a parent/guardian CNIC or a student GR #.
      * Dashes and spaces are ignored, and only active students are returned.
      *
      * @return Collection<int, Student>
@@ -27,33 +27,29 @@ final class StudentLookup
             return collect();
         }
 
-        $students = self::byRollNumber($normalized)
+        $students = self::byGrNo($normalized)
             ->merge(self::byCnic(StudentParent::class, $normalized))
             ->merge(self::byCnic(Guardian::class, $normalized));
 
         return $students
             ->filter(fn (Student $student): bool => $student->status === StudentStatus::Active)
             ->unique('id')
-            ->sortBy('sr_no')
+            ->sortBy('gr_no')
             ->values();
     }
 
     /**
+     * GR # is a free-form string, so it is matched the same way it is
+     * typed: case-insensitive, ignoring dashes and spaces.
+     *
      * @return Collection<int, Student>
      */
-    private static function byRollNumber(string $identifier): Collection
+    private static function byGrNo(string $identifier): Collection
     {
-        if (ctype_digit($identifier) === false) {
-            /** @var Collection<int, Student> */
-            return collect();
-        }
-
-        /** @var Collection<int, Student> $students */
-        $students = Student::query()
-            ->where('sr_no', (int) $identifier)
+        /** @var Collection<int, Student> */
+        return Student::query()
+            ->whereRaw('REPLACE(REPLACE(LOWER(gr_no), \'-\', \'\'), \' \', \'\') = ?', [mb_strtolower($identifier)])
             ->get();
-
-        return $students;
     }
 
     /**
