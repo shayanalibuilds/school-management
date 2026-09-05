@@ -103,13 +103,13 @@ parameters:
 			path: app/Filament/Resources/Payments/Schemas/PaymentForm.php
 
 		-
-			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\PaymentStatus\:\:Completed will always evaluate to false\.$#'
+			message: '#^Strict comparison using \=\=\= between string\|null and App\\Enums\\PaymentStatus\:\:Completed will always evaluate to false\.$#'
 			identifier: identical.alwaysFalse
 			count: 1
 			path: app/Filament/Resources/Payments/Tables/PaymentsTable.php
 
 		-
-			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\PayrollStatus\:\:Pending will always evaluate to false\.$#'
+			message: '#^Strict comparison using \=\=\= between string\|null and App\\Enums\\PayrollStatus\:\:Pending will always evaluate to false\.$#'
 			identifier: identical.alwaysFalse
 			count: 1
 			path: app/Filament/Resources/Payrolls/Tables/PayrollsTable.php
@@ -121,7 +121,7 @@ parameters:
 			path: app/Filament/Resources/StaffAssignmentRequests/Tables/StaffAssignmentRequestsTable.php
 
 		-
-			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\AssignmentRequestStatus\:\:Pending will always evaluate to false\.$#'
+			message: '#^Strict comparison using \=\=\= between string\|null and App\\Enums\\AssignmentRequestStatus\:\:Pending will always evaluate to false\.$#'
 			identifier: identical.alwaysFalse
 			count: 2
 			path: app/Filament/Resources/StaffAssignmentRequests/Tables/StaffAssignmentRequestsTable.php
@@ -241,7 +241,7 @@ parameters:
 			path: app/Filament/Widgets/StudentPerformanceChart.php
 
 		-
-			message: '#^Cannot access property \$value on string\.$#'
+			message: '#^Cannot access property \$value on string\|null\.$#'
 			identifier: property.nonObject
 			count: 3
 			path: app/Http/Controllers/ExportController.php
@@ -397,19 +397,19 @@ parameters:
 			path: app/Models/Fee.php
 
 		-
-			message: '#^Property App\\Models\\Fee\:\:\$status \(string\) does not accept App\\Enums\\FeeStatus\:\:Paid\.$#'
+			message: '#^Property App\\Models\\Fee\:\:\$status \(string\|null\) does not accept App\\Enums\\FeeStatus\:\:Paid\.$#'
 			identifier: assign.propertyType
 			count: 1
 			path: app/Models/Fee.php
 
 		-
-			message: '#^Property App\\Models\\Fee\:\:\$status \(string\) does not accept App\\Enums\\FeeStatus\:\:Partial\.$#'
+			message: '#^Property App\\Models\\Fee\:\:\$status \(string\|null\) does not accept App\\Enums\\FeeStatus\:\:Partial\.$#'
 			identifier: assign.propertyType
 			count: 1
 			path: app/Models/Fee.php
 
 		-
-			message: '#^Property App\\Models\\Fee\:\:\$status \(string\) does not accept App\\Enums\\FeeStatus\:\:Unpaid\.$#'
+			message: '#^Property App\\Models\\Fee\:\:\$status \(string\|null\) does not accept App\\Enums\\FeeStatus\:\:Unpaid\.$#'
 			identifier: assign.propertyType
 			count: 1
 			path: app/Models/Fee.php
@@ -463,7 +463,7 @@ parameters:
 			path: app/Models/Payment.php
 
 		-
-			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\PaymentStatus\:\:Completed will always evaluate to false\.$#'
+			message: '#^Strict comparison using \=\=\= between string\|null and App\\Enums\\PaymentStatus\:\:Completed will always evaluate to false\.$#'
 			identifier: identical.alwaysFalse
 			count: 2
 			path: app/Models/Payment.php
@@ -505,7 +505,7 @@ parameters:
 			path: app/Models/Payroll.php
 
 		-
-			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\PayrollStatus\:\:Paid will always evaluate to false\.$#'
+			message: '#^Strict comparison using \=\=\= between string\|null and App\\Enums\\PayrollStatus\:\:Paid will always evaluate to false\.$#'
 			identifier: identical.alwaysFalse
 			count: 1
 			path: app/Models/Payroll.php
@@ -541,7 +541,7 @@ parameters:
 			path: app/Models/StaffAssignmentRequest.php
 
 		-
-			message: '#^Strict comparison using \!\=\= between string and App\\Enums\\AssignmentRequestStatus\:\:Pending will always evaluate to true\.$#'
+			message: '#^Strict comparison using \!\=\= between string\|null and App\\Enums\\AssignmentRequestStatus\:\:Pending will always evaluate to true\.$#'
 			identifier: notIdentical.alwaysTrue
 			count: 2
 			path: app/Models/StaffAssignmentRequest.php
@@ -733,7 +733,7 @@ parameters:
 			path: app/Support/StudentLookup.php
 
 		-
-			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\StudentStatus\:\:Active will always evaluate to false\.$#'
+			message: '#^Strict comparison using \=\=\= between string\|null and App\\Enums\\StudentStatus\:\:Active will always evaluate to false\.$#'
 			identifier: identical.alwaysFalse
 			count: 1
 			path: app/Support/StudentLookup.php
@@ -985,15 +985,9 @@ parameters:
 			path: tests/Feature/StudentWizardTest.php
 
 		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<string\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: tests/Feature/StudentWizardTest.php
-
-		-
 			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<string\|null\>\:\:and\(\)$#'
 			identifier: argument.templateType
-			count: 1
+			count: 2
 			path: tests/Feature/StudentWizardTest.php
 
 		-
@@ -1039,7 +1033,7 @@ parameters:
 			path: tests/Feature/TableBulkActionsTest.php
 
 		-
-			message: '#^Cannot access property \$value on string\.$#'
+			message: '#^Cannot access property \$value on string\|null\.$#'
 			identifier: property.nonObject
 			count: 1
 			path: tests/Feature/TableBulkActionsTest.php
@@ -1063,7 +1057,7 @@ parameters:
 			path: tests/Feature/TableBulkActionsTest.php
 
 		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<string\>\:\:and\(\)$#'
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<string\|null\>\:\:and\(\)$#'
 			identifier: argument.templateType
 			count: 1
 			path: tests/Feature/TableBulkActionsTest.php
