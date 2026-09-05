@@ -44,11 +44,12 @@ it('resolves students by guardian cnic', function (): void {
     expect(StudentLookup::resolve('35202-5555555-5')->pluck('id'))->toContain($student->getKey());
 });
 
-it('resolves a student by roll number', function (): void {
-    $student = Student::factory()->create(['sr_no' => 77]);
+it('resolves a student by gr number, ignoring case and dashes', function (): void {
+    $student = Student::factory()->create(['gr_no' => 'GR-77']);
 
-    expect(StudentLookup::resolve('77')->pluck('id'))->toContain($student->getKey())
-        ->and(StudentLookup::resolve('0077')->pluck('id'))->toContain($student->getKey());
+    expect(StudentLookup::resolve('GR-77')->pluck('id'))->toContain($student->getKey())
+        ->and(StudentLookup::resolve('gr77')->pluck('id'))->toContain($student->getKey())
+        ->and(StudentLookup::resolve(' GR 77 ')->pluck('id'))->toContain($student->getKey());
 });
 
 it('returns every active child of one parent', function (): void {
@@ -64,8 +65,8 @@ it('returns every active child of one parent', function (): void {
 });
 
 it('excludes inactive students from every lookup', function (): void {
-    $active = Student::factory()->create(['sr_no' => 80]);
-    $left = Student::factory()->left()->create(['sr_no' => 81]);
+    $active = Student::factory()->create(['gr_no' => 'GR-80']);
+    $left = Student::factory()->left()->create(['gr_no' => 'GR-81']);
     $parent = ParentModel::factory()->create(['cnic' => '35202-7777777-7']);
     $parent->students()->attach([$active->getKey(), $left->getKey()]);
 
@@ -73,12 +74,12 @@ it('excludes inactive students from every lookup', function (): void {
 
     expect($byCnic->pluck('id'))->toContain($active->getKey())
         ->and($byCnic->pluck('id'))->not->toContain($left->getKey())
-        ->and(StudentLookup::resolve('81')->isEmpty())->toBeTrue()
-        ->and(StudentLookup::resolve('80')->pluck('id'))->toContain($active->getKey());
+        ->and(StudentLookup::resolve('GR-81')->isEmpty())->toBeTrue()
+        ->and(StudentLookup::resolve('gr-80')->pluck('id'))->toContain($active->getKey());
 });
 
 it('returns nothing for unknown or empty identifiers', function (): void {
-    Student::factory()->create(['sr_no' => 5]);
+    Student::factory()->create(['gr_no' => 'GR-5']);
     ParentModel::factory()->create(['cnic' => '35202-0000000-0']);
 
     expect(StudentLookup::resolve('9999999999999')->isEmpty())->toBeTrue()
@@ -109,12 +110,12 @@ it('shows public results for a child by year as grades', function (): void {
         ->assertSee('A+');
 });
 
-it('shows public results as positions searched by roll number', function (): void {
+it('shows public results as positions searched by gr number', function (): void {
     $class = StudentClass::factory()->create();
     $subject = Subject::factory()->create();
 
-    $first = Student::factory()->create(['student_class_id' => $class->getKey(), 'name' => 'Top Student', 'sr_no' => 301]);
-    $second = Student::factory()->create(['student_class_id' => $class->getKey(), 'name' => 'Second Student', 'sr_no' => 302]);
+    $first = Student::factory()->create(['student_class_id' => $class->getKey(), 'name' => 'Top Student', 'gr_no' => 'GR-301']);
+    $second = Student::factory()->create(['student_class_id' => $class->getKey(), 'name' => 'Second Student', 'gr_no' => 'GR-302']);
 
     App\Models\ExamResult::factory()->create([
         'student_id' => $first->getKey(), 'student_class_id' => $class->getKey(),
@@ -125,7 +126,7 @@ it('shows public results as positions searched by roll number', function (): voi
         'subject_id' => $subject->getKey(), 'year' => 2025, 'marks' => 80,
     ]);
 
-    get('/results?identifier=301&year=2025&type=positions')
+    get('/results?identifier=GR-301&year=2025&type=positions')
         ->assertOk()
         ->assertSee('1st');
 });

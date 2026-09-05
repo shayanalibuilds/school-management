@@ -43,7 +43,7 @@ final class JazzCashService
             'pp_Amount' => (string) ((int) round(((float) $payment->amount) * 100)),
             'pp_TxnCurrency' => 'PKR',
             'pp_TxnDateTime' => $now->format('YmdHis'),
-            'pp_BillReference' => (string) $payment->fee->student->sr_no,
+            'pp_BillReference' => (string) $payment->fee->student->gr_no,
             'pp_Description' => 'Fee payment: '.$payment->fee->feeStructure->name,
             'pp_TxnExpiryDateTime' => $now->modify('+1 day')->format('YmdHis'),
             'pp_ReturnURL' => route('payments.callback', ['provider' => 'jazzcash']),

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\ExamResults;
 
-use App\Filament\Resources\ExamResults\Pages\CreateExamResult;
 use App\Filament\Resources\ExamResults\Pages\EditExamResult;
 use App\Filament\Resources\ExamResults\Pages\ListExamResults;
 use App\Filament\Resources\ExamResults\Schemas\ExamResultForm;
@@ -48,7 +47,6 @@ final class ExamResultResource extends Resource
     {
         return [
             'index' => ListExamResults::route('/'),
-            'create' => CreateExamResult::route('/create'),
             'edit' => EditExamResult::route('/{record}/edit'),
         ];
     }

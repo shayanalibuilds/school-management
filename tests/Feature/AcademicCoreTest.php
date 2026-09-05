@@ -21,7 +21,6 @@ it('creates and links the academic core models', function (): void {
 
     $student = Student::factory()->create([
         'student_class_id' => $class->getKey(),
-        'sr_no' => 1,
     ]);
 
     expect($student->studentClass->is($class))->toBeTrue()
@@ -53,7 +52,6 @@ it('lets an admin create a student through the panel', function (): void {
 
     Livewire::test(CreateStudent::class)
         ->fillForm([
-            'sr_no' => 42,
             'gr_no' => 'GR-2026-0042',
             'name' => 'Aisha Khan',
             'student_class_id' => $class->getKey(),
@@ -63,7 +61,7 @@ it('lets an admin create a student through the panel', function (): void {
         ->call('create')
         ->assertHasNoFormErrors();
 
-    expect(Student::query()->where('sr_no', 42)->where('name', 'Aisha Khan')->exists())->toBeTrue();
+    expect(Student::query()->where('gr_no', 'GR-2026-0042')->where('name', 'Aisha Khan')->exists())->toBeTrue();
 });
 
 it('shows academic resource index pages to admins', function (): void {
@@ -74,11 +72,9 @@ it('shows academic resource index pages to admins', function (): void {
     }
 });
 
-it('generates sequential sr numbers when not provided', function (): void {
-    $first = Student::factory()->create(['sr_no' => null]);
-    $second = Student::factory()->create(['sr_no' => null]);
+it('generates unique gr numbers for every student', function (): void {
+    $students = Student::factory()->count(5)->create();
 
-    expect($first->sr_no)->toBeInt()
-        ->and($second->sr_no)->toBe($first->sr_no + 1)
-        ->and(Str::length((string) $second->sr_no))->toBeGreaterThan(0);
+    expect($students->pluck('gr_no')->unique())->toHaveCount(5)
+        ->and(Str::length((string) $students->first()->gr_no))->toBeGreaterThan(0);
 });

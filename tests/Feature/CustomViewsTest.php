@@ -23,8 +23,11 @@ const CUSTOM_VIEWS = [
     'pages/⚡results.blade.php',
     'pages/⚡attendance.blade.php',
     'pages/⚡fees.blade.php',
-    'filament/staff/pages/mark-attendance.blade.php',
-    'filament/staff/pages/enter-results.blade.php',
+    'filament/staff/pages/fill-attendance.blade.php',
+    'filament/staff/pages/fill-exam-results.blade.php',
+    'filament/admin/pages/fill-attendance.blade.php',
+    'filament/admin/pages/fill-exam-results.blade.php',
+    'filament/admin/pages/import-export.blade.php',
     'filament/staff/pages/my-assignments.blade.php',
     'filament/admin/pages/payment-settings.blade.php',
 ];
@@ -65,10 +68,10 @@ test('public landing renders filament styled markup', function (): void {
         ->assertSee('css/filament/filament/app.css', false);
 });
 
-test('staff mark attendance page renders filament styled markup', function (): void {
+test('staff fill attendance page renders filament styled markup', function (): void {
     actingAs(Staff::factory()->create(), 'staff');
 
-    get('/staff/mark-attendance')
+    get('/staff/fill-attendance')
         ->assertOk()
         ->assertSee('fi-section', false)
         ->assertSee('fi-select-input', false)

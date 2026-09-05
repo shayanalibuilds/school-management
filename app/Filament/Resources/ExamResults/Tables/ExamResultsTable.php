@@ -4,17 +4,13 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\ExamResults\Tables;
 
-use App\Filament\Support\BulkEdit;
 use App\Support\Grades;
-use Filament\Actions\BulkAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Collection;
 
 final class ExamResultsTable
 {
@@ -24,8 +20,8 @@ final class ExamResultsTable
 
         return $table
             ->columns([
-                TextColumn::make('student.sr_no')
-                    ->label('SR #')
+                TextColumn::make('student.gr_no')
+                    ->label('GR #')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('student.name')
@@ -71,30 +67,6 @@ final class ExamResultsTable
                 DeleteAction::make(),
             ])
             ->toolbarActions([
-                BulkAction::make('bulkEdit')
-                    ->label('Bulk edit')
-                    ->icon('heroicon-m-pencil-square')
-                    ->form([
-                        Select::make('student_class_id')
-                            ->label('Class')
-                            ->relationship('studentClass', 'name')
-                            ->searchable()
-                            ->preload()
-                            ->helperText('Only filled fields are applied to the selected results.'),
-                        Select::make('subject_id')
-                            ->label('Subject')
-                            ->relationship('subject', 'name')
-                            ->searchable()
-                            ->preload(),
-                        Select::make('year')
-                            ->options(collect(range($currentYear - 9, $currentYear))
-                                ->mapWithKeys(fn (int $year): array => [$year => (string) $year])
-                                ->all()),
-                    ])
-                    ->action(function (Collection $records, array $data): void {
-                        BulkEdit::apply($records, $data);
-                    })
-                    ->deselectRecordsAfterCompletion(),
                 DeleteBulkAction::make(),
             ]);
     }

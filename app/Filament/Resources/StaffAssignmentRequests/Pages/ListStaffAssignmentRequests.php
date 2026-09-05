@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Filament\Resources\StaffAssignmentRequests\Pages;
 
 use App\Filament\Resources\StaffAssignmentRequests\StaffAssignmentRequestResource;
-use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
 final class ListStaffAssignmentRequests extends ListRecords
@@ -14,8 +13,8 @@ final class ListStaffAssignmentRequests extends ListRecords
 
     protected function getHeaderActions(): array
     {
-        return [
-            CreateAction::make(),
-        ];
+        // Requests are raised by staff on their own panel; admins only
+        // approve or reject them, so there is no create button here.
+        return [];
     }
 }

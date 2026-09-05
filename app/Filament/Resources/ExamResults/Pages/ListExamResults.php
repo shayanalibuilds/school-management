@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\ExamResults\Pages;
 
 use App\Filament\Resources\ExamResults\ExamResultResource;
-use Filament\Actions\CreateAction;
+use App\Filament\Support\ExportCsvAction;
 use Filament\Resources\Pages\ListRecords;
 
 final class ListExamResults extends ListRecords
@@ -14,8 +14,10 @@ final class ListExamResults extends ListRecords
 
     protected function getHeaderActions(): array
     {
+        // Results are recorded from the Fill exam results page;
+        // this table is for reviewing and correcting records.
         return [
-            CreateAction::make(),
+            ExportCsvAction::make('exam-results'),
         ];
     }
 }

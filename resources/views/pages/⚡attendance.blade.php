@@ -43,7 +43,7 @@ new #[Layout('layouts::app')] class extends Component {
 <div class="space-y-6 py-4">
     <div class="space-y-1">
         <h1 class="text-2xl font-semibold tracking-tight text-zinc-950">Check Attendance</h1>
-        <p class="text-sm text-zinc-600">Enter the parent or guardian CNIC, or the student roll number (SR #).</p>
+        <p class="text-sm text-zinc-600">Enter the parent or guardian CNIC, or the student GR number (GR #).</p>
     </div>
 
     <x-filament::section>
@@ -68,7 +68,7 @@ new #[Layout('layouts::app')] class extends Component {
     @if ($this->students->isNotEmpty())
         @foreach ($this->students as $entry)
             <x-filament::section
-                :heading="$entry['student']->name.' — '.$entry['student']->studentClass->name.' — SR #'.$entry['student']->sr_no"
+                :heading="$entry['student']->name.' — '.$entry['student']->studentClass->name.' — GR #'.$entry['student']->gr_no"
             >
                 @if ($entry['records']->isNotEmpty())
                     <div class="overflow-hidden rounded-lg border border-zinc-200 bg-white">

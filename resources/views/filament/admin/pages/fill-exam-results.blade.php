@@ -1,7 +1,7 @@
 <div style="display: grid; gap: 1.5rem;">
     <x-filament::section
-        heading="Enter results"
-        description="Record exam marks for your assigned classes and subjects."
+        heading="Fill exam results"
+        description="Record exam marks for a whole class at once."
     >
         <div style="display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));">
             <x-filament-forms::field-wrapper label="Class" id="classId" statePath="classId">
@@ -39,6 +39,7 @@
                     <thead style="background-color: #f9fafb;">
                         <tr style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.025em; color: #6b7280;">
                             <th style="padding: 0.625rem 1rem; text-align: start;">Student</th>
+                            <th style="padding: 0.625rem 1rem; text-align: start;">GR #</th>
                             <th style="padding: 0.625rem 1rem; text-align: start;">Marks (out of 100)</th>
                         </tr>
                     </thead>
@@ -46,6 +47,7 @@
                         @foreach ($this->students as $student)
                             <tr style="border-top: 1px solid #e5e7eb; color: #111827;">
                                 <td style="padding: 0.625rem 1rem;">{{ $student->name }}</td>
+                                <td style="padding: 0.625rem 1rem; color: #6b7280;">{{ $student->gr_no }}</td>
                                 <td style="padding: 0.625rem 1rem; max-width: 12rem;">
                                     <x-filament::input.wrapper>
                                         <x-filament::input
@@ -65,7 +67,7 @@
 
             <x-slot name="footer">
                 <x-filament::button wire:click="save" icon="heroicon-m-check">
-                    Save results
+                    Insert results
                 </x-filament::button>
             </x-slot>
         </x-filament::section>

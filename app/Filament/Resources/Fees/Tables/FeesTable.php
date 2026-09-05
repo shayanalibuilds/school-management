@@ -5,19 +5,14 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Fees\Tables;
 
 use App\Enums\FeeStatus;
-use App\Filament\Support\BulkEdit;
 use App\Models\StudentClass;
-use Filament\Actions\BulkAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 
 final class FeesTable
 {
@@ -27,8 +22,8 @@ final class FeesTable
 
         return $table
             ->columns([
-                TextColumn::make('student.sr_no')
-                    ->label('SR #')
+                TextColumn::make('student.gr_no')
+                    ->label('GR #')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('student.name')
@@ -89,21 +84,6 @@ final class FeesTable
                 DeleteAction::make(),
             ])
             ->toolbarActions([
-                BulkAction::make('bulkEdit')
-                    ->label('Bulk edit')
-                    ->icon('heroicon-m-pencil-square')
-                    ->form([
-                        Select::make('year')
-                            ->options(collect(range($currentYear - 9, $currentYear + 1))
-                                ->mapWithKeys(fn (int $year): array => [$year => (string) $year])
-                                ->all())
-                            ->helperText('Only filled fields are applied to the selected fees.'),
-                        DatePicker::make('due_date'),
-                    ])
-                    ->action(function (Collection $records, array $data): void {
-                        BulkEdit::apply($records, $data);
-                    })
-                    ->deselectRecordsAfterCompletion(),
                 DeleteBulkAction::make(),
             ]);
     }

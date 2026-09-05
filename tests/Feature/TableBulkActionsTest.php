@@ -4,35 +4,24 @@ declare(strict_types=1);
 
 use App\Enums\AssignmentAction;
 use App\Enums\AssignmentRequestStatus;
-use App\Enums\AttendanceStatus;
-use App\Enums\ExpenseRecurrence;
-use App\Enums\FeeStructureType;
 use App\Enums\PaymentStatus;
 use App\Enums\StudentStatus;
 use App\Filament\Resources\Attendances\Pages\ListAttendances;
 use App\Filament\Resources\ExamResults\Pages\ListExamResults;
-use App\Filament\Resources\Expenses\Pages\ListExpenses;
 use App\Filament\Resources\Fees\Pages\ListFees;
-use App\Filament\Resources\FeeStructures\Pages\ListFeeStructures;
 use App\Filament\Resources\Payments\Pages\ListPayments;
 use App\Filament\Resources\Payrolls\Pages\ListPayrolls;
 use App\Filament\Resources\StaffAssignmentRequests\Pages\ListStaffAssignmentRequests;
-use App\Filament\Resources\StaffAssignments\Pages\ListStaffAssignments;
 use App\Filament\Resources\Students\Pages\ListStudents;
 use App\Models\Admin;
 use App\Models\Attendance;
 use App\Models\ExamResult;
-use App\Models\Expense;
 use App\Models\Fee;
-use App\Models\FeeStructure;
 use App\Models\Payment;
 use App\Models\Payroll;
-use App\Models\StaffAssignment;
 use App\Models\StaffAssignmentRequest;
 use App\Models\Student;
-use App\Models\StudentClass;
 use App\Models\Subject;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Livewire\Livewire;
 
 use function Pest\Laravel\actingAs;
@@ -47,15 +36,11 @@ it('bulk changes the status of many students at once', function (): void {
     $students->each(fn (Student $student) => expect($student->refresh()->status)->toBe(StudentStatus::Left));
 });
 
-it('bulk edits the class of many students at once', function (): void {
+it('no longer offers bulk edit on the students table', function (): void {
     actingAs(Admin::factory()->create(), 'admin');
-    $students = Student::factory()->count(2)->create();
-    $newClass = StudentClass::factory()->create();
 
     Livewire::test(ListStudents::class)
-        ->callTableBulkAction('bulkEdit', $students, ['student_class_id' => $newClass->getKey()]);
-
-    $students->each(fn (Student $student) => expect($student->refresh()->student_class_id)->toBe($newClass->getKey()));
+        ->assertTableBulkActionDoesNotExist('bulkEdit');
 });
 
 it('bulk deletes students into the trash', function (): void {
@@ -67,77 +52,6 @@ it('bulk deletes students into the trash', function (): void {
 
     $students->each(fn (Student $student) => expect(Student::query()->find($student->getKey()))->toBeNull()
         ->and(Student::withTrashed()->findOrFail($student->getKey())->trashed())->toBeTrue());
-});
-
-it('bulk edits attendance status and date', function (): void {
-    actingAs(Admin::factory()->create(), 'admin');
-    $attendances = Attendance::factory()->count(2)->create(['status' => AttendanceStatus::Absent]);
-
-    Livewire::test(ListAttendances::class)
-        ->callTableBulkAction('bulkEdit', $attendances, [
-            'status' => AttendanceStatus::Present->value,
-            'date' => '2026-08-20',
-        ]);
-
-    $attendances->each(fn (Attendance $attendance) => expect($attendance->refresh()->status)->toBe(AttendanceStatus::Present)
-        ->and($attendance->fresh()->date->format('Y-m-d'))->toBe('2026-08-20'));
-});
-
-it('bulk edits exam result subject and year', function (): void {
-    actingAs(Admin::factory()->create(), 'admin');
-    $subject = Subject::factory()->create();
-    $results = ExamResult::factory()->count(2)->create(['year' => 2024]);
-
-    Livewire::test(ListExamResults::class)
-        ->callTableBulkAction('bulkEdit', $results, [
-            'subject_id' => $subject->getKey(),
-            'year' => '2026',
-        ]);
-
-    $results->each(fn (ExamResult $result) => expect($result->refresh()->subject_id)->toBe($subject->getKey())
-        ->and($result->fresh()->year)->toBe(2026));
-});
-
-it('bulk edits fee year and due date', function (): void {
-    actingAs(Admin::factory()->create(), 'admin');
-    $fees = Fee::factory()->count(2)->create(['year' => 2024]);
-
-    Livewire::test(ListFees::class)
-        ->callTableBulkAction('bulkEdit', $fees, [
-            'year' => '2026',
-            'due_date' => '2026-09-30',
-        ]);
-
-    $fees->each(fn (Fee $fee) => expect($fee->refresh()->year)->toBe(2026)
-        ->and($fee->fresh()->due_date?->format('Y-m-d'))->toBe('2026-09-30'));
-});
-
-it('bulk edits fee structure type and amount', function (): void {
-    actingAs(Admin::factory()->create(), 'admin');
-    $structures = FeeStructure::factory()->count(2)->create();
-
-    Livewire::test(ListFeeStructures::class)
-        ->callTableBulkAction('bulkEdit', $structures, [
-            'type' => FeeStructureType::OneTime->value,
-            'amount' => '12000',
-        ]);
-
-    $structures->each(fn (FeeStructure $structure) => expect($structure->refresh()->type)->toBe(FeeStructureType::OneTime)
-        ->and((float) $structure->fresh()->amount)->toBe(12000.0));
-});
-
-it('bulk edits expense recurrence and amount', function (): void {
-    actingAs(Admin::factory()->create(), 'admin');
-    $expenses = Expense::factory()->count(2)->create();
-
-    Livewire::test(ListExpenses::class)
-        ->callTableBulkAction('bulkEdit', $expenses, [
-            'recurrence' => ExpenseRecurrence::Monthly->value,
-            'amount' => '3500',
-        ]);
-
-    $expenses->each(fn (Expense $expense) => expect($expense->refresh()->recurrence)->toBe(ExpenseRecurrence::Monthly)
-        ->and((float) $expense->fresh()->amount)->toBe(3500.0));
 });
 
 it('bulk marks pending payments as completed and credits the fee', function (): void {
@@ -168,39 +82,25 @@ it('bulk marks pending payrolls as paid', function (): void {
         ->and($payroll->fresh()->paid_at)->not->toBeNull());
 });
 
-it('shows and searches the student SR # on fees, attendance and results tables', function (): void {
+it('shows and searches the student GR # on fees, attendance and results tables', function (): void {
     actingAs(Admin::factory()->create(), 'admin');
-    $student = Student::factory()->create(['sr_no' => 4242]);
+    $student = Student::factory()->create(['gr_no' => 'GR-4242']);
     $subject = Subject::factory()->create(['name' => 'Bulk Subject']);
     Fee::factory()->create(['student_id' => $student->getKey()]);
     Attendance::factory()->create(['student_id' => $student->getKey()]);
     ExamResult::factory()->create(['student_id' => $student->getKey(), 'subject_id' => $subject->getKey()]);
 
     Livewire::test(ListFees::class)
-        ->assertSee('4242')
-        ->searchTable('4242')
+        ->assertSee('GR-4242')
+        ->searchTable('GR-4242')
         ->assertSee($student->name);
 
     Livewire::test(ListAttendances::class)
-        ->assertSee('4242');
+        ->assertSee('GR-4242');
 
     Livewire::test(ListExamResults::class)
-        ->assertSee('4242')
+        ->assertSee('GR-4242')
         ->assertSee('Bulk Subject');
-});
-
-it('bulk edits the class of many staff assignments at once', function (): void {
-    actingAs(Admin::factory()->create(), 'admin');
-    $assignments = EloquentCollection::make([
-        StaffAssignment::factory()->create(),
-        StaffAssignment::factory()->create(),
-    ]);
-    $newClass = StudentClass::factory()->create();
-
-    Livewire::test(ListStaffAssignments::class)
-        ->callTableBulkAction('bulkEdit', $assignments, ['student_class_id' => $newClass->getKey()]);
-
-    $assignments->each(fn (StaffAssignment $assignment) => expect($assignment->refresh()->student_class_id)->toBe($newClass->getKey()));
 });
 
 it('bulk approves and rejects assignment requests with an admin note', function (): void {
@@ -225,4 +125,11 @@ it('bulk approves and rejects assignment requests with an admin note', function 
 
     expect($pending->refresh()->status)->toBe(AssignmentRequestStatus::Rejected)
         ->and($pending->fresh()->admin_note)->toBe('Already covered by another teacher.');
+});
+
+it('hides the new assignment request button from admins', function (): void {
+    actingAs(Admin::factory()->create(), 'admin');
+
+    Livewire::test(ListStaffAssignmentRequests::class)
+        ->assertActionDoesNotExist('create');
 });

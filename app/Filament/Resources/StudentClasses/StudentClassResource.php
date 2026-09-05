@@ -27,6 +27,12 @@ final class StudentClassResource extends Resource
 
     protected static ?string $navigationLabel = 'Classes';
 
+    // Everywhere a user reads it, the model is just a "Class" — never
+    // the dev-facing "Student class".
+    protected static ?string $modelLabel = 'Class';
+
+    protected static ?string $pluralModelLabel = 'Classes';
+
     public static function form(Schema $schema): Schema
     {
         return StudentClassForm::configure($schema);

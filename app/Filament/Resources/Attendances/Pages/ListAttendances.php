@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Attendances\Pages;
 
 use App\Filament\Resources\Attendances\AttendanceResource;
-use Filament\Actions\CreateAction;
+use App\Filament\Support\ExportCsvAction;
 use Filament\Resources\Pages\ListRecords;
 
 final class ListAttendances extends ListRecords
@@ -14,8 +14,10 @@ final class ListAttendances extends ListRecords
 
     protected function getHeaderActions(): array
     {
+        // Attendance is recorded from the Fill attendance page;
+        // this table is for reviewing and correcting records.
         return [
-            CreateAction::make(),
+            ExportCsvAction::make('attendance'),
         ];
     }
 }

@@ -5,18 +5,14 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Attendances\Tables;
 
 use App\Enums\AttendanceStatus;
-use App\Filament\Support\BulkEdit;
-use Filament\Actions\BulkAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 
 final class AttendancesTable
 {
@@ -24,8 +20,8 @@ final class AttendancesTable
     {
         return $table
             ->columns([
-                TextColumn::make('student.sr_no')
-                    ->label('SR #')
+                TextColumn::make('student.gr_no')
+                    ->label('GR #')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('student.name')
@@ -47,8 +43,9 @@ final class AttendancesTable
                         AttendanceStatus::Absent => 'danger',
                     })
                     ->sortable(),
-                TextColumn::make('markedBy.name')
+                TextColumn::make('markerName')
                     ->label('Marked by')
+                    ->state(fn ($record): string => $record->markerName() ?? '—')
                     ->toggleable(),
             ])
             ->filters([
@@ -83,21 +80,6 @@ final class AttendancesTable
                 EditAction::make(),
             ])
             ->toolbarActions([
-                BulkAction::make('bulkEdit')
-                    ->label('Bulk edit')
-                    ->icon('heroicon-m-pencil-square')
-                    ->form([
-                        DatePicker::make('date')
-                            ->helperText('Only filled fields are applied to the selected records.'),
-                        Select::make('status')
-                            ->options(collect(AttendanceStatus::cases())
-                                ->mapWithKeys(fn (AttendanceStatus $status): array => [$status->value => $status->label()])
-                                ->all()),
-                    ])
-                    ->action(function (Collection $records, array $data): void {
-                        BulkEdit::apply($records, $data);
-                    })
-                    ->deselectRecordsAfterCompletion(),
                 DeleteBulkAction::make(),
             ]);
     }

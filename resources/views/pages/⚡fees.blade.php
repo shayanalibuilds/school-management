@@ -126,7 +126,7 @@ new #[Layout('layouts::app')] class extends Component {
 <div class="space-y-6 py-4">
     <div class="space-y-1">
         <h1 class="text-2xl font-semibold tracking-tight text-zinc-950">Fees &amp; Payments</h1>
-        <p class="text-sm text-zinc-600">Enter the parent or guardian CNIC, or the student roll number (SR #), to check dues and pay online.</p>
+        <p class="text-sm text-zinc-600">Enter the parent or guardian CNIC, or the student GR number (GR #), to check dues and pay online.</p>
     </div>
 
     <x-filament::section>

@@ -22,7 +22,7 @@ final class StudentFactory extends Factory
     public function definition(): array
     {
         return [
-            'sr_no' => null,
+            'gr_no' => fake()->unique()->regexify('GR[0-9]{6}'),
             'name' => fake()->name(),
             'student_class_id' => StudentClass::factory(),
             'joining_date' => fake()->dateTimeBetween('-3 years', 'now'),

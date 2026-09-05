@@ -1,6 +1,6 @@
 <div style="display: grid; gap: 1.5rem;">
     <x-filament::section
-        heading="Mark attendance"
+        heading="Fill attendance"
         description="Daily attendance must be submitted before 8:20 AM."
     >
         <div style="display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));">
@@ -28,6 +28,7 @@
                     <thead style="background-color: #f9fafb;">
                         <tr style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.025em; color: #6b7280;">
                             <th style="padding: 0.625rem 1rem; text-align: start;">Student</th>
+                            <th style="padding: 0.625rem 1rem; text-align: start;">GR #</th>
                             <th style="padding: 0.625rem 1rem; text-align: start;">Status</th>
                         </tr>
                     </thead>
@@ -35,6 +36,7 @@
                         @foreach ($this->students as $student)
                             <tr style="border-top: 1px solid #e5e7eb; color: #111827;">
                                 <td style="padding: 0.625rem 1rem;">{{ $student->name }}</td>
+                                <td style="padding: 0.625rem 1rem; color: #6b7280;">{{ $student->gr_no }}</td>
                                 <td style="padding: 0.625rem 1rem;">
                                     <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
                                         @foreach (\App\Enums\AttendanceStatus::cases() as $status)
@@ -57,7 +59,7 @@
 
             <x-slot name="footer">
                 <x-filament::button wire:click="save" icon="heroicon-m-check">
-                    Save attendance
+                    Insert attendance
                 </x-filament::button>
             </x-slot>
         </x-filament::section>

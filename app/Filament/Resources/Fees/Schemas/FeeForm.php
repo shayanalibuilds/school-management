@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Fees\Schemas;
 
 use App\Filament\Support\WizardSubmitActions;
+use App\Models\Student;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -26,7 +27,13 @@ final class FeeForm
                         ->schema([
                             Select::make('student_id')
                                 ->label('Student')
-                                ->relationship('student', 'name')
+                                ->options(fn (): array => Student::query()
+                                    ->with('studentClass')
+                                    ->active()
+                                    ->orderBy('name')
+                                    ->get()
+                                    ->mapWithKeys(fn (Student $student): array => [$student->getKey() => $student->selectLabel()])
+                                    ->all())
                                 ->searchable()
                                 ->preload()
                                 ->required(),

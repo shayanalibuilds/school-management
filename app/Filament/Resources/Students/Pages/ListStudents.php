@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Students\Pages;
 
 use App\Filament\Resources\Students\StudentResource;
+use App\Filament\Support\ExportCsvAction;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
@@ -16,6 +17,7 @@ final class ListStudents extends ListRecords
     {
         return [
             CreateAction::make(),
+            ExportCsvAction::make('students'),
         ];
     }
 }

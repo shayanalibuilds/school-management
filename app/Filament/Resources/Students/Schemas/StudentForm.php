@@ -26,21 +26,17 @@ final class StudentForm
                     Step::make('Student Info')
                         ->icon('heroicon-m-academic-cap')
                         ->schema([
-                            TextInput::make('sr_no')
-                                ->label('SR #')
-                                ->numeric()
-                                ->unique(ignoreRecord: true)
-                                ->helperText('Leave empty to assign the next sequential number.'),
                             TextInput::make('gr_no')
                                 ->label('GR #')
                                 ->required()
                                 ->maxLength(50)
-                                ->unique(ignoreRecord: true),
+                                ->unique(ignoreRecord: true)
+                                ->helperText('The one permanent identifier for the student.'),
                             TextInput::make('name')
                                 ->required()
                                 ->maxLength(255),
                             Select::make('student_class_id')
-                                ->label('Joining class')
+                                ->label('Class')
                                 ->relationship('studentClass', 'name')
                                 ->searchable()
                                 ->preload()
@@ -106,8 +102,6 @@ final class StudentForm
     private static function personalDetails(): array
     {
         return [
-            TextInput::make('father_name')
-                ->maxLength(255),
             DatePicker::make('date_of_birth')
                 ->maxDate(today()),
             Select::make('gender')

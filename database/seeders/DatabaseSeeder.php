@@ -71,12 +71,10 @@ final class DatabaseSeeder extends Seeder
         }
 
         $students = collect();
-        $srCounter = 1;
 
         foreach ($classes as $class) {
             foreach (range(1, 6) as $seat) {
                 $students->push(Student::factory()->create([
-                    'sr_no' => $srCounter++,
                     'student_class_id' => $class->getKey(),
                     'status' => StudentStatus::Active,
                 ]));
