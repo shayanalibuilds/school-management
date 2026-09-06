@@ -87,7 +87,6 @@ it('lets staff mark attendance for their assigned class', function (): void {
 
     Livewire::test(FillAttendance::class)
         ->set('classId', $class->getKey())
-        ->set('date', today()->toDateString())
         ->set('statuses.'.$students[0]->getKey(), AttendanceStatus::Present->value)
         ->set('statuses.'.$students[1]->getKey(), AttendanceStatus::Absent->value)
         ->set('statuses.'.$students[2]->getKey(), AttendanceStatus::Leave->value)
@@ -111,7 +110,6 @@ it('blocks staff from saving attendance for a class they are not assigned to', f
 
     Livewire::test(FillAttendance::class)
         ->set('classId', $class->getKey())
-        ->set('date', today()->toDateString())
         ->call('save');
 
     expect(Attendance::query()->count())->toBe(0);
