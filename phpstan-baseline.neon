@@ -253,6 +253,54 @@ parameters:
 			path: app/Filament/Resources/StaffAssignments/Schemas/StaffAssignmentForm.php
 
 		-
+			message: '#^Method App\\Filament\\Resources\\Timetables\\Pages\\ListTimetableSlots\:\:getDefaultTableSortColumn\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: app/Filament/Resources/Timetables/Pages/ListTimetableSlots.php
+
+		-
+			message: '#^Method App\\Filament\\Resources\\Timetables\\Pages\\ListTimetableSlots\:\:getDefaultTableSortDirection\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: app/Filament/Resources/Timetables/Pages/ListTimetableSlots.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: app/Filament/Resources/Timetables/Schemas/TimetableForm.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 7
+			path: app/Filament/Resources/Timetables/Schemas/TimetableForm.php
+
+		-
+			message: '#^Parameter \#6 \$ignoreId of static method App\\Models\\TimetableSlot\:\:findConflict\(\) expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Filament/Resources/Timetables/Schemas/TimetableForm.php
+
+		-
+			message: '#^Trying to invoke mixed but it''s not a callable\.$#'
+			identifier: callable.nonCallable
+			count: 8
+			path: app/Filament/Resources/Timetables/Schemas/TimetableForm.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>name" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Filament/Resources/Timetables/Schemas/TimetableForm.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>name" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Filament/Resources/Timetables/Tables/TimetablesTable.php
+
+		-
 			message: '#^Cannot access property \$value on mixed\.$#'
 			identifier: property.nonObject
 			count: 1
@@ -767,6 +815,18 @@ parameters:
 			identifier: missingType.generics
 			count: 1
 			path: app/Models/Subject.php
+
+		-
+			message: '#^Attribute class App\\Models\\Override does not exist\.$#'
+			identifier: attribute.notFound
+			count: 1
+			path: app/Models/TimetableSlot.php
+
+		-
+			message: '#^Class App\\Models\\TimetableSlot uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/TimetableSlot.php
 
 		-
 			message: '#^Call to method notify\(\) on an unknown class App\\Support\\App\\Models\\Staff\.$#'
@@ -1487,3 +1547,39 @@ parameters:
 			identifier: argument.templateType
 			count: 1
 			path: tests/Feature/TableBulkActionsTest.php
+
+		-
+			message: '#^Cannot access property \$subject_id on App\\Models\\TimetableSlot\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/TimetableTest.php
+
+		-
+			message: '#^Cannot call method is\(\) on App\\Models\\StudentClass\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/TimetableTest.php
+
+		-
+			message: '#^Cannot call method is\(\) on App\\Models\\Subject\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/TimetableTest.php
+
+		-
+			message: '#^Parameter \#1 \$classId of static method App\\Models\\TimetableSlot\:\:findConflict\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 6
+			path: tests/Feature/TimetableTest.php
+
+		-
+			message: '#^Parameter \#2 \$subjectId of static method App\\Models\\TimetableSlot\:\:findConflict\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 6
+			path: tests/Feature/TimetableTest.php
+
+		-
+			message: '#^Parameter \#6 \$ignoreId of static method App\\Models\\TimetableSlot\:\:findConflict\(\) expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Feature/TimetableTest.php
