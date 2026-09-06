@@ -523,6 +523,450 @@ parameters:
 			path: app/Http/Controllers/PaymentCallbackController.php
 
 		-
+			message: '#^Binary operation "\." between ''Imported '' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: app/Importers/AttendanceImporter.php
+
+		-
+			message: '#^Cannot access property \$status on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Importers/AttendanceImporter.php
+
+		-
+			message: '#^Cannot access property \$student_class_id on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Importers/AttendanceImporter.php
+
+		-
+			message: '#^Cannot call method format\(\) on int\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Importers/AttendanceImporter.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 2
+			path: app/Importers/AttendanceImporter.php
+
+		-
+			message: '#^Binary operation "\." between ''Imported '' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: app/Importers/ExamResultImporter.php
+
+		-
+			message: '#^Cannot access property \$exists on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Importers/ExamResultImporter.php
+
+		-
+			message: '#^Cannot access property \$marks on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Importers/ExamResultImporter.php
+
+		-
+			message: '#^Cannot access property \$status on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Importers/ExamResultImporter.php
+
+		-
+			message: '#^Cannot access property \$student_class_id on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Importers/ExamResultImporter.php
+
+		-
+			message: '#^Cannot access property \$total_marks on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Importers/ExamResultImporter.php
+
+		-
+			message: '#^Cannot call method format\(\) on int\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Importers/ExamResultImporter.php
+
+		-
+			message: '#^Cannot cast mixed to float\.$#'
+			identifier: cast.double
+			count: 2
+			path: app/Importers/ExamResultImporter.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: app/Importers/ExamResultImporter.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 3
+			path: app/Importers/ExamResultImporter.php
+
+		-
+			message: '#^Binary operation "\." between ''Imported '' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: app/Importers/ExpenseImporter.php
+
+		-
+			message: '#^Cannot access property \$amount on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Importers/ExpenseImporter.php
+
+		-
+			message: '#^Cannot access property \$description on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Importers/ExpenseImporter.php
+
+		-
+			message: '#^Cannot access property \$recurrence on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Importers/ExpenseImporter.php
+
+		-
+			message: '#^Cannot call method format\(\) on int\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Importers/ExpenseImporter.php
+
+		-
+			message: '#^Cannot cast mixed to float\.$#'
+			identifier: cast.double
+			count: 1
+			path: app/Importers/ExpenseImporter.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 3
+			path: app/Importers/ExpenseImporter.php
+
+		-
+			message: '#^Binary operation "\." between ''Imported '' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: app/Importers/FeeImporter.php
+
+		-
+			message: '#^Cannot access property \$amount on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Importers/FeeImporter.php
+
+		-
+			message: '#^Cannot access property \$amount_paid on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Importers/FeeImporter.php
+
+		-
+			message: '#^Cannot access property \$due_date on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Importers/FeeImporter.php
+
+		-
+			message: '#^Cannot access property \$status on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Importers/FeeImporter.php
+
+		-
+			message: '#^Cannot call method format\(\) on int\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Importers/FeeImporter.php
+
+		-
+			message: '#^Cannot cast mixed to float\.$#'
+			identifier: cast.double
+			count: 2
+			path: app/Importers/FeeImporter.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: app/Importers/FeeImporter.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 2
+			path: app/Importers/FeeImporter.php
+
+		-
+			message: '#^Binary operation "\." between ''Imported '' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: app/Importers/GuardianImporter.php
+
+		-
+			message: '#^Cannot access property \$name on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Importers/GuardianImporter.php
+
+		-
+			message: '#^Cannot access property \$phone on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Importers/GuardianImporter.php
+
+		-
+			message: '#^Cannot access property \$relation on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Importers/GuardianImporter.php
+
+		-
+			message: '#^Cannot call method format\(\) on int\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Importers/GuardianImporter.php
+
+		-
+			message: '#^Cannot call method students\(\) on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Importers/GuardianImporter.php
+
+		-
+			message: '#^Cannot call method syncWithoutDetaching\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Importers/GuardianImporter.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 4
+			path: app/Importers/GuardianImporter.php
+
+		-
+			message: '#^Attribute class App\\Importers\\Override does not exist\.$#'
+			identifier: attribute.notFound
+			count: 1
+			path: app/Importers/Importer.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 4
+			path: app/Importers/Importer.php
+
+		-
+			message: '#^Method App\\Importers\\Importer\:\:studentIdsByGrNoList\(\) should return list\<string\> but returns array\<string\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Importers/Importer.php
+
+		-
+			message: '#^Binary operation "\." between ''Imported '' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: app/Importers/ParentImporter.php
+
+		-
+			message: '#^Cannot access property \$name on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Importers/ParentImporter.php
+
+		-
+			message: '#^Cannot access property \$occupation on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Importers/ParentImporter.php
+
+		-
+			message: '#^Cannot access property \$phone on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Importers/ParentImporter.php
+
+		-
+			message: '#^Cannot call method format\(\) on int\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Importers/ParentImporter.php
+
+		-
+			message: '#^Cannot call method students\(\) on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Importers/ParentImporter.php
+
+		-
+			message: '#^Cannot call method syncWithoutDetaching\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Importers/ParentImporter.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 4
+			path: app/Importers/ParentImporter.php
+
+		-
+			message: '#^Binary operation "\." between ''Imported '' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: app/Importers/PaymentImporter.php
+
+		-
+			message: '#^Cannot access property \$amount on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Importers/PaymentImporter.php
+
+		-
+			message: '#^Cannot access property \$fee_id on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Importers/PaymentImporter.php
+
+		-
+			message: '#^Cannot access property \$paid_at on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Importers/PaymentImporter.php
+
+		-
+			message: '#^Cannot access property \$payer_name on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Importers/PaymentImporter.php
+
+		-
+			message: '#^Cannot access property \$provider on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Importers/PaymentImporter.php
+
+		-
+			message: '#^Cannot access property \$status on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Importers/PaymentImporter.php
+
+		-
+			message: '#^Cannot call method format\(\) on int\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Importers/PaymentImporter.php
+
+		-
+			message: '#^Cannot cast mixed to float\.$#'
+			identifier: cast.double
+			count: 1
+			path: app/Importers/PaymentImporter.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 5
+			path: app/Importers/PaymentImporter.php
+
+		-
+			message: '#^Binary operation "\." between ''Imported '' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: app/Importers/PayrollImporter.php
+
+		-
+			message: '#^Cannot access property \$amount on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Importers/PayrollImporter.php
+
+		-
+			message: '#^Cannot access property \$paid_at on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Importers/PayrollImporter.php
+
+		-
+			message: '#^Cannot access property \$status on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Importers/PayrollImporter.php
+
+		-
+			message: '#^Cannot call method format\(\) on int\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Importers/PayrollImporter.php
+
+		-
+			message: '#^Cannot cast mixed to float\.$#'
+			identifier: cast.double
+			count: 1
+			path: app/Importers/PayrollImporter.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 3
+			path: app/Importers/PayrollImporter.php
+
+		-
+			message: '#^Binary operation "\." between ''Imported '' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: app/Importers/StudentImporter.php
+
+		-
+			message: '#^Cannot access property \$joining_date on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Importers/StudentImporter.php
+
+		-
+			message: '#^Cannot access property \$name on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Importers/StudentImporter.php
+
+		-
+			message: '#^Cannot access property \$status on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Importers/StudentImporter.php
+
+		-
+			message: '#^Cannot access property \$student_class_id on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Importers/StudentImporter.php
+
+		-
+			message: '#^Cannot call method format\(\) on int\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Importers/StudentImporter.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 3
+			path: app/Importers/StudentImporter.php
+
+		-
 			message: '#^Attribute class App\\Models\\Override does not exist\.$#'
 			identifier: attribute.notFound
 			count: 3
@@ -1211,6 +1655,42 @@ parameters:
 			identifier: method.nonObject
 			count: 1
 			path: tests/Feature/ClassSubjectLinkTest.php
+
+		-
+			message: '#^Cannot access property \$name on App\\Models\\Student\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/DirectImportTest.php
+
+		-
+			message: '#^Cannot access property \$status on App\\Models\\Attendance\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/DirectImportTest.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/DirectImportTest.php
+
+		-
+			message: '#^Cannot call method students\(\) on App\\Models\\Guardian\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/DirectImportTest.php
+
+		-
+			message: '#^Cannot call method students\(\) on App\\Models\\StudentParent\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/DirectImportTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\<0, max\>\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: tests/Feature/DirectImportTest.php
 
 		-
 			message: '#^Cannot access property \$marks on App\\Models\\ExamResult\|null\.$#'

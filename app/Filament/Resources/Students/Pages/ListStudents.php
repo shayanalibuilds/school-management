@@ -6,7 +6,9 @@ namespace App\Filament\Resources\Students\Pages;
 
 use App\Filament\Resources\Students\StudentResource;
 use App\Filament\Support\ExportCsvAction;
+use App\Importers\StudentImporter;
 use Filament\Actions\CreateAction;
+use Filament\Actions\ImportAction;
 use Filament\Resources\Pages\ListRecords;
 
 final class ListStudents extends ListRecords
@@ -18,6 +20,9 @@ final class ListStudents extends ListRecords
         return [
             CreateAction::make(),
             ExportCsvAction::make('students'),
+            ImportAction::make()
+                ->importer(StudentImporter::class)
+                ->label('Import CSV'),
         ];
     }
 }

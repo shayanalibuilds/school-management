@@ -96,6 +96,6 @@ it('shows the import export page to admins', function (): void {
     actingAs(Admin::factory()->create(), 'admin')
         ->get('/dashboard/import-export')
         ->assertOk()
-        ->assertSee('Import students')
+        ->assertSee('Import staff')
         ->assertSee('Export to CSV');
 });
