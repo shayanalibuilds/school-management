@@ -28,6 +28,36 @@ final class Attendance extends Model
     ];
 
     /**
+     * Upsert one student's attendance for a given day. The lookup uses
+     * whereDate() so it matches however the storage engine persists the
+     * date ('2026-09-06' vs '2026-09-06 00:00:00') and never spawns a
+     * duplicate row for the same student + day.
+     *
+     * @param  array<string, mixed>  $values
+     */
+    public static function updateOrCreateForDay(int|string $studentId, string $date, array $values): self
+    {
+        $attendance = self::query()
+            ->where('student_id', $studentId)
+            ->whereDate('date', $date)
+            ->first();
+
+        if ($attendance === null) {
+            $attendance = new self();
+            $attendance->student_id = $studentId;
+            $attendance->date = $date;
+        }
+
+        foreach ($values as $key => $value) {
+            $attendance->{$key} = $value;
+        }
+
+        $attendance->save();
+
+        return $attendance;
+    }
+
+    /**
      * @return BelongsTo<Student, $this>
      */
     public function student(): BelongsTo

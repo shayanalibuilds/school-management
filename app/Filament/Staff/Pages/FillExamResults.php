@@ -10,6 +10,7 @@ use App\Models\Staff;
 use App\Models\Student;
 use App\Models\StudentClass;
 use App\Models\Subject;
+use App\Support\PanelNotifier;
 use BackedEnum;
 use Carbon\CarbonInterface;
 use Filament\Notifications\Notification as FilamentNotification;
@@ -317,6 +318,14 @@ final class FillExamResults extends Page
                 'status' => ExamResultStatus::Published->value,
                 'published_at' => now(),
             ]);
+
+        PanelNotifier::examResultsPublished(
+            className: (string) StudentClass::query()->whereKey($this->classId)->value('name'),
+            subjectName: (string) Subject::query()->whereKey($this->subjectId)->value('name'),
+            publisherName: $staff->name,
+            classId: (string) $this->classId,
+            subjectId: (string) $this->subjectId,
+        );
 
         FilamentNotification::make()
             ->title("Results published for {$publishable} students")

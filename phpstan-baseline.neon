@@ -31,6 +31,12 @@ parameters:
 			path: app/Filament/Pages/FillAttendance.php
 
 		-
+			message: '#^Parameter \#1 \$studentId of static method App\\Models\\Attendance\:\:updateOrCreateForDay\(\) expects int\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Filament/Pages/FillAttendance.php
+
+		-
 			message: '#^Possibly invalid array key type mixed\.$#'
 			identifier: offsetAccess.invalidOffset
 			count: 2
@@ -57,7 +63,7 @@ parameters:
 		-
 			message: '#^Cannot cast mixed to string\.$#'
 			identifier: cast.string
-			count: 1
+			count: 3
 			path: app/Filament/Pages/FillExamResults.php
 
 		-
@@ -253,6 +259,12 @@ parameters:
 			path: app/Filament/Staff/Pages/FillAttendance.php
 
 		-
+			message: '#^Parameter \#1 \$studentId of static method App\\Models\\Attendance\:\:updateOrCreateForDay\(\) expects int\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Filament/Staff/Pages/FillAttendance.php
+
+		-
 			message: '#^Possibly invalid array key type mixed\.$#'
 			identifier: offsetAccess.invalidOffset
 			count: 2
@@ -279,7 +291,7 @@ parameters:
 		-
 			message: '#^Cannot cast mixed to string\.$#'
 			identifier: cast.string
-			count: 1
+			count: 3
 			path: app/Filament/Staff/Pages/FillExamResults.php
 
 		-
@@ -465,6 +477,12 @@ parameters:
 		-
 			message: '#^Class App\\Models\\Attendance uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
 			identifier: missingType.generics
+			count: 1
+			path: app/Models/Attendance.php
+
+		-
+			message: '#^Property App\\Models\\Attendance\:\:\$student_id \(string\) does not accept int\|string\.$#'
+			identifier: assign.propertyType
 			count: 1
 			path: app/Models/Attendance.php
 
@@ -731,6 +749,30 @@ parameters:
 			identifier: missingType.generics
 			count: 1
 			path: app/Models/Subject.php
+
+		-
+			message: '#^Call to method notify\(\) on an unknown class App\\Support\\App\\Models\\Staff\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Support/PanelNotifier.php
+
+		-
+			message: '#^Method App\\Support\\PanelNotifier\:\:adminsAndAssignedStaff\(\) has invalid return type App\\Support\\App\\Models\\Staff\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Support/PanelNotifier.php
+
+		-
+			message: '#^Method App\\Support\\PanelNotifier\:\:adminsAndAssignedStaff\(\) should return Illuminate\\Support\\Collection\<int, App\\Models\\Admin\|App\\Support\\App\\Models\\Staff\> but returns Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Admin\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Support/PanelNotifier.php
+
+		-
+			message: '#^Parameter \#1 \$items of method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\Admin\>\:\:merge\(\) expects iterable\<\(int\|string\), App\\Models\\Admin\>, Illuminate\\Support\\Collection\<\(int\|string\), mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Support/PanelNotifier.php
 
 		-
 			message: '#^Cannot access property \$provider on App\\Models\\PaymentSetting\|null\.$#'
@@ -1301,6 +1343,48 @@ parameters:
 			identifier: argument.templateType
 			count: 1
 			path: tests/Feature/ImportExportTest.php
+
+		-
+			message: '#^Binary operation "\." between ''statuses\.'' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 4
+			path: tests/Feature/OfflineNotificationsTest.php
+
+		-
+			message: '#^Cannot access property \$data on Illuminate\\Notifications\\DatabaseNotification\|null\.$#'
+			identifier: property.nonObject
+			count: 7
+			path: tests/Feature/OfflineNotificationsTest.php
+
+		-
+			message: '#^Cannot access property \$read_at on Illuminate\\Notifications\\DatabaseNotification\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/OfflineNotificationsTest.php
+
+		-
+			message: '#^Cannot access property \$status on App\\Models\\Attendance\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/OfflineNotificationsTest.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/OfflineNotificationsTest.php
+
+		-
+			message: '#^Part \$student\-\>getKey\(\) \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: tests/Feature/OfflineNotificationsTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\<0, max\>\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: tests/Feature/OfflineNotificationsTest.php
 
 		-
 			message: '#^Parameter \#1 \$value of method Illuminate\\Testing\\TestResponse\<Symfony\\Component\\HttpFoundation\\Response\>\:\:assertSee\(\) expects list\<string\>\|string, mixed given\.$#'

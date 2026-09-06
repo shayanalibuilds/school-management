@@ -63,6 +63,8 @@ final class StaffPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->spa()
-            ->unsavedChangesAlerts();
+            ->unsavedChangesAlerts()
+            ->databaseNotifications()
+            ->databaseNotificationsPolling('30s');
     }
 }
