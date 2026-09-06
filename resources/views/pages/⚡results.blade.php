@@ -50,7 +50,11 @@ new #[Layout('layouts::app')] class extends Component {
                 continue;
             }
 
-            $results = $student->examResults()->where('year', (int) $this->year)->with('subject')->get();
+            $results = $student->examResults()
+                ->where('year', (int) $this->year)
+                ->published()
+                ->with('subject')
+                ->get();
 
             $rows[] = [
                 'student' => $student,
@@ -104,20 +108,24 @@ new #[Layout('layouts::app')] class extends Component {
             </div>
             <div>
                 <label for="year" class="mb-1 block text-sm font-medium text-zinc-700">Year</label>
-                <x-filament::input.select id="year" wire:model="year">
-                    <option value="">Select year</option>
-                    @foreach ($this->years as $availableYear)
-                        <option value="{{ $availableYear }}">{{ $availableYear }}</option>
-                    @endforeach
-                </x-filament::input.select>
+                <x-filament::input.wrapper>
+                    <x-filament::input.select id="year" wire:model="year">
+                        <option value="">Select year</option>
+                        @foreach ($this->years as $availableYear)
+                            <option value="{{ $availableYear }}">{{ $availableYear }}</option>
+                        @endforeach
+                    </x-filament::input.select>
+                </x-filament::input.wrapper>
             </div>
             <div class="flex items-end justify-between gap-2">
                 <div class="grow">
                     <label for="type" class="mb-1 block text-sm font-medium text-zinc-700">Show as</label>
-                    <x-filament::input.select id="type" wire:model="type">
-                        <option value="grades">Grades</option>
-                        <option value="positions">Positions</option>
-                    </x-filament::input.select>
+                    <x-filament::input.wrapper>
+                        <x-filament::input.select id="type" wire:model="type">
+                            <option value="grades">Grades</option>
+                            <option value="positions">Positions</option>
+                        </x-filament::input.select>
+                    </x-filament::input.wrapper>
                 </div>
                 <x-filament::button type="submit" icon="heroicon-m-magnifying-glass" class="!mb-0.5">
                     Search

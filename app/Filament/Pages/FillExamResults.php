@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Filament\Pages;
 
+use App\Enums\ExamResultStatus;
+use App\Models\Admin;
 use App\Models\ExamResult;
 use App\Models\Student;
 use App\Models\StudentClass;
 use App\Models\Subject;
 use BackedEnum;
+use Carbon\CarbonInterface;
 use Filament\Notifications\Notification as FilamentNotification;
 use Filament\Pages\Page;
 use Illuminate\Support\Collection;
@@ -115,7 +118,32 @@ final class FillExamResults extends Page
     }
 
     /**
-     * @return array<int, string>
+     * Publishing state of the selected result sheet, used by the
+     * view to show the recheck window and lock the form once it closes.
+     *
+     * @return array{ends_at: CarbonInterface, locked: bool, published: bool}|null
+     */
+    public function getSheetStateProperty(): ?array
+    {
+        if ($this->classId === null || $this->subjectId === null || $this->year === null) {
+            return null;
+        }
+
+        $endsAt = ExamResult::recheckWindowFor($this->classId, $this->subjectId, (int) $this->year);
+
+        if ($endsAt === null) {
+            return null;
+        }
+
+        return [
+            'ends_at' => $endsAt,
+            'locked' => $endsAt->isPast(),
+            'published' => true,
+        ];
+    }
+
+    /**
+     * @return array<string, string>
      */
     public function getYearsProperty(): array
     {
@@ -130,7 +158,7 @@ final class FillExamResults extends Page
     {
         $admin = auth('admin')->user();
 
-        if (! $admin instanceof \App\Models\Admin) {
+        if (! $admin instanceof Admin) {
             $this->addError('classId', 'Only admins can record results here.');
 
             return;
@@ -138,6 +166,16 @@ final class FillExamResults extends Page
 
         if ($this->classId === null || $this->subjectId === null || $this->year === null) {
             $this->addError('classId', 'Select a class, subject and year first.');
+
+            return;
+        }
+
+        if (ExamResult::sheetIsLocked($this->classId, $this->subjectId, (int) $this->year)) {
+            FilamentNotification::make()
+                ->title('These results are locked')
+                ->body('They were published more than 30 days ago, so no further corrections are possible.')
+                ->danger()
+                ->send();
 
             return;
         }
@@ -164,24 +202,88 @@ final class FillExamResults extends Page
                 return;
             }
 
-            ExamResult::updateOrCreate(
-                [
-                    'student_id' => $student->getKey(),
-                    'subject_id' => $this->subjectId,
-                    'year' => (int) $this->year,
-                ],
-                [
-                    'student_class_id' => $this->classId,
-                    'marks' => $marks,
-                    'total_marks' => 100,
-                ],
-            );
+            // Results are updated in place: an existing record for the
+            // student + subject + year never spawns a duplicate row.
+            $result = ExamResult::query()->firstOrNew([
+                'student_id' => $student->getKey(),
+                'subject_id' => $this->subjectId,
+                'year' => (int) $this->year,
+            ]);
+
+            $result->student_class_id = $this->classId;
+            $result->marks = $marks;
+            $result->total_marks = 100;
+
+            if (! $result->exists) {
+                $result->status = ExamResultStatus::Draft->value;
+            }
+
+            $result->save();
 
             $saved++;
         }
 
         FilamentNotification::make()
-            ->title("Results filled for {$saved} students")
+            ->title($saved === 0 ? 'Nothing to fill' : "Results filled for {$saved} students")
+            ->body($saved === 0 ? 'Enter marks for at least one student first.' : 'Results are saved as drafts until you publish them.')
+            ->{$saved === 0 ? 'warning' : 'success'}()
+            ->send();
+    }
+
+    public function publish(): void
+    {
+        $admin = auth('admin')->user();
+
+        if (! $admin instanceof Admin) {
+            $this->addError('classId', 'Only admins can publish results here.');
+
+            return;
+        }
+
+        if ($this->classId === null || $this->subjectId === null || $this->year === null) {
+            $this->addError('classId', 'Select a class, subject and year first.');
+
+            return;
+        }
+
+        if (ExamResult::sheetIsLocked($this->classId, $this->subjectId, (int) $this->year)) {
+            FilamentNotification::make()
+                ->title('These results are locked')
+                ->body('They were published more than 30 days ago, so no further corrections are possible.')
+                ->danger()
+                ->send();
+
+            return;
+        }
+
+        $publishable = ExamResult::query()
+            ->where('student_class_id', $this->classId)
+            ->where('subject_id', $this->subjectId)
+            ->where('year', (int) $this->year)
+            ->count();
+
+        if ($publishable === 0) {
+            FilamentNotification::make()
+                ->title('Nothing to publish')
+                ->body('Fill the results first, then publish them.')
+                ->warning()
+                ->send();
+
+            return;
+        }
+
+        ExamResult::query()
+            ->where('student_class_id', $this->classId)
+            ->where('subject_id', $this->subjectId)
+            ->where('year', (int) $this->year)
+            ->update([
+                'status' => ExamResultStatus::Published->value,
+                'published_at' => now(),
+            ]);
+
+        FilamentNotification::make()
+            ->title("Results published for {$publishable} students")
+            ->body('Students can see them now. Corrections stay open for 30 days.')
             ->success()
             ->send();
     }
