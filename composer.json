@@ -75,36 +75,7 @@
         "dev": [
             "Composer\\Config::disableProcessTimeout",
             "php ./bin/dev"
-        ],
-        "lint": [
-            "./vendor/bin/pint",
-            "bun run lint"
-        ],
-        "refactor": "./vendor/bin/rector process",
-        "fix": [
-            "@test:types",
-            "@refactor",
-            "bun run lint:fix",
-            "./vendor/bin/pint"
-        ],
-        "test:typos": "./vendor/bin/peck",
-        "test:lint": [
-            "./vendor/bin/pint --test",
-            "bun run test:lint"
-        ],
-        "test:unit": "./vendor/bin/pest --parallel",
-        "test:unit:coverage": "./vendor/bin/pest --parallel --coverage",
-        "test:types": "./vendor/bin/phpstan analyse --memory-limit=256M",
-        "test:refactor": "./vendor/bin/rector process --dry-run",
-        "test": [
-            "@test:typos",
-            "@test:unit",
-            "@test:lint",
-            "@test:types",
-            "@test:refactor"
-        ],
-        "phpstan": "./vendor/bin/phpstan analyse --memory-limit=256M",
-        "phpstan-baseline": "./vendor/bin/phpstan analyse --generate-baseline --memory-limit=256M"
+        ]
     },
     "extra": {
         "laravel": {
