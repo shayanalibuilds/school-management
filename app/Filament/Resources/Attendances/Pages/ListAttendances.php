@@ -6,6 +6,8 @@ namespace App\Filament\Resources\Attendances\Pages;
 
 use App\Filament\Resources\Attendances\AttendanceResource;
 use App\Filament\Support\ExportCsvAction;
+use App\Importers\AttendanceImporter;
+use Filament\Actions\ImportAction;
 use Filament\Resources\Pages\ListRecords;
 
 final class ListAttendances extends ListRecords
@@ -18,6 +20,9 @@ final class ListAttendances extends ListRecords
         // this table is for reviewing and correcting records.
         return [
             ExportCsvAction::make('attendance'),
+            ImportAction::make()
+                ->importer(AttendanceImporter::class)
+                ->label('Import CSV'),
         ];
     }
 }

@@ -6,7 +6,9 @@ namespace App\Filament\Resources\Payments\Pages;
 
 use App\Filament\Resources\Payments\PaymentResource;
 use App\Filament\Support\ExportCsvAction;
+use App\Importers\PaymentImporter;
 use Filament\Actions\CreateAction;
+use Filament\Actions\ImportAction;
 use Filament\Resources\Pages\ListRecords;
 
 final class ListPayments extends ListRecords
@@ -18,6 +20,9 @@ final class ListPayments extends ListRecords
         return [
             CreateAction::make(),
             ExportCsvAction::make('payments'),
+            ImportAction::make()
+                ->importer(PaymentImporter::class)
+                ->label('Import CSV'),
         ];
     }
 }
