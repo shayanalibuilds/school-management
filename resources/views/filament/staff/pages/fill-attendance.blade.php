@@ -5,12 +5,14 @@
     >
         <div style="display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));">
             <x-filament-forms::field-wrapper label="Class" id="classId" statePath="classId">
-                <x-filament::input.select id="classId" wire:model.live="classId">
-                    <option value="">Select a class</option>
-                    @foreach ($this->classes as $class)
-                        <option value="{{ $class->getKey() }}">{{ $class->name }}</option>
-                    @endforeach
-                </x-filament::input.select>
+                <x-filament::input.wrapper>
+                    <x-filament::input.select id="classId" wire:model.live="classId">
+                        <option value="">Select a class</option>
+                        @foreach ($this->classes as $class)
+                            <option value="{{ $class->getKey() }}">{{ $class->name }}</option>
+                        @endforeach
+                    </x-filament::input.select>
+                </x-filament::input.wrapper>
             </x-filament-forms::field-wrapper>
 
             <x-filament-forms::field-wrapper label="Date" id="date" statePath="date">

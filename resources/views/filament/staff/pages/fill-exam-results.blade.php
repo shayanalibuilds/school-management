@@ -5,29 +5,35 @@
     >
         <div style="display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));">
             <x-filament-forms::field-wrapper label="Class" id="classId" statePath="classId">
-                <x-filament::input.select id="classId" wire:model.live="classId">
-                    <option value="">Select a class</option>
-                    @foreach ($this->classes as $class)
-                        <option value="{{ $class->getKey() }}">{{ $class->name }}</option>
-                    @endforeach
-                </x-filament::input.select>
+                <x-filament::input.wrapper>
+                    <x-filament::input.select id="classId" wire:model.live="classId">
+                        <option value="">Select a class</option>
+                        @foreach ($this->classes as $class)
+                            <option value="{{ $class->getKey() }}">{{ $class->name }}</option>
+                        @endforeach
+                    </x-filament::input.select>
+                </x-filament::input.wrapper>
             </x-filament-forms::field-wrapper>
 
             <x-filament-forms::field-wrapper label="Subject" id="subjectId" statePath="subjectId">
-                <x-filament::input.select id="subjectId" wire:model.live="subjectId">
-                    <option value="">Select a subject</option>
-                    @foreach ($this->subjects as $subject)
-                        <option value="{{ $subject->getKey() }}">{{ $subject->name }}</option>
-                    @endforeach
-                </x-filament::input.select>
+                <x-filament::input.wrapper>
+                    <x-filament::input.select id="subjectId" wire:model.live="subjectId">
+                        <option value="">Select a subject</option>
+                        @foreach ($this->subjects as $subject)
+                            <option value="{{ $subject->getKey() }}">{{ $subject->name }}</option>
+                        @endforeach
+                    </x-filament::input.select>
+                </x-filament::input.wrapper>
             </x-filament-forms::field-wrapper>
 
             <x-filament-forms::field-wrapper label="Year" id="year" statePath="year">
-                <x-filament::input.select id="year" wire:model.live="year">
-                    @foreach ($this->years as $yearValue => $yearLabel)
-                        <option value="{{ $yearValue }}">{{ $yearLabel }}</option>
-                    @endforeach
-                </x-filament::input.select>
+                <x-filament::input.wrapper>
+                    <x-filament::input.select id="year" wire:model.live="year">
+                        @foreach ($this->years as $yearValue => $yearLabel)
+                            <option value="{{ $yearValue }}">{{ $yearLabel }}</option>
+                        @endforeach
+                    </x-filament::input.select>
+                </x-filament::input.wrapper>
             </x-filament-forms::field-wrapper>
         </div>
     </x-filament::section>
