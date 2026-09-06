@@ -50,6 +50,9 @@ final class AttendanceDeadlineNotification extends Notification
     public function toArray(object $notifiable): array
     {
         return [
+            // 'format' => 'filament' makes the alert visible in the
+            // Filament database notification bell on every device.
+            'format' => 'filament',
             'title' => 'Attendance not submitted',
             'body' => sprintf(
                 'Attendance for "%s" has not been marked today (%s) before the 8:20 AM deadline.',

@@ -9,6 +9,7 @@ use App\Models\Admin;
 use App\Models\Attendance;
 use App\Models\Student;
 use App\Models\StudentClass;
+use App\Support\PanelNotifier;
 use BackedEnum;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
@@ -131,6 +132,14 @@ final class FillAttendance extends Page
             return;
         }
 
+        $class = StudentClass::query()->find($this->classId);
+
+        if ($class === null) {
+            $this->addError('classId', 'Select a class first.');
+
+            return;
+        }
+
         $statuses = $this->statuses;
 
         $students = Student::query()
@@ -141,19 +150,15 @@ final class FillAttendance extends Page
         foreach ($students as $student) {
             $status = $statuses[$student->getKey()] ?? AttendanceStatus::Present->value;
 
-            Attendance::updateOrCreate(
-                [
-                    'student_id' => $student->getKey(),
-                    'date' => self::attendanceDate(),
-                ],
-                [
-                    'student_class_id' => $this->classId,
-                    'staff_id' => null,
-                    'admin_id' => $admin->getKey(),
-                    'status' => $status,
-                ],
-            );
+            Attendance::updateOrCreateForDay($student->getKey(), self::attendanceDate(), [
+                'student_class_id' => $this->classId,
+                'staff_id' => null,
+                'admin_id' => $admin->getKey(),
+                'status' => $status,
+            ]);
         }
+
+        PanelNotifier::attendanceFilled($class->name, $admin->name);
 
         Notification::make()
             ->title('Attendance filled')
