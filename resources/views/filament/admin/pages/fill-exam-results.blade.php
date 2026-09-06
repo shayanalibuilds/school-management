@@ -67,7 +67,7 @@
 
             <x-slot name="footer">
                 <x-filament::button wire:click="save" icon="heroicon-m-check">
-                    Insert results
+                    Fill exam results
                 </x-filament::button>
             </x-slot>
         </x-filament::section>

@@ -174,7 +174,7 @@ final class FillAttendance extends Page
         }
 
         Notification::make()
-            ->title('Attendance inserted')
+            ->title('Attendance filled')
             ->success()
             ->send();
     }
