@@ -24,7 +24,6 @@ it('lets an admin insert attendance for a whole class at once', function (): voi
 
     Livewire::test(FillAttendance::class)
         ->set('classId', $class->getKey())
-        ->set('date', today()->toDateString())
         ->set('statuses.'.$students[0]->getKey(), AttendanceStatus::Present->value)
         ->set('statuses.'.$students[1]->getKey(), AttendanceStatus::Absent->value)
         ->set('statuses.'.$students[2]->getKey(), AttendanceStatus::Leave->value)
@@ -43,19 +42,23 @@ it('lets an admin insert attendance for a whole class at once', function (): voi
         ->and($rows->firstWhere('student_id', $students[1]->getKey())->markerName())->toBe($admin->name);
 });
 
-it('blocks admins from inserting attendance for a future date', function (): void {
+it('always records attendance for the current day only', function (): void {
     $class = StudentClass::factory()->create();
-    Student::factory()->create(['student_class_id' => $class->getKey()]);
+    $student = Student::factory()->create(['student_class_id' => $class->getKey()]);
 
     actingAs(Admin::factory()->create(), 'admin');
     Filament\Facades\Filament::setCurrentPanel('admin');
 
+    // The page no longer exposes a date property at all - attendance is
+    // hard-wired to today, so any save lands on the current date.
     Livewire::test(FillAttendance::class)
         ->set('classId', $class->getKey())
-        ->set('date', today()->addDay()->toDateString())
-        ->call('save');
+        ->set('statuses.'.$student->getKey(), AttendanceStatus::Present->value)
+        ->call('save')
+        ->assertSuccessful();
 
-    expect(Attendance::query()->count())->toBe(0);
+    expect(Attendance::query()->whereDate('date', today())->count())->toBe(1)
+        ->and(Attendance::query()->whereDate('date', today()->subDay())->count())->toBe(0);
 });
 
 it('keeps staff and admin markers distinguishable', function (): void {

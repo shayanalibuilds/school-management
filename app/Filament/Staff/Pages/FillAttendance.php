@@ -19,8 +19,6 @@ final class FillAttendance extends Page
 {
     public ?string $classId = null;
 
-    public ?string $date = null;
-
     /**
      * @var array<string, string>
      */
@@ -32,9 +30,17 @@ final class FillAttendance extends Page
 
     protected static string|BackedEnum|null $navigationIcon = \Filament\Support\Icons\Heroicon::OutlinedClipboardDocumentList;
 
+    /**
+     * Attendance can only ever be recorded for the current day.
+     */
+    public static function attendanceDate(): string
+    {
+        return today()->toDateString();
+    }
+
     public function mount(): void
     {
-        $this->date = today()->toDateString();
+        //
     }
 
     /**
@@ -75,8 +81,8 @@ final class FillAttendance extends Page
     }
 
     /**
-     * Seed the status state from saved records when the class or
-     * date selection changes. Defaults everything to present.
+     * Seed the status state from saved records when the class
+     * selection changes. Defaults everything to present.
      */
     public function loadExistingStatuses(): void
     {
@@ -88,7 +94,7 @@ final class FillAttendance extends Page
 
         $existing = Attendance::query()
             ->where('student_class_id', $this->classId)
-            ->whereDate('date', $this->date)
+            ->whereDate('date', self::attendanceDate())
             ->pluck('status', 'student_id');
 
         $students = Student::query()
@@ -108,11 +114,6 @@ final class FillAttendance extends Page
         $this->loadExistingStatuses();
     }
 
-    public function updatedDate(): void
-    {
-        $this->loadExistingStatuses();
-    }
-
     public function setStatus(int|string $studentId, string $status): void
     {
         if (AttendanceStatus::tryFrom($status) !== null) {
@@ -128,14 +129,8 @@ final class FillAttendance extends Page
             throw new Halt('Not signed in.');
         }
 
-        if ($this->date === null || $this->classId === null) {
-            $this->addError('classId', 'Select a class and a date first.');
-
-            return;
-        }
-
-        if ($this->date > today()->toDateString()) {
-            $this->addError('date', 'Attendance cannot be marked for a future date.');
+        if ($this->classId === null) {
+            $this->addError('classId', 'Select a class first.');
 
             return;
         }
@@ -163,7 +158,7 @@ final class FillAttendance extends Page
             Attendance::updateOrCreate(
                 [
                     'student_id' => $student->getKey(),
-                    'date' => $this->date,
+                    'date' => self::attendanceDate(),
                 ],
                 [
                     'student_class_id' => $this->classId,

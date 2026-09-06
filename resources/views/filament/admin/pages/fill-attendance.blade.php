@@ -1,7 +1,7 @@
 <div style="display: grid; gap: 1.5rem;">
     <x-filament::section
         heading="Fill attendance"
-        description="Pick a class and a date, then record every student at once."
+        description="Pick a class, then record every student for today. Attendance can only be filled for the current day."
     >
         <div style="display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));">
             <x-filament-forms::field-wrapper label="Class" id="classId" statePath="classId">
@@ -15,9 +15,9 @@
                 </x-filament::input.wrapper>
             </x-filament-forms::field-wrapper>
 
-            <x-filament-forms::field-wrapper label="Date" id="date" statePath="date">
+            <x-filament-forms::field-wrapper label="Date">
                 <x-filament::input.wrapper>
-                    <x-filament::input id="date" type="date" wire:model.live="date" />
+                    <x-filament::input :value="\App\Filament\Pages\FillAttendance::attendanceDate()" type="date" readonly />
                 </x-filament::input.wrapper>
             </x-filament-forms::field-wrapper>
         </div>
