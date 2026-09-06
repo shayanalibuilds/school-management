@@ -21,13 +21,15 @@
                         :id="'settings-'.$provider->value.'-environment'"
                         :statePath="'settings.'.$provider->value.'.environment'"
                     >
-                        <x-filament::input.select
-                            :id="'settings-'.$provider->value.'-environment'"
-                            wire:model="settings.{{ $provider->value }}.environment"
-                        >
-                            <option value="sandbox">Sandbox</option>
-                            <option value="live">Live</option>
-                        </x-filament::input.select>
+                        <x-filament::input.wrapper>
+                            <x-filament::input.select
+                                :id="'settings-'.$provider->value.'-environment'"
+                                wire:model="settings.{{ $provider->value }}.environment"
+                            >
+                                <option value="sandbox">Sandbox</option>
+                                <option value="live">Live</option>
+                            </x-filament::input.select>
+                        </x-filament::input.wrapper>
                     </x-filament-forms::field-wrapper>
 
                     @foreach ($provider->requiredCredentials() as $key)
