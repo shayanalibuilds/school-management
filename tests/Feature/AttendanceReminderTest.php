@@ -52,7 +52,13 @@ it('is scheduled daily at 08:20 in the app timezone', function (): void {
     $event = collect(Schedule::events())
         ->first(fn (Illuminate\Console\Scheduling\Event $event): bool => str_contains((string) $event->command, 'attendance:check-deadline'));
 
-    expect($event)->toBeInstanceOf(Illuminate\Console\Scheduling\Event::class)
-        ->and($event->expression)->toBe('20 8 * * *')
-        ->and((string) $event->timezone)->toBe(config('app.timezone', 'Asia/Karachi'));
+    expect($event)->not->toBeNull();
+
+    assert($event !== null);
+
+    $timezone = $event->timezone;
+    $timezoneName = $timezone instanceof DateTimeZone ? $timezone->getName() : $timezone;
+
+    expect($event->expression)->toBe('20 8 * * *')
+        ->and($timezoneName)->toBe(config('app.timezone', 'Asia/Karachi'));
 });
