@@ -79,11 +79,20 @@ final class StaffAssignmentRequest extends Model
         }
 
         if ($this->action === AssignmentAction::Add) {
-            StaffAssignment::firstOrCreate([
-                'staff_id' => $this->staff_id,
-                'student_class_id' => $this->student_class_id,
-                'subject_id' => $this->subject_id,
-            ]);
+            // A class + subject pair can only ever have one teacher;
+            // only create when the pair is still unowned.
+            $pairTaken = StaffAssignment::query()
+                ->where('student_class_id', $this->student_class_id)
+                ->where('subject_id', $this->subject_id)
+                ->exists();
+
+            if (! $pairTaken) {
+                StaffAssignment::query()->create([
+                    'staff_id' => $this->staff_id,
+                    'student_class_id' => $this->student_class_id,
+                    'subject_id' => $this->subject_id,
+                ]);
+            }
         }
 
         if ($this->action === AssignmentAction::Remove) {

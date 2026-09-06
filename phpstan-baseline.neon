@@ -235,6 +235,24 @@ parameters:
 			path: app/Filament/Resources/StaffAssignmentRequests/Tables/StaffAssignmentRequestsTable.php
 
 		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: app/Filament/Resources/StaffAssignments/Schemas/StaffAssignmentForm.php
+
+		-
+			message: '#^Invoking callable on an unknown class Filament\\Forms\\Get\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Filament/Resources/StaffAssignments/Schemas/StaffAssignmentForm.php
+
+		-
+			message: '#^Parameter \$get of anonymous function has invalid type Filament\\Forms\\Get\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Filament/Resources/StaffAssignments/Schemas/StaffAssignmentForm.php
+
+		-
 			message: '#^Cannot access property \$value on mixed\.$#'
 			identifier: property.nonObject
 			count: 1
