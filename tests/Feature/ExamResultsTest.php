@@ -34,10 +34,10 @@ it('computes class positions for a year with competition ranking', function (): 
     $c = Student::factory()->create(['student_class_id' => $class->getKey()]);
     $d = Student::factory()->create(['student_class_id' => $class->getKey()]);
 
-    ExamResult::factory()->create(['student_id' => $a->getKey(), 'student_class_id' => $class->getKey(), 'subject_id' => $subject->getKey(), 'year' => $year, 'marks' => 90]);
-    ExamResult::factory()->create(['student_id' => $b->getKey(), 'student_class_id' => $class->getKey(), 'subject_id' => $subject->getKey(), 'year' => $year, 'marks' => 90]);
-    ExamResult::factory()->create(['student_id' => $c->getKey(), 'student_class_id' => $class->getKey(), 'subject_id' => $subject->getKey(), 'year' => $year, 'marks' => 80]);
-    ExamResult::factory()->create(['student_id' => $d->getKey(), 'student_class_id' => $class->getKey(), 'subject_id' => $subject->getKey(), 'year' => $year, 'marks' => 70]);
+    ExamResult::factory()->published()->create(['student_id' => $a->getKey(), 'student_class_id' => $class->getKey(), 'subject_id' => $subject->getKey(), 'year' => $year, 'marks' => 90]);
+    ExamResult::factory()->published()->create(['student_id' => $b->getKey(), 'student_class_id' => $class->getKey(), 'subject_id' => $subject->getKey(), 'year' => $year, 'marks' => 90]);
+    ExamResult::factory()->published()->create(['student_id' => $c->getKey(), 'student_class_id' => $class->getKey(), 'subject_id' => $subject->getKey(), 'year' => $year, 'marks' => 80]);
+    ExamResult::factory()->published()->create(['student_id' => $d->getKey(), 'student_class_id' => $class->getKey(), 'subject_id' => $subject->getKey(), 'year' => $year, 'marks' => 70]);
 
     $positions = Positions::forClass($class, $year);
 

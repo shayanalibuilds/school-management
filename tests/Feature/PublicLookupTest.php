@@ -94,7 +94,7 @@ it('shows public results for a child by year as grades', function (): void {
     $parent->students()->attach($student->getKey());
     $subject = Subject::factory()->create(['name' => 'Mathematics']);
 
-    App\Models\ExamResult::factory()->create([
+    App\Models\ExamResult::factory()->published()->create([
         'student_id' => $student->getKey(),
         'student_class_id' => $student->student_class_id,
         'subject_id' => $subject->getKey(),
@@ -117,11 +117,11 @@ it('shows public results as positions searched by gr number', function (): void 
     $first = Student::factory()->create(['student_class_id' => $class->getKey(), 'name' => 'Top Student', 'gr_no' => 'GR-301']);
     $second = Student::factory()->create(['student_class_id' => $class->getKey(), 'name' => 'Second Student', 'gr_no' => 'GR-302']);
 
-    App\Models\ExamResult::factory()->create([
+    App\Models\ExamResult::factory()->published()->create([
         'student_id' => $first->getKey(), 'student_class_id' => $class->getKey(),
         'subject_id' => $subject->getKey(), 'year' => 2025, 'marks' => 95,
     ]);
-    App\Models\ExamResult::factory()->create([
+    App\Models\ExamResult::factory()->published()->create([
         'student_id' => $second->getKey(), 'student_class_id' => $class->getKey(),
         'subject_id' => $subject->getKey(), 'year' => 2025, 'marks' => 80,
     ]);

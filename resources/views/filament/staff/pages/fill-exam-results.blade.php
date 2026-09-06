@@ -1,3 +1,7 @@
+@php
+    $sheetState = $this->sheetState;
+    $locked = $sheetState !== null && $sheetState['locked'];
+@endphp
 <div style="display: grid; gap: 1.5rem;">
     <x-filament::section
         heading="Fill exam results"
@@ -36,6 +40,33 @@
                 </x-filament::input.wrapper>
             </x-filament-forms::field-wrapper>
         </div>
+
+        @if ($sheetState !== null)
+            @if ($locked)
+                <x-filament::callout
+                    color="danger"
+                    icon="heroicon-m-lock-closed"
+                    class="mt-4"
+                >
+                    <x-slot name="heading">
+                        Results locked — no edits allowed
+                    </x-slot>
+                    These results were published on {{ $sheetState['ends_at']->subDays(30)->format('j M Y') }} and the
+                    30-day correction window closed on {{ $sheetState['ends_at']->format('j M Y') }}.
+                </x-filament::callout>
+            @else
+                <x-filament::callout
+                    color="info"
+                    icon="heroicon-m-clock"
+                    class="mt-4"
+                >
+                    <x-slot name="heading">
+                        Published — corrections open until {{ $sheetState['ends_at']->format('j M Y') }}
+                    </x-slot>
+                    Students see these results. Mistakes reported by students can be corrected until the window closes.
+                </x-filament::callout>
+            @endif
+        @endif
     </x-filament::section>
 
     @if ($this->students->isNotEmpty())
@@ -62,6 +93,7 @@
                                             max="100"
                                             step="0.5"
                                             wire:model="marks.{{ $student->getKey() }}"
+                                            :readonly="$locked"
                                         />
                                     </x-filament::input.wrapper>
                                 </td>
@@ -72,9 +104,26 @@
             </div>
 
             <x-slot name="footer">
-                <x-filament::button wire:click="save" icon="heroicon-m-check">
-                    Fill exam results
-                </x-filament::button>
+                @if (! $locked)
+                    <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                        <x-filament::button wire:click="save" icon="heroicon-m-check">
+                            Fill exam results
+                        </x-filament::button>
+                        <x-filament::button
+                            wire:click="publish"
+                            wire:confirm="Publish these results? Students will see them, and corrections stay open for 30 days."
+                            color="success"
+                            outlined
+                            icon="heroicon-m-globe-alt"
+                        >
+                            Publish results
+                        </x-filament::button>
+                    </div>
+                @else
+                    <x-filament::badge color="danger" icon="heroicon-m-lock-closed">
+                        Locked on {{ $sheetState['ends_at']->format('j M Y') }}
+                    </x-filament::badge>
+                @endif
             </x-slot>
         </x-filament::section>
     @endif

@@ -92,7 +92,7 @@ final class ExportController extends Controller
             ],
             'exam-results' => [
                 fn (): \Illuminate\Support\Collection => ExamResult::query()->with(['student.studentClass', 'subject'])->orderByDesc('year')->get(),
-                ['student_gr_no', 'student_name', 'class', 'subject', 'year', 'marks', 'total_marks', 'grade'],
+                ['student_gr_no', 'student_name', 'class', 'subject', 'year', 'marks', 'total_marks', 'grade', 'status', 'published_at'],
                 fn (ExamResult $result): array => [
                     $result->student?->gr_no,
                     $result->student?->name,
@@ -102,6 +102,8 @@ final class ExportController extends Controller
                     $result->marks,
                     $result->total_marks,
                     $result->grade(),
+                    $result->status->value,
+                    $result->published_at?->toDateTimeString(),
                 ],
             ],
             'fees' => [

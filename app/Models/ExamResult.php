@@ -4,16 +4,26 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\ExamResultStatus;
 use App\Support\Grades;
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 final class ExamResult extends Model
 {
     use HasFactory;
     use HasUuids;
+
+    /**
+     * How long after publishing results stay correctable. Parents can
+     * report mistakes and the teacher can fix them within this window;
+     * afterwards the results are locked for good.
+     */
+    final public const RECHECK_WINDOW_DAYS = 30;
 
     /**
      * @var list<string>
@@ -25,7 +35,41 @@ final class ExamResult extends Model
         'year',
         'marks',
         'total_marks',
+        'status',
+        'published_at',
     ];
+
+    /**
+     * The moment the correction window closes for a whole
+     * class + subject + year result sheet, or null when none of
+     * its rows have ever been published.
+     */
+    public static function recheckWindowFor(string $classId, string $subjectId, int $year): ?CarbonInterface
+    {
+        $publishedAt = self::query()
+            ->where('student_class_id', $classId)
+            ->where('subject_id', $subjectId)
+            ->where('year', $year)
+            ->whereNotNull('published_at')
+            ->max('published_at');
+
+        if ($publishedAt === null) {
+            return null;
+        }
+
+        return Carbon::parse((string) $publishedAt)->addDays(self::RECHECK_WINDOW_DAYS);
+    }
+
+    /**
+     * Whether a whole result sheet is locked (published more than
+     * 30 days ago and therefore no longer editable anywhere).
+     */
+    public static function sheetIsLocked(string $classId, string $subjectId, int $year): bool
+    {
+        $windowEndsAt = self::recheckWindowFor($classId, $subjectId, $year);
+
+        return $windowEndsAt !== null && $windowEndsAt->isPast();
+    }
 
     /**
      * @return BelongsTo<Student, $this>
@@ -52,11 +96,48 @@ final class ExamResult extends Model
     }
 
     /**
+     * Only published results; drafts never leak to students or public pages.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder<self>  $query
+     * @return \Illuminate\Database\Eloquent\Builder<self>
+     */
+    public function scopePublished($query)
+    {
+        return $query->where('status', ExamResultStatus::Published->value);
+    }
+
+    /**
      * Grade derived from marks against total marks.
      */
     public function grade(): string
     {
         return Grades::fromMarks($this->marks, $this->total_marks);
+    }
+
+    /**
+     * When the 30-day correction window for this result closes,
+     * or null while the result is still a draft.
+     */
+    public function recheckWindowEndsAt(): ?CarbonInterface
+    {
+        $publishedAt = $this->published_at;
+
+        if (! $publishedAt instanceof CarbonInterface) {
+            return null;
+        }
+
+        return $publishedAt->copy()->addDays(self::RECHECK_WINDOW_DAYS);
+    }
+
+    /**
+     * Drafts are always editable; published results stay editable
+     * until the recheck window closes.
+     */
+    public function isEditable(): bool
+    {
+        $endsAt = $this->recheckWindowEndsAt();
+
+        return $endsAt === null || $endsAt->isFuture();
     }
 
     /**
@@ -69,6 +150,8 @@ final class ExamResult extends Model
             'marks' => 'float',
             'total_marks' => 'float',
             'year' => 'integer',
+            'status' => ExamResultStatus::class,
+            'published_at' => 'datetime',
         ];
     }
 }

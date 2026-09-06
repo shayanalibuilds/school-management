@@ -40,6 +40,13 @@ final class ExamResultsTable
                     ->sortable(),
                 TextColumn::make('total_marks')
                     ->label('Total'),
+                TextColumn::make('status')
+                    ->badge(),
+                TextColumn::make('published_at')
+                    ->label('Published')
+                    ->dateTime('j M Y')
+                    ->sortable()
+                    ->placeholder('—'),
                 TextColumn::make('grade')
                     ->label('Grade')
                     ->badge()
@@ -61,9 +68,14 @@ final class ExamResultsTable
                     ->options(collect(range($currentYear - 9, $currentYear))
                         ->mapWithKeys(fn (int $year): array => [$year => (string) $year])
                         ->all()),
+                SelectFilter::make('status')
+                    ->options(collect(\App\Enums\ExamResultStatus::cases())
+                        ->mapWithKeys(fn (\App\Enums\ExamResultStatus $status): array => [$status->value => $status->label()])
+                        ->all()),
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()
+                    ->visible(fn (\App\Models\ExamResult $record): bool => $record->isEditable()),
                 DeleteAction::make(),
             ])
             ->toolbarActions([

@@ -21,6 +21,7 @@ final class Positions
         $totals = ExamResult::query()
             ->where('student_class_id', $class->getKey())
             ->where('year', $year)
+            ->published()
             ->selectRaw('student_id, SUM(marks) as total_marks')
             ->groupBy('student_id')
             ->orderByDesc('total_marks')

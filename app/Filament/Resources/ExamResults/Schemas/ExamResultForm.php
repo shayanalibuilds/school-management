@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\ExamResults\Schemas;
 
 use App\Filament\Support\WizardSubmitActions;
+use App\Models\ExamResult;
 use App\Models\Student;
 use Closure;
 use Filament\Forms\Components\Select;
@@ -18,6 +19,8 @@ final class ExamResultForm
     public static function configure(Schema $schema): Schema
     {
         $currentYear = (int) today()->year;
+
+        $locked = fn (?ExamResult $record): bool => $record !== null && ! $record->isEditable();
 
         return $schema
             ->components([
@@ -36,19 +39,22 @@ final class ExamResultForm
                                     ->all())
                                 ->searchable()
                                 ->preload()
-                                ->required(),
+                                ->required()
+                                ->disabled($locked),
                             Select::make('subject_id')
                                 ->label('Subject')
                                 ->relationship('subject', 'name')
                                 ->searchable()
                                 ->preload()
-                                ->required(),
+                                ->required()
+                                ->disabled($locked),
                             Select::make('year')
                                 ->options(collect(range($currentYear - 9, $currentYear))
                                     ->mapWithKeys(fn (int $year): array => [$year => (string) $year])
                                     ->all())
                                 ->default((string) $currentYear)
-                                ->required(),
+                                ->required()
+                                ->disabled($locked),
                         ])
                         ->columns(2),
                     Step::make('Marks')
@@ -64,12 +70,14 @@ final class ExamResultForm
                                     if ($total > 0 && (float) $value > $total) {
                                         $fail('Marks cannot exceed the total marks.');
                                     }
-                                }),
+                                })
+                                ->disabled($locked),
                             TextInput::make('total_marks')
                                 ->numeric()
                                 ->minValue(1)
                                 ->default(100)
-                                ->required(),
+                                ->required()
+                                ->disabled($locked),
                             WizardSubmitActions::make(),
                         ])
                         ->columns(2),
