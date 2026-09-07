@@ -48,6 +48,7 @@ it('lets archived records come back', function (): void {
     $class = StudentClass::factory()->create();
 
     $class->archive();
+
     expect($class->fresh()->status)->toBe('inactive');
 
     $class->unarchive();
@@ -58,6 +59,7 @@ it('shows active and inactive tabs on the students list and hides archived recor
     $admin = Admin::factory()->create();
     $archived = Student::factory()->create(['name' => 'Old Kid']);
     $archived->archive();
+
     $active = Student::factory()->create(['name' => 'Current Kid']);
 
     actingAs($admin, 'admin');
@@ -81,6 +83,7 @@ it('hides inactive classes from the fill attendance picker', function (): void {
     $admin = Admin::factory()->create();
     $inactive = StudentClass::factory()->create(['name' => 'Closed Class']);
     $inactive->archive();
+
     $active = StudentClass::factory()->create(['name' => 'Open Class']);
 
     actingAs($admin, 'admin');

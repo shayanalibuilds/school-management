@@ -56,7 +56,7 @@ final class FeeImporter extends Importer
         $student = self::studentByGrNo($this->data['student_gr_no'] ?? null);
         $feeStructure = FeeStructure::query()->where('name', mb_trim((string) ($this->data['fee'] ?? '')))->first();
 
-        if ($student === null || $feeStructure === null) {
+        if (! $student instanceof \App\Models\Student || $feeStructure === null) {
             return null;
         }
 

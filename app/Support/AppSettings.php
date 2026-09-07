@@ -10,9 +10,9 @@ use RuntimeException;
 
 final class AppSettings
 {
-    final public const QUEUE_EVERYTHING = 'queue_everything';
+    public const string QUEUE_EVERYTHING = 'queue_everything';
 
-    final public const STATS_ENABLED = 'stats_enabled';
+    public const string STATS_ENABLED = 'stats_enabled';
 
     public static function get(string $key, ?string $default = null): ?string
     {

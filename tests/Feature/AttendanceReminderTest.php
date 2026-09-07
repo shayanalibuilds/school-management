@@ -20,11 +20,9 @@ it('emails and database-notifies admins when a class has no attendance today', f
 
     artisan('attendance:check-deadline');
 
-    Notification::assertSentTo($admin, App\Notifications\AttendanceDeadlineNotification::class, function (App\Notifications\AttendanceDeadlineNotification $notification, array $channels) use ($admin): bool {
-        return $channels === ['mail', 'database']
-            && $notification->toMail($admin)->subject === 'Attendance not submitted for Class 5'
-            && $notification->toArray($admin)['title'] === 'Attendance not submitted';
-    });
+    Notification::assertSentTo($admin, App\Notifications\AttendanceDeadlineNotification::class, fn (App\Notifications\AttendanceDeadlineNotification $notification, array $channels): bool => $channels === ['mail', 'database']
+        && $notification->toMail($admin)->subject === 'Attendance not submitted for Class 5'
+        && $notification->toArray($admin)['title'] === 'Attendance not submitted');
 });
 
 it('stays quiet when every class has submitted attendance today', function (): void {

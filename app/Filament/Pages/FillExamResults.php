@@ -136,7 +136,7 @@ final class FillExamResults extends Page
 
         $endsAt = ExamResult::recheckWindowFor($this->classId, $this->subjectId, (int) $this->year);
 
-        if ($endsAt === null) {
+        if (! $endsAt instanceof CarbonInterface) {
             return null;
         }
 

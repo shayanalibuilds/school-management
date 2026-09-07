@@ -235,7 +235,7 @@ it('reports unchecked class subject sheets for the year', function (): void {
     ExamResult::factory()->create(['student_id' => $student->getKey(), 'student_class_id' => $class->getKey(), 'subject_id' => $english->getKey(), 'year' => 2026, 'marks' => 60]);
     ExamResult::factory()->create(['student_id' => $otherStudent->getKey(), 'student_class_id' => $otherClass->getKey(), 'subject_id' => $maths->getKey(), 'year' => 2026, 'marks' => 60]);
 
-    expect(ExamResult::uncheckedSheets(2026))->toBe([])
+    expect(ExamResult::uncheckedSheets(2026))->toBeEmpty()
         ->and(ExamResult::allClassesChecked(2026))->toBeTrue();
 });
 

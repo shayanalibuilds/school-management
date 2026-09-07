@@ -45,7 +45,7 @@ final class Attendance extends Model
     {
         $attendance = self::forStudentAndDay($studentId, $date);
 
-        if ($attendance === null) {
+        if (! $attendance instanceof self) {
             $attendance = new self();
             $attendance->student_id = $studentId;
             $attendance->date = $date;
@@ -57,14 +57,14 @@ final class Attendance extends Model
 
         try {
             $attendance->save();
-        } catch (UniqueConstraintViolationException $exception) {
+        } catch (UniqueConstraintViolationException $uniqueConstraintViolationException) {
             // A concurrent writer claimed this student + day while we
             // were working. Honour "never delete, never duplicate" by
             // updating their row rather than failing the whole class.
             $attendance = self::forStudentAndDay($studentId, $date);
 
-            if ($attendance === null) {
-                throw $exception;
+            if (! $attendance instanceof self) {
+                throw $uniqueConstraintViolationException;
             }
 
             foreach ($values as $key => $value) {

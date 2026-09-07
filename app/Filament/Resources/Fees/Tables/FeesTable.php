@@ -63,15 +63,13 @@ final class FeesTable
                 SelectFilter::make('class')
                     ->label('Class')
                     ->options(fn (): array => StudentClass::query()->orderBy('name')->pluck('name', 'id')->all())
-                    ->query(function (Builder $query, array $data): Builder {
-                        return $query->when(
-                            $data['value'] ?? null,
-                            fn (Builder $query, mixed $classId): Builder => $query->whereHas(
-                                'student',
-                                fn (Builder $studentQuery): Builder => $studentQuery->where('student_class_id', $classId),
-                            ),
-                        );
-                    }),
+                    ->query(fn (Builder $query, array $data): Builder => $query->when(
+                        $data['value'] ?? null,
+                        fn (Builder $query, mixed $classId): Builder => $query->whereHas(
+                            'student',
+                            fn (Builder $studentQuery): Builder => $studentQuery->where('student_class_id', $classId),
+                        ),
+                    )),
                 SelectFilter::make('year')
                     ->options(collect(range($currentYear - 9, $currentYear + 1))
                         ->mapWithKeys(fn (int $year): array => [$year => (string) $year])
