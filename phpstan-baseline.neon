@@ -2041,6 +2041,12 @@ parameters:
 			path: tests/Feature/ImportExportTest.php
 
 		-
+			message: '#^Function countedNoun\(\) should return string but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: tests/Feature/ImporterNotificationPluralsTest.php
+
+		-
 			message: '#^Binary operation "\." between ''statuses\.'' and mixed results in an error\.$#'
 			identifier: binaryOp.invalid
 			count: 4
@@ -2105,6 +2111,30 @@ parameters:
 			identifier: argument.templateType
 			count: 1
 			path: tests/Feature/ParentsGuardiansTest.php
+
+		-
+			message: '#^Cannot access offset ''provider'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Feature/PublicFeeCheckoutTest.php
+
+		-
+			message: '#^Cannot access property \$amount on App\\Models\\Payment\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/PublicFeeCheckoutTest.php
+
+		-
+			message: '#^Cannot access property \$provider on App\\Models\\Payment\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/PublicFeeCheckoutTest.php
+
+		-
+			message: '#^Cannot access property \$status on App\\Models\\Payment\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/PublicFeeCheckoutTest.php
 
 		-
 			message: '#^Cannot cast mixed to string\.$#'
