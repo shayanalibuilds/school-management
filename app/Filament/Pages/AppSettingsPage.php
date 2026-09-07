@@ -18,6 +18,8 @@ final class AppSettingsPage extends Page
 
     protected string $view = 'filament.admin.pages.app-settings';
 
+    protected ?string $heading = 'App settings';
+
     protected static ?string $navigationLabel = 'App settings';
 
     protected static string|BackedEnum|null $navigationIcon = \Filament\Support\Icons\Heroicon::OutlinedAdjustmentsHorizontal;

@@ -29,6 +29,8 @@ final class FillAttendance extends Page
 
     protected string $view = 'filament.admin.pages.fill-attendance';
 
+    protected ?string $heading = 'Fill attendance';
+
     protected static ?string $navigationLabel = 'Fill attendance';
 
     protected static string|BackedEnum|null $navigationIcon = \Filament\Support\Icons\Heroicon::OutlinedClipboardDocumentList;

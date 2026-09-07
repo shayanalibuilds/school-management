@@ -35,6 +35,8 @@ final class FillExamResults extends Page
 
     protected string $view = 'filament.admin.pages.fill-exam-results';
 
+    protected ?string $heading = 'Fill exam results';
+
     protected static ?string $navigationLabel = 'Fill exam results';
 
     protected static string|BackedEnum|null $navigationIcon = \Filament\Support\Icons\Heroicon::OutlinedPencilSquare;

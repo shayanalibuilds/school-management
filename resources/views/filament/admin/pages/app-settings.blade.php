@@ -1,6 +1,6 @@
+<x-filament-panels::page>
 <div style="display: grid; gap: 1.5rem; max-width: 48rem;">
     <x-filament::section
-        heading="App settings"
         description="Toggle application-wide features."
     >
         <div style="display: grid; gap: 1.25rem;">
@@ -40,3 +40,4 @@
         </div>
     </x-filament::section>
 </div>
+</x-filament-panels::page>

@@ -7,11 +7,13 @@ use App\Importers\AttendanceImporter;
 use App\Importers\ExamResultImporter;
 use App\Importers\GuardianImporter;
 use App\Importers\ParentImporter;
+use App\Importers\StaffImporter;
 use App\Importers\StudentImporter;
 use App\Models\Admin;
 use App\Models\Attendance;
 use App\Models\ExamResult;
 use App\Models\Guardian;
+use App\Models\Staff;
 use App\Models\Student;
 use App\Models\StudentClass;
 use App\Models\StudentParent;
@@ -136,4 +138,24 @@ it('links imported parents and guardians to children by GR #', function (): void
     expect(StudentParent::query()->where('cnic', '35202-1111111-1')->count())->toBe(1)
         ->and(StudentParent::query()->where('cnic', '35202-1111111-1')->first()->students()->pluck('students.id'))->toContain($student->getKey())
         ->and(Guardian::query()->where('cnic', '35202-2222222-2')->first()->students()->pluck('students.id'))->toContain($student->getKey());
+});
+
+it('imports staff keyed by CNIC with a default status', function (): void {
+    $importer = new StaffImporter(
+        testImport(StaffImporter::class),
+        ['name' => 'name', 'cnic' => 'cnic', 'email' => 'email', 'phone' => 'phone', 'joining_date' => 'joining_date', 'status' => 'status'],
+        [],
+    );
+
+    $importer(['name' => 'Imported Teacher', 'cnic' => '11111-1111111-1', 'email' => 'imported@school.test', 'phone' => '0300-1111111', 'joining_date' => '2025-04-01', 'status' => 'active']);
+    $importer(['name' => 'Updated Teacher', 'cnic' => '11111-1111111-1', 'email' => 'updated@school.test', 'phone' => '', 'joining_date' => '2025-04-01', 'status' => 'on_leave']);
+    $importer(['name' => 'Default Status', 'cnic' => '22222-2222222-2', 'email' => '', 'phone' => '', 'joining_date' => '2026-01-10', 'status' => '']);
+
+    $imported = Staff::query()->where('cnic', '11111-1111111-1')->first();
+
+    expect(Staff::query()->count())->toBe(2)
+        ->and($imported->name)->toBe('Updated Teacher')
+        ->and($imported->email)->toBe('updated@school.test')
+        ->and($imported->status->value)->toBe('on_leave')
+        ->and(Staff::query()->where('cnic', '22222-2222222-2')->first()->status->value)->toBe('active');
 });
