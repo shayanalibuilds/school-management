@@ -35,7 +35,7 @@ final class ExpenseImporter extends Importer
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        return 'Imported '.number_format($import->successful_rows).' expenses.';
+        return self::countedNoun((int) $import->successful_rows, 'expense').' imported.';
     }
 
     public function resolveRecord(): ?Expense

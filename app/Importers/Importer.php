@@ -7,6 +7,7 @@ namespace App\Importers;
 use App\Models\Student;
 use App\Models\StudentClass;
 use Filament\Actions\Imports\Importer as FilamentImporter;
+use Illuminate\Support\Str;
 
 abstract class Importer extends FilamentImporter
 {
@@ -19,6 +20,17 @@ abstract class Importer extends FilamentImporter
      */
     #[Override]
     final public function fillRecord(): void {}
+
+    /**
+     * A formatted count with the correctly inflected noun, so
+     * notifications read "1 student" and "12 students" alike.
+     */
+    protected static function countedNoun(int $count, string $singular, ?string $plural = null): string
+    {
+        $noun = $count === 1 ? $singular : ($plural ?? Str::plural($singular));
+
+        return number_format($count).' '.$noun;
+    }
 
     /**
      * Look up a student by their one and only identifier: the GR #.

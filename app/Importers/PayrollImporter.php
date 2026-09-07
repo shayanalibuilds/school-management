@@ -40,7 +40,7 @@ final class PayrollImporter extends Importer
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        return 'Imported '.number_format($import->successful_rows).' payrolls.';
+        return self::countedNoun((int) $import->successful_rows, 'payroll').' imported.';
     }
 
     public function resolveRecord(): ?Payroll
