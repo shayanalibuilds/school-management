@@ -169,6 +169,15 @@ it('renders an official receipt for a completed payment', function (): void {
         ->assertSee('EasyPaisa');
 });
 
+it('numbers a completed receipt even when the office recorded no reference', function (): void {
+    $payment = Payment::factory()->completed()->create(['amount' => 2500, 'reference' => null]);
+
+    get("/receipts/{$payment->getKey()}")
+        ->assertOk()
+        ->assertSee('RCPT-'.mb_strtoupper(mb_substr($payment->getKey(), 0, 8)))
+        ->assertDontSee('PENDING');
+});
+
 it('shows the payment settings page to admins', function (): void {
     actingAs(Admin::factory()->create(), 'admin');
 
