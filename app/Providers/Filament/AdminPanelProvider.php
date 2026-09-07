@@ -34,6 +34,11 @@ final class AdminPanelProvider extends PanelProvider
             ->path('dashboard')
             ->authGuard('admin')
             ->login()
+            ->navigationGroups([
+                'Academics',
+                'Finance',
+                'Settings',
+            ])
             ->colors([
                 'primary' => Color::Blue,
             ])

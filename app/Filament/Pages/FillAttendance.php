@@ -113,13 +113,6 @@ final class FillAttendance extends Page
         $this->loadExistingStatuses();
     }
 
-    public function setStatus(int|string $studentId, string $status): void
-    {
-        if (AttendanceStatus::tryFrom($status) !== null) {
-            $this->statuses[$studentId] = $status;
-        }
-    }
-
     public function save(): void
     {
         $admin = auth('admin')->user();
