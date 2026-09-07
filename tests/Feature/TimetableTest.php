@@ -44,15 +44,43 @@ it('blocks two subjects for the same class in the same time slot', function (): 
     timetableSlot($class, $maths, 1, '09:00:00', '10:00:00');
 })->throws(UniqueConstraintViolationException::class);
 
-it('blocks the same subject in two classes at the same time', function (): void {
+it('allows the same subject in two classes at the same time when different teachers are assigned', function (): void {
     $classOne = StudentClass::factory()->create();
     $classTwo = StudentClass::factory()->create();
     $english = Subject::factory()->create();
+    $teacherOne = Staff::factory()->create();
+    $teacherTwo = Staff::factory()->create();
+
+    StaffAssignment::query()->create(['staff_id' => $teacherOne->getKey(), 'student_class_id' => $classOne->getKey(), 'subject_id' => $english->getKey()]);
+    StaffAssignment::query()->create(['staff_id' => $teacherTwo->getKey(), 'student_class_id' => $classTwo->getKey(), 'subject_id' => $english->getKey()]);
 
     timetableSlot($classOne, $english, 1, '09:00:00', '10:00:00');
 
-    timetableSlot($classTwo, $english, 1, '09:00:00', '10:00:00');
-})->throws(UniqueConstraintViolationException::class);
+    // Multiple rooms: the same subject can run for another class at once.
+    $slot = timetableSlot($classTwo, $english, 1, '09:00:00', '10:00:00');
+
+    expect($slot->exists)->toBeTrue()
+        ->and(TimetableSlot::findConflict($classTwo->getKey(), $english->getKey(), 1, '09:00:00', '10:00:00', $slot->getKey()))->toBeNull();
+});
+
+it('blocks two classes at the same time when the same teacher is assigned to both', function (): void {
+    $classOne = StudentClass::factory()->create();
+    $classTwo = StudentClass::factory()->create();
+    $english = Subject::factory()->create();
+    $maths = Subject::factory()->create();
+    $teacher = Staff::factory()->create();
+
+    StaffAssignment::query()->create(['staff_id' => $teacher->getKey(), 'student_class_id' => $classOne->getKey(), 'subject_id' => $english->getKey()]);
+    StaffAssignment::query()->create(['staff_id' => $teacher->getKey(), 'student_class_id' => $classTwo->getKey(), 'subject_id' => $maths->getKey()]);
+
+    timetableSlot($classOne, $english, 1, '09:00:00', '10:00:00');
+
+    // One teacher cannot be in two classrooms at once.
+    $conflict = TimetableSlot::findConflict($classTwo->getKey(), $maths->getKey(), 1, '09:30:00', '10:30:00');
+
+    expect($conflict)->not->toBeNull()
+        ->and($conflict->student_class_id)->toBe($classOne->getKey());
+});
 
 it('detects overlapping time ranges for the same class', function (): void {
     $class = StudentClass::factory()->create();
@@ -73,7 +101,7 @@ it('detects overlapping time ranges for the same class', function (): void {
         ->and($conflict->subject_id)->toBe($english->getKey());
 });
 
-it('detects overlapping time ranges for the same subject across classes', function (): void {
+it('lets another class use the same slot freely when no teacher is assigned', function (): void {
     $classOne = StudentClass::factory()->create();
     $classTwo = StudentClass::factory()->create();
     $english = Subject::factory()->create();
@@ -84,8 +112,8 @@ it('detects overlapping time ranges for the same subject across classes', functi
     // Another subject in class two at the same time is fine.
     expect(TimetableSlot::findConflict($classTwo->getKey(), $history->getKey(), 2, '11:00:00', '12:00:00'))->toBeNull();
 
-    // The same subject in class two overlaps the existing booking.
-    expect(TimetableSlot::findConflict($classTwo->getKey(), $english->getKey(), 2, '11:30:00', '12:30:00'))->not->toBeNull();
+    // The same subject in class two also works - different rooms, no teacher assigned.
+    expect(TimetableSlot::findConflict($classTwo->getKey(), $english->getKey(), 2, '11:30:00', '12:30:00'))->toBeNull();
 });
 
 it('allows adjacent slots and different days without conflicts', function (): void {

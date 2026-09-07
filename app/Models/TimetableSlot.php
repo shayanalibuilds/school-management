@@ -43,22 +43,57 @@ final class TimetableSlot extends Model
     }
 
     /**
-     * Whether another slot already occupies this time range for the
-     * same class or the same subject - one subject per slot per class,
-     * and a subject can only be in one classroom at a time.
+     * Whether another slot already occupies this time range for the same
+     * class, or for the same teacher. Schools have multiple rooms, so the
+     * same subject may run for several classes at once - but a class
+     * cannot sit two subjects at the same time, and one teacher cannot
+     * teach two classes at the same time.
      */
     public static function findConflict(string $classId, string $subjectId, int $dayOfWeek, string $startTime, string $endTime, ?string $ignoreId = null): ?self
     {
-        return self::query()
+        $classConflict = self::query()
             ->where('day_of_week', $dayOfWeek)
             ->where('start_time', '<', $endTime)
             ->where('end_time', '>', $startTime)
-            ->where(function ($query) use ($classId, $subjectId): void {
-                $query->where('student_class_id', $classId)
-                    ->orWhere('subject_id', $subjectId);
-            })
+            ->where('student_class_id', $classId)
             ->when($ignoreId !== null, fn ($query) => $query->whereKeyNot($ignoreId))
             ->first();
+
+        if ($classConflict !== null) {
+            return $classConflict;
+        }
+
+        // The teacher who would take this new slot (from the class +
+        // subject assignment). Without an assigned teacher there is no
+        // one to double-book.
+        $staffAssignment = StaffAssignment::query()
+            ->where('student_class_id', $classId)
+            ->where('subject_id', $subjectId)
+            ->first();
+
+        if ($staffAssignment === null) {
+            return null;
+        }
+
+        $overlapping = self::query()
+            ->where('day_of_week', $dayOfWeek)
+            ->where('start_time', '<', $endTime)
+            ->where('end_time', '>', $startTime)
+            ->when($ignoreId !== null, fn ($query) => $query->whereKeyNot($ignoreId))
+            ->get();
+
+        foreach ($overlapping as $slot) {
+            $slotTeacherId = StaffAssignment::query()
+                ->where('student_class_id', $slot->student_class_id)
+                ->where('subject_id', $slot->subject_id)
+                ->value('staff_id');
+
+            if ($slotTeacherId !== null && (string) $slotTeacherId === (string) $staffAssignment->staff_id) {
+                return $slot;
+            }
+        }
+
+        return null;
     }
 
     public function dayLabel(): string
