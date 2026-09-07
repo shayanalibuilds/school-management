@@ -7,10 +7,13 @@
 
         <title>{{ config('app.name', 'School Management System') }}</title>
 
-        <!-- Fonts -->
+        <!-- Fonts: Newsreader for institutional headlines, Plus Jakarta Sans for the interface. -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..600&display=swap" rel="stylesheet" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
 
         <!-- Styles: app CSS first, Filament component CSS second so components win. -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -38,12 +41,14 @@
         </style>
     </head>
 
-    <body class="min-h-screen bg-zinc-50 text-zinc-950 antialiased">
+    <body class="min-h-screen bg-paper font-sans text-ink antialiased">
         <x-navigation />
 
-        <main class="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6">
+        <main class="mx-auto w-full max-w-7xl px-4 pb-14 pt-8 sm:px-6 lg:px-8">
             {{ $slot }}
         </main>
+
+        <x-footer />
 
         @filamentScripts
     </body>

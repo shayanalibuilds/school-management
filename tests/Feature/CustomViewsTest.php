@@ -9,12 +9,17 @@ use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 
 /**
- * Custom blade views must be built from Filament components — never Flux.
+ * Custom blade views must never use Flux.
  *
  * Flux styles ship in a separate CSS build that only the Livewire starter
  * layout loads, so Flux markup rendered inside Filament panels (staff pages,
  * payment settings) or without that build came out completely unstyled.
- * Filament components are styled by the same CSS the panels already ship.
+ *
+ * Filament panel views are built from Filament components, styled by the same
+ * CSS the panels already ship. Public portal views use the institutional
+ * registry design system: Tailwind tokens defined in resources/css/app.css
+ * (Newsreader display type, navy primary containers, green verification
+ * accents) rendered by the app's own Vite build.
  */
 const CUSTOM_VIEWS = [
     'layouts/app.blade.php',
@@ -61,11 +66,16 @@ test('public layout loads filament assets without flux hooks', function (): void
     expect($css)->not->toContain('livewire/flux');
 });
 
-test('public landing renders filament styled markup', function (): void {
+test('public landing renders the registry design system markup', function (): void {
     get('/')
         ->assertOk()
-        ->assertSee('fi-btn', false)
-        ->assertSee('css/filament/filament/app.css', false);
+        // Design tokens from the app's own Vite build are applied...
+        ->assertSee('bg-navy', false)
+        ->assertSee('font-display', false)
+        // ...Filament's stylesheet is still loaded for panel parity...
+        ->assertSee('css/filament/filament/app.css', false)
+        // ...and Flux never appears anywhere.
+        ->assertDontSee('<flux:', false);
 });
 
 test('staff fill attendance page renders filament styled markup', function (): void {
