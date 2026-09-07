@@ -35,6 +35,14 @@ it('records expenses with recurrence', function (): void {
     expect($expense->recurrence)->toBe(ExpenseRecurrence::Monthly);
 });
 
+it('offers a daily recurrence option for expenses', function (): void {
+    $expense = Expense::factory()->create(['recurrence' => ExpenseRecurrence::Daily]);
+
+    expect($expense->recurrence)->toBe(ExpenseRecurrence::Daily)
+        ->and($expense->recurrence->label())->toBe('Daily')
+        ->and(collect(ExpenseRecurrence::cases())->contains(ExpenseRecurrence::Daily))->toBeTrue();
+});
+
 it('shows payroll and expense resources to admins', function (): void {
     actingAs(Admin::factory()->create(), 'admin');
 

@@ -8,6 +8,8 @@ enum ExpenseRecurrence: string
 {
     case OneTime = 'one_time';
 
+    case Daily = 'daily';
+
     case Weekly = 'weekly';
 
     case Monthly = 'monthly';
@@ -18,6 +20,7 @@ enum ExpenseRecurrence: string
     {
         return match ($this) {
             self::OneTime => 'One time',
+            self::Daily => 'Daily',
             self::Weekly => 'Weekly',
             self::Monthly => 'Monthly',
             self::Yearly => 'Yearly',
