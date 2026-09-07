@@ -97,3 +97,29 @@ test('admin payment settings page renders filament styled markup', function (): 
         ->assertSee('fi-section', false)
         ->assertDontSee('<flux:', false);
 });
+
+/**
+ * Every custom panel page must render the standard Filament page chrome:
+ * the fi-header block is what keeps breathing room between the sticky top
+ * navigation and the first section. A view that skips the
+ * x-filament-panels::page wrapper loses the header and its section lands
+ * flush against the topbar — this pins the structure that prevents that.
+ */
+test('every custom panel page renders the standard header chrome', function (string $url, string $guard): void {
+    $user = $guard === 'admin' ? Admin::factory()->create() : Staff::factory()->create();
+
+    actingAs($user, $guard)
+        ->get($url)
+        ->assertOk()
+        ->assertSee('fi-header', false)
+        ->assertSee('fi-page-content', false);
+})->with([
+    'admin import/export' => ['/dashboard/import-export', 'admin'],
+    'admin fill attendance' => ['/dashboard/fill-attendance', 'admin'],
+    'admin fill exam results' => ['/dashboard/fill-exam-results', 'admin'],
+    'admin payment settings' => ['/dashboard/payment-settings', 'admin'],
+    'admin app settings' => ['/dashboard/app-settings-page', 'admin'],
+    'staff fill attendance' => ['/staff/fill-attendance', 'staff'],
+    'staff fill exam results' => ['/staff/fill-exam-results', 'staff'],
+    'staff my assignments' => ['/staff/my-assignments', 'staff'],
+]);

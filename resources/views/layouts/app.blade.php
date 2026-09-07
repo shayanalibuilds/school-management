@@ -42,9 +42,16 @@
     </head>
 
     <body class="min-h-screen bg-paper font-sans text-ink antialiased">
+        <a
+            href="#main"
+            class="sr-only z-50 rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+        >
+            Skip to content
+        </a>
+
         <x-navigation />
 
-        <main class="mx-auto w-full max-w-7xl px-4 pb-14 pt-8 sm:px-6 lg:px-8">
+        <main id="main" class="mx-auto w-full max-w-7xl scroll-mt-20 px-4 pb-14 pt-8 sm:px-6 lg:px-8">
             {{ $slot }}
         </main>
 

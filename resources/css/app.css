@@ -24,10 +24,15 @@
     --color-ink-soft: #45474d;
     --color-line: #c6c6cd;
 
+    /* Muted text: #5f6980 keeps 12px captions above the 4.5:1 AA bar on
+       white and paper (the old #7a849c measured 3.74:1). Use -bright on
+       navy surfaces, where the darker tone would fall back under the bar. */
+    --color-steel: #5f6980;
+    --color-steel-bright: #a3adc4;
+
     /* Navy primary container (buttons, table heads, footer) */
     --color-navy: #121b2f;
     --color-navy-hover: #283044;
-    --color-steel: #7a849c;
     --color-glow: #98f5c5;
 
     /* Green verification accent */

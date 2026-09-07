@@ -88,7 +88,7 @@ new #[Layout('layouts::app')] class extends Component {
                             required
                             autocomplete="off"
                             placeholder="35202-1234567-1 or GR 42"
-                            class="w-full rounded-lg border border-line bg-card px-3.5 py-2.5 text-sm font-semibold uppercase tracking-wide tabular text-ink shadow-sm transition-all placeholder:font-normal placeholder:normal-case placeholder:tracking-normal placeholder:text-line focus:outline-none focus:ring-2 focus:ring-navy"
+                            class="w-full rounded-lg border border-line bg-card px-3.5 py-2.5 text-sm font-semibold uppercase tracking-wide tabular text-ink shadow-sm transition-[color,background-color,border-color,box-shadow] placeholder:font-normal placeholder:normal-case placeholder:tracking-normal placeholder:text-line focus:outline-none focus:ring-2 focus:ring-navy"
                         />
                         <p class="mt-1.5 text-xs text-ink-soft">
                             The GR number is printed on the student ID card and every fee receipt.
@@ -97,7 +97,7 @@ new #[Layout('layouts::app')] class extends Component {
                     <div class="pt-1">
                         <button
                             type="submit"
-                            class="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg bg-navy px-4 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:bg-navy-hover"
+                            class="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg bg-navy px-4 py-3 text-sm font-semibold text-white shadow-sm transition-[color,background-color,border-color,box-shadow] hover:bg-navy-hover"
                         >
                             <x-portal-icon name="search" class="h-4 w-4 text-glow" />
                             Look up attendance

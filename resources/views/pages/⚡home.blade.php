@@ -70,9 +70,9 @@ new #[Layout('layouts::app')] class extends Component {
                 <x-portal-icon name="identification" class="h-5 w-5 text-steel" />
                 Staff member?
             </span>
-            <a href="/staff" class="font-semibold text-green hover:underline">Staff login</a>
+            <a href="/staff" class="font-semibold text-green hover:underline">Staff sign in</a>
             <span class="text-line">•</span>
-            <a href="/dashboard" class="font-semibold text-green hover:underline">Admin login</a>
+            <a href="/dashboard" class="font-semibold text-green hover:underline">Admin sign in</a>
         </div>
     </section>
 </div>
