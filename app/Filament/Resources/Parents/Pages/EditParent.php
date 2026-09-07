@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Parents\Pages;
 
 use App\Filament\Resources\Parents\ParentResource;
-use Filament\Actions\DeleteAction;
+use App\Filament\Support\ArchiveAction;
 use Filament\Resources\Pages\EditRecord;
 
 final class EditParent extends EditRecord
@@ -15,7 +15,7 @@ final class EditParent extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make(),
+            ArchiveAction::make(),
         ];
     }
 }

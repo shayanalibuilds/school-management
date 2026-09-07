@@ -19,6 +19,18 @@ parameters:
 			path: app/Enums/ExamResultStatus.php
 
 		-
+			message: '#^Method App\\Enums\\RecordStatus\:\:getColor\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: app/Enums/RecordStatus.php
+
+		-
+			message: '#^Method App\\Enums\\RecordStatus\:\:getLabel\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: app/Enums/RecordStatus.php
+
+		-
 			message: '#^Cannot access property \$value on mixed\.$#'
 			identifier: property.nonObject
 			count: 1
@@ -359,6 +371,12 @@ parameters:
 			identifier: assign.propertyType
 			count: 1
 			path: app/Filament/Staff/Pages/FillExamResults.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:archive\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: app/Filament/Support/ArchiveAction.php
 
 		-
 			message: '#^Cannot cast mixed to float\.$#'
@@ -997,10 +1015,22 @@ parameters:
 			path: app/Models/FeeStructure.php
 
 		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:archive\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Models/FeeStructure.php
+
+		-
 			message: '#^Class App\\Models\\FeeStructure uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
 			identifier: missingType.generics
 			count: 1
 			path: app/Models/FeeStructure.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:archive\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Models/Guardian.php
 
 		-
 			message: '#^Class App\\Models\\Guardian uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
@@ -1123,6 +1153,12 @@ parameters:
 			path: app/Models/Student.php
 
 		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:archive\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Models/Student.php
+
+		-
 			message: '#^Class App\\Models\\Student uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
 			identifier: missingType.generics
 			count: 1
@@ -1135,16 +1171,34 @@ parameters:
 			path: app/Models/Student.php
 
 		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:archive\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Models/StudentClass.php
+
+		-
 			message: '#^Class App\\Models\\StudentClass uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
 			identifier: missingType.generics
 			count: 1
 			path: app/Models/StudentClass.php
 
 		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:archive\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Models/StudentParent.php
+
+		-
 			message: '#^Class App\\Models\\StudentParent uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
 			identifier: missingType.generics
 			count: 1
 			path: app/Models/StudentParent.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:archive\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Models/Subject.php
 
 		-
 			message: '#^Class App\\Models\\Subject uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
@@ -1493,6 +1547,96 @@ parameters:
 			identifier: method.nonObject
 			count: 1
 			path: tests/Feature/AdminFillAttendanceTest.php
+
+		-
+			message: '#^Access to an undefined property Livewire\\Component\:\:\$classes\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/ArchiveOnDeleteTest.php
+
+		-
+			message: '#^Call to an undefined method Livewire\\Component\:\:getTabs\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: tests/Feature/ArchiveOnDeleteTest.php
+
+		-
+			message: '#^Cannot access property \$status on App\\Models\\FeeStructure\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\FeeStructure\>\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/ArchiveOnDeleteTest.php
+
+		-
+			message: '#^Cannot access property \$status on App\\Models\\Guardian\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Guardian\>\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/ArchiveOnDeleteTest.php
+
+		-
+			message: '#^Cannot access property \$status on App\\Models\\StudentClass\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\StudentClass\>\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/ArchiveOnDeleteTest.php
+
+		-
+			message: '#^Cannot access property \$status on App\\Models\\StudentClass\|null\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: tests/Feature/ArchiveOnDeleteTest.php
+
+		-
+			message: '#^Cannot access property \$status on App\\Models\\StudentParent\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\StudentParent\>\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/ArchiveOnDeleteTest.php
+
+		-
+			message: '#^Cannot access property \$status on App\\Models\\Student\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/ArchiveOnDeleteTest.php
+
+		-
+			message: '#^Cannot access property \$status on App\\Models\\Subject\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Subject\>\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/ArchiveOnDeleteTest.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/ArchiveOnDeleteTest.php
+
+		-
+			message: '#^Cannot call method pluck\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/ArchiveOnDeleteTest.php
+
+		-
+			message: '#^Parameter \#1 \$array of function array_keys expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Feature/ArchiveOnDeleteTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<App\\Models\\Student\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Student\>\|null\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: tests/Feature/ArchiveOnDeleteTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 4
+			path: tests/Feature/ArchiveOnDeleteTest.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function expect$#'
+			identifier: argument.templateType
+			count: 3
+			path: tests/Feature/ArchiveOnDeleteTest.php
 
 		-
 			message: '#^Anonymous function should return bool but returns mixed\.$#'
@@ -1933,6 +2077,18 @@ parameters:
 			path: tests/Feature/ParentStudentsRelationTest.php
 
 		-
+			message: '#^Access to an undefined property App\\Models\\StudentParent\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/ParentsGuardiansTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<App\\Models\\StudentParent\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\StudentParent\>\|null\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: tests/Feature/ParentsGuardiansTest.php
+
+		-
 			message: '#^Cannot cast mixed to string\.$#'
 			identifier: cast.string
 			count: 9
@@ -1981,12 +2137,6 @@ parameters:
 			path: tests/Feature/StudentWizardTest.php
 
 		-
-			message: '#^Call to an undefined method App\\Models\\Student\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Student\>\:\:trashed\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: tests/Feature/TableBulkActionsTest.php
-
-		-
 			message: '#^Cannot access property \$admin_note on App\\Models\\StaffAssignmentRequest\|null\.$#'
 			identifier: property.nonObject
 			count: 1
@@ -1995,6 +2145,24 @@ parameters:
 		-
 			message: '#^Cannot access property \$paid_at on App\\Models\\Payroll\|null\.$#'
 			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/TableBulkActionsTest.php
+
+		-
+			message: '#^Cannot access property \$status on App\\Models\\Student\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/TableBulkActionsTest.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/TableBulkActionsTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<App\\Models\\Student\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Student\>\|null\>\:\:and\(\)$#'
+			identifier: argument.templateType
 			count: 1
 			path: tests/Feature/TableBulkActionsTest.php
 

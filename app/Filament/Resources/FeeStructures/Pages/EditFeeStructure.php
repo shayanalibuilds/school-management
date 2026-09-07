@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\FeeStructures\Pages;
 
 use App\Filament\Resources\FeeStructures\FeeStructureResource;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\ForceDeleteAction;
-use Filament\Actions\RestoreAction;
+use App\Filament\Support\ArchiveAction;
 use Filament\Resources\Pages\EditRecord;
 
 final class EditFeeStructure extends EditRecord
@@ -17,9 +15,7 @@ final class EditFeeStructure extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make(),
-            ForceDeleteAction::make(),
-            RestoreAction::make(),
+            ArchiveAction::make(),
         ];
     }
 }

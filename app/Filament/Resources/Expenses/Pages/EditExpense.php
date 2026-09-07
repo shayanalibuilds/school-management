@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Expenses\Pages;
 
 use App\Filament\Resources\Expenses\ExpenseResource;
-use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
 final class EditExpense extends EditRecord
@@ -15,7 +14,6 @@ final class EditExpense extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make(),
         ];
     }
 }

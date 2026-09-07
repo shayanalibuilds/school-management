@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Attendances\Tables;
 
 use App\Enums\AttendanceStatus;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Columns\TextColumn;
@@ -80,7 +79,6 @@ final class AttendancesTable
                 EditAction::make(),
             ])
             ->toolbarActions([
-                DeleteBulkAction::make(),
             ]);
     }
 }

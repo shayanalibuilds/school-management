@@ -53,7 +53,7 @@ final class FillExamResults extends Page
      */
     public function getClassesProperty(): Collection
     {
-        return StudentClass::query()->orderBy('name')->get();
+        return StudentClass::query()->where('status', 'active')->orderBy('name')->get();
     }
 
     /**
@@ -61,7 +61,7 @@ final class FillExamResults extends Page
      */
     public function getSubjectsProperty(): Collection
     {
-        return Subject::query()->orderBy('name')->get();
+        return Subject::query()->where('status', 'active')->orderBy('name')->get();
     }
 
     /**

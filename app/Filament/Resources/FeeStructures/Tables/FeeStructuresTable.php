@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\FeeStructures\Tables;
 
 use App\Enums\FeeStructureType;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\DeleteBulkAction;
+use App\Filament\Support\ArchiveAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -18,6 +17,10 @@ final class FeeStructuresTable
     {
         return $table
             ->columns([
+                TextColumn::make('status')
+                    ->badge()
+                    ->formatStateUsing(fn (string $state): string => $state === 'active' ? 'Active' : 'Inactive')
+                    ->color(fn (string $state): string => $state === 'active' ? 'success' : 'gray'),
                 TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
@@ -36,10 +39,10 @@ final class FeeStructuresTable
             ])
             ->recordActions([
                 EditAction::make(),
-                DeleteAction::make(),
+                ArchiveAction::make(),
             ])
             ->toolbarActions([
-                DeleteBulkAction::make(),
+                ArchiveAction::bulk(),
             ]);
     }
 }

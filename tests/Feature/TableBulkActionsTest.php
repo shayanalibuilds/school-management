@@ -43,15 +43,17 @@ it('no longer offers bulk edit on the students table', function (): void {
         ->assertTableBulkActionDoesNotExist('bulkEdit');
 });
 
-it('bulk deletes students into the trash', function (): void {
+it('bulk archives students instead of deleting them', function (): void {
     actingAs(Admin::factory()->create(), 'admin');
     $students = Student::factory()->count(2)->create();
 
     Livewire::test(ListStudents::class)
-        ->callTableBulkAction('delete', $students);
+        ->callTableBulkAction('archive', $students);
 
-    $students->each(fn (Student $student) => expect(Student::query()->find($student->getKey()))->toBeNull()
-        ->and(Student::withTrashed()->findOrFail($student->getKey())->trashed())->toBeTrue());
+    // Rows stay in the database - only the status flips to the
+    // archived value, because nothing in a school may be deleted.
+    $students->each(fn (Student $student) => expect(Student::query()->find($student->getKey()))->not->toBeNull()
+        ->and($student->fresh()->status->value)->toBe('left'));
 });
 
 it('bulk marks pending payments as completed and credits the fee', function (): void {

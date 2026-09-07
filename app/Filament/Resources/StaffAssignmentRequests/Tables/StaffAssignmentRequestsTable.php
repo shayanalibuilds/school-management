@@ -10,7 +10,6 @@ use App\Models\Admin;
 use App\Models\StaffAssignmentRequest;
 use Filament\Actions\Action;
 use Filament\Actions\BulkAction;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -157,7 +156,6 @@ final class StaffAssignmentRequestsTable
                         },
                     )
                     ->deselectRecordsAfterCompletion(),
-                DeleteBulkAction::make(),
             ]);
     }
 }

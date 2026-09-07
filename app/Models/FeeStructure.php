@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\FeeStructureType;
+use App\Enums\RecordStatus;
+use App\Models\Concerns\ArchivesInsteadOfDeleting;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,6 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 final class FeeStructure extends Model
 {
+    use ArchivesInsteadOfDeleting;
     use HasFactory;
     use HasUuids;
     use SoftDeletes;
@@ -44,5 +47,15 @@ final class FeeStructure extends Model
             'type' => FeeStructureType::class,
             'amount' => 'decimal:2',
         ];
+    }
+
+    protected function archiveStatus(): string
+    {
+        return RecordStatus::Inactive->value;
+    }
+
+    protected function activeStatus(): string
+    {
+        return RecordStatus::Active->value;
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Students\Pages;
 
 use App\Filament\Resources\Students\StudentResource;
+use App\Filament\Support\ArchiveTabs;
 use App\Filament\Support\ExportCsvAction;
 use App\Importers\StudentImporter;
 use Filament\Actions\CreateAction;
@@ -14,6 +15,15 @@ use Filament\Resources\Pages\ListRecords;
 final class ListStudents extends ListRecords
 {
     protected static string $resource = StudentResource::class;
+
+    /**
+     * Nothing is ever deleted: the Inactive tab is where archived
+     * records live.
+     */
+    public function getTabs(): array
+    {
+        return ArchiveTabs::make();
+    }
 
     protected function getHeaderActions(): array
     {
