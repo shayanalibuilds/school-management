@@ -9,7 +9,14 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property numeric-string $amount
+ * @property string $month
+ * @property Carbon|null $paid_at
+ * @property PayrollStatus $status
+ */
 final class Payroll extends Model
 {
     use HasFactory;
