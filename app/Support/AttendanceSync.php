@@ -10,6 +10,7 @@ use App\Models\Attendance;
 use App\Models\Staff;
 use App\Models\Student;
 use App\Models\StudentClass;
+use Illuminate\Support\Facades\DB;
 
 final class AttendanceSync
 {
@@ -33,17 +34,22 @@ final class AttendanceSync
             ->where('student_class_id', $classId)
             ->get();
 
-        foreach ($students as $student) {
-            $studentId = (string) $student->getKey();
-            $status = $statuses[$studentId] ?? AttendanceStatus::Present->value;
+        // One transaction per class: SQLite serialises writers, so two
+        // simultaneous submissions (queued job + inline save, admin +
+        // staff) can never interleave between lookup and insert.
+        DB::transaction(function () use ($students, $statuses, $classId, $markerType, $markerId): void {
+            foreach ($students as $student) {
+                $studentId = (string) $student->getKey();
+                $status = $statuses[$studentId] ?? AttendanceStatus::Present->value;
 
-            Attendance::updateOrCreateForDay($studentId, today()->toDateString(), [
-                'student_class_id' => $classId,
-                'staff_id' => $markerType === 'staff' ? $markerId : null,
-                'admin_id' => $markerType === 'admin' ? $markerId : null,
-                'status' => $status,
-            ]);
-        }
+                Attendance::updateOrCreateForDay($studentId, today()->toDateString(), [
+                    'student_class_id' => $classId,
+                    'staff_id' => $markerType === 'staff' ? $markerId : null,
+                    'admin_id' => $markerType === 'admin' ? $markerId : null,
+                    'status' => $status,
+                ]);
+            }
+        });
 
         $marker = $markerType === 'staff'
             ? Staff::query()->find($markerId)

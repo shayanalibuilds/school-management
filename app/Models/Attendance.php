@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\UniqueConstraintViolationException;
 
 final class Attendance extends Model
 {
@@ -33,14 +34,16 @@ final class Attendance extends Model
      * date ('2026-09-06' vs '2026-09-06 00:00:00') and never spawns a
      * duplicate row for the same student + day.
      *
+     * When a concurrent writer (for example a queued sync job landing
+     * while an admin submits inline) inserts the row between our lookup
+     * and our save, the unique constraint fires — we resolve it by
+     * re-reading the row and applying the update instead of crashing.
+     *
      * @param  array<string, mixed>  $values
      */
     public static function updateOrCreateForDay(int|string $studentId, string $date, array $values): self
     {
-        $attendance = self::query()
-            ->where('student_id', $studentId)
-            ->whereDate('date', $date)
-            ->first();
+        $attendance = self::forStudentAndDay($studentId, $date);
 
         if ($attendance === null) {
             $attendance = new self();
@@ -52,7 +55,24 @@ final class Attendance extends Model
             $attendance->{$key} = $value;
         }
 
-        $attendance->save();
+        try {
+            $attendance->save();
+        } catch (UniqueConstraintViolationException $exception) {
+            // A concurrent writer claimed this student + day while we
+            // were working. Honour "never delete, never duplicate" by
+            // updating their row rather than failing the whole class.
+            $attendance = self::forStudentAndDay($studentId, $date);
+
+            if ($attendance === null) {
+                throw $exception;
+            }
+
+            foreach ($values as $key => $value) {
+                $attendance->{$key} = $value;
+            }
+
+            $attendance->save();
+        }
 
         return $attendance;
     }
@@ -107,5 +127,18 @@ final class Attendance extends Model
             'date' => 'date',
             'status' => AttendanceStatus::class,
         ];
+    }
+
+    /**
+     * Find a student's attendance for a given day, whichever format the
+     * stored date uses.
+     */
+    private static function forStudentAndDay(int|string $studentId, string $date): ?self
+    {
+        /** @var self|null */
+        return self::query()
+            ->where('student_id', $studentId)
+            ->whereDate('date', $date)
+            ->first();
     }
 }
