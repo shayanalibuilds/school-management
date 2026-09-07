@@ -1,7 +1,32 @@
 {
     "preset": "laravel",
     "ignore": {
-        "words": ["php", "filesystems", "favicon", "js", "tweakflux", "opencode", "bento", "nightwatch", "pirsch", "instruckt", "img", "inviter"],
-        "paths": []
+        "words": [
+            "php",
+            "filesystems",
+            "favicon",
+            "js",
+            "tweakflux",
+            "opencode",
+            "bento",
+            "nightwatch",
+            "pirsch",
+            "instruckt",
+            "img",
+            "inviter",
+            "paisa",
+            "easypaisa",
+            "jazzcash",
+            "cnic",
+            "sha",
+            "hmac",
+            "unarchive",
+            "lookups",
+            "deduplicated",
+            "preselect",
+            "archivable",
+            "gr"
+        ],
+        "paths": ["public/fonts"]
     }
 }

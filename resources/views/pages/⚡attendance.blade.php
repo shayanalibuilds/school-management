@@ -58,7 +58,7 @@ new #[Layout('layouts::app')] class extends Component {
         </div>
         <div class="flex items-center gap-2.5 rounded-lg border border-haze bg-mist px-3.5 py-2 text-xs font-medium text-ink-soft">
             <x-portal-icon name="shield-check" class="h-4.5 w-4.5 text-green" />
-            <span>Synchronised with the daily register · Academic year {{ today()->year }}</span>
+            <span>Synchronized with the daily register · Academic year {{ today()->year }}</span>
         </div>
     </div>
 

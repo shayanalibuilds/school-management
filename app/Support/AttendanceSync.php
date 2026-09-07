@@ -15,9 +15,9 @@ use Illuminate\Support\Facades\DB;
 final class AttendanceSync
 {
     /**
-     * Write a whole class's attendance for today, then tell every
-     * admin's devices. Runs inline or on the queue depending on the
-     * "queue everything" app setting.
+     * Write a whole class's attendance for today, then notify every
+     * admin and the assigned teacher. Runs inline or on the queue
+     * depending on the "queue everything" app setting.
      *
      * @param  array<string, string>  $statuses
      */

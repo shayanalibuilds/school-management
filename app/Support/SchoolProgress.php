@@ -72,7 +72,7 @@ final class SchoolProgress
     }
 
     /**
-     * Monthly cost of one expense. Recurring expenses are normalised
+     * Monthly cost of one expense. Recurring expenses are normalized
      * to a per-month equivalent (a daily expense costs ~30x its amount
      * each month, a yearly one 1/12th). One-time expenses cost their
      * full amount once, in the month they were recorded.
@@ -157,7 +157,7 @@ final class SchoolProgress
     {
         $date = Carbon::createFromFormat('Y-m', $month);
 
-        return $date === null ? $month : $date->format('M Y');
+        return $date instanceof Carbon ? $date->format('M Y') : $month;
     }
 
     /**

@@ -48,7 +48,8 @@ final class EasyPaisaService
 
     /**
      * HMAC-SHA256 over sorted key=value pairs joined with ampersands, keyed
-     * by the store hash key — mirroring EasyPaisa's hosted request signing.
+     * by the store hash key — the same signing EasyPaisa applies to its
+     * hosted checkout requests.
      *
      * @param  array<string, string>  $fields
      */
