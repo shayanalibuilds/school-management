@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Filament\Staff\Pages;
 
 use App\Enums\AttendanceStatus;
+use App\Jobs\SyncAttendance;
 use App\Models\Attendance;
 use App\Models\Staff;
 use App\Models\Student;
 use App\Models\StudentClass;
-use App\Support\PanelNotifier;
+use App\Support\AppSettings;
+use App\Support\AttendanceSync;
 use BackedEnum;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
@@ -146,9 +148,7 @@ final class FillAttendance extends Page
             return;
         }
 
-        $class = StudentClass::query()->find($this->classId);
-
-        if ($class === null) {
+        if (StudentClass::query()->whereKey($this->classId)->doesntExist()) {
             $this->addError('classId', 'Select a class first.');
 
             return;
@@ -156,22 +156,19 @@ final class FillAttendance extends Page
 
         $statuses = $this->statuses;
 
-        $students = Student::query()
-            ->active()
-            ->where('student_class_id', $this->classId)
-            ->get();
+        if (AppSettings::queueEverything()) {
+            SyncAttendance::dispatch('staff', (string) $staff->getKey(), $this->classId, $statuses);
 
-        foreach ($students as $student) {
-            $status = $statuses[$student->getKey()] ?? AttendanceStatus::Present->value;
+            Notification::make()
+                ->title('Attendance queued')
+                ->body("Today's attendance is being recorded in the background.")
+                ->info()
+                ->send();
 
-            Attendance::updateOrCreateForDay($student->getKey(), self::attendanceDate(), [
-                'student_class_id' => $this->classId,
-                'staff_id' => $staff->getKey(),
-                'status' => $status,
-            ]);
+            return;
         }
 
-        PanelNotifier::attendanceFilled($class->name, $staff->name);
+        AttendanceSync::execute('staff', (string) $staff->getKey(), $this->classId, $statuses);
 
         Notification::make()
             ->title('Attendance filled')

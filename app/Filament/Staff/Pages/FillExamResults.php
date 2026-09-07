@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace App\Filament\Staff\Pages;
 
-use App\Enums\ExamResultStatus;
+use App\Jobs\PublishExamResults;
+use App\Jobs\SyncExamResults;
 use App\Models\ExamResult;
 use App\Models\Staff;
 use App\Models\Student;
 use App\Models\StudentClass;
 use App\Models\Subject;
-use App\Support\PanelNotifier;
+use App\Support\AppSettings;
+use App\Support\ExamResultsSync;
 use BackedEnum;
 use Carbon\CarbonInterface;
 use Filament\Notifications\Notification as FilamentNotification;
@@ -209,48 +211,34 @@ final class FillExamResults extends Page
             return;
         }
 
-        $students = Student::query()
-            ->active()
-            ->where('student_class_id', $this->classId)
-            ->get();
-
-        $saved = 0;
-
-        foreach ($students as $student) {
-            $marks = $this->marks[$student->getKey()] ?? null;
-
-            if ($marks === null || $marks === '') {
+        // Validate every provided mark before any write happens.
+        foreach ($this->marks as $value) {
+            if ($value === null || $value === '') {
                 continue;
             }
 
-            $marks = (float) $marks;
-
-            if ($marks < 0 || $marks > 100) {
+            if ((float) $value < 0 || (float) $value > 100) {
                 $this->addError('marks', 'Marks must be between 0 and 100.');
 
                 return;
             }
-
-            // Results are updated in place: an existing record for the
-            // student + subject + year never spawns a duplicate row.
-            $result = ExamResult::query()->firstOrNew([
-                'student_id' => $student->getKey(),
-                'subject_id' => $this->subjectId,
-                'year' => (int) $this->year,
-            ]);
-
-            $result->student_class_id = $this->classId;
-            $result->marks = $marks;
-            $result->total_marks = 100;
-
-            if (! $result->exists) {
-                $result->status = ExamResultStatus::Draft->value;
-            }
-
-            $result->save();
-
-            $saved++;
         }
+
+        $marks = $this->marks;
+
+        if (AppSettings::queueEverything()) {
+            SyncExamResults::dispatch('staff', (string) $staff->getKey(), $this->classId, $this->subjectId, (int) $this->year, $marks);
+
+            FilamentNotification::make()
+                ->title('Results queued')
+                ->body('The marks are being recorded in the background.')
+                ->info()
+                ->send();
+
+            return;
+        }
+
+        $saved = ExamResultsSync::execute('staff', (string) $staff->getKey(), $this->classId, $this->subjectId, (int) $this->year, $marks);
 
         FilamentNotification::make()
             ->title($saved === 0 ? 'Nothing to fill' : "Results filled for {$saved} students")
@@ -310,22 +298,19 @@ final class FillExamResults extends Page
             return;
         }
 
-        ExamResult::query()
-            ->where('student_class_id', $this->classId)
-            ->where('subject_id', $this->subjectId)
-            ->where('year', (int) $this->year)
-            ->update([
-                'status' => ExamResultStatus::Published->value,
-                'published_at' => now(),
-            ]);
+        if (AppSettings::queueEverything()) {
+            PublishExamResults::dispatch('staff', (string) $staff->getKey(), $this->classId, $this->subjectId, (int) $this->year);
 
-        PanelNotifier::examResultsPublished(
-            className: (string) StudentClass::query()->whereKey($this->classId)->value('name'),
-            subjectName: (string) Subject::query()->whereKey($this->subjectId)->value('name'),
-            publisherName: $staff->name,
-            classId: (string) $this->classId,
-            subjectId: (string) $this->subjectId,
-        );
+            FilamentNotification::make()
+                ->title('Publishing queued')
+                ->body('The results are being published in the background.')
+                ->info()
+                ->send();
+
+            return;
+        }
+
+        ExamResultsSync::publish($this->classId, $this->subjectId, (int) $this->year, $staff->name);
 
         FilamentNotification::make()
             ->title("Results published for {$publishable} students")
