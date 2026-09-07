@@ -317,7 +317,7 @@
                 <h2>Official Electronic Settlement Voucher</h2>
                 <p>
                     System-verifiable record ·
-                    Student GR: <strong class="mono tabular">{{ $payment->fee->student->gr_no }}</strong>
+                    Student GR: <strong class="mono tabular">{{ \App\Support\GrNumber::bare($payment->fee->student->gr_no) }}</strong>
                 </p>
             </div>
         </div>
@@ -360,7 +360,7 @@
             <div>
                 <span class="label">Student</span>
                 <span class="value">{{ $payment->fee->student->name }}</span>
-                <span class="gr-chip tabular">GR {{ $payment->fee->student->gr_no }}</span>
+                <span class="gr-chip tabular">GR {{ \App\Support\GrNumber::bare($payment->fee->student->gr_no) }}</span>
             </div>
             <div>
                 <span class="label">Received from</span>

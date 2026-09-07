@@ -252,7 +252,7 @@ new #[Layout('layouts::app')] class extends Component {
                                                     Record verified
                                                 </span>
                                                 <span class="rounded bg-tint px-2 py-0.5 font-mono text-xs font-bold tabular text-ink">
-                                                    GR: {{ $student->gr_no }}
+                                                    GR: {{ \App\Support\GrNumber::bare($student->gr_no) }}
                                                 </span>
                                             </div>
                                             <h2 class="text-xl font-bold text-ink">{{ $student->name }}</h2>
@@ -314,11 +314,12 @@ new #[Layout('layouts::app')] class extends Component {
                                 @else
                                     <div class="flex flex-col justify-between rounded-xl bg-mist p-4 shadow-sm md:col-span-2">
                                         <div class="mb-2 flex items-center justify-between text-ink-soft">
-                                            <span class="text-xs font-semibold uppercase tracking-wider">No subject marks on file</span>
+                                            <span class="text-xs font-semibold uppercase tracking-wider">Positions view</span>
                                             <x-portal-icon name="document-text" class="h-5 w-5 text-navy" />
                                         </div>
                                         <p class="text-sm text-ink-soft">
-                                            {{ count($row['results']) }} published result{{ count($row['results']) === 1 ? '' : 's' }} for this student in {{ $year }}.
+                                            Subject marks are hidden in this view — switch
+                                            <span class="font-semibold text-ink">Show as: Grades</span> to see the full breakdown.
                                         </p>
                                     </div>
                                 @endif

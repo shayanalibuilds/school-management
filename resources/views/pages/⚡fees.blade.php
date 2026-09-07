@@ -255,7 +255,7 @@ new #[Layout('layouts::app')] class extends Component {
                                 <div class="flex flex-wrap items-center gap-2.5">
                                     <span class="text-xs font-bold uppercase tracking-widest text-glow">Fee Ledger</span>
                                     <span class="text-steel">•</span>
-                                    <span class="font-mono text-xs font-semibold tabular text-steel">GR {{ $student->gr_no }}</span>
+                                    <span class="font-mono text-xs font-semibold tabular text-steel">GR {{ \App\Support\GrNumber::bare($student->gr_no) }}</span>
                                 </div>
                                 <h2 class="mt-1 text-xl font-bold text-white">{{ $student->name }}</h2>
                                 <span class="mt-0.5 block text-sm text-steel">

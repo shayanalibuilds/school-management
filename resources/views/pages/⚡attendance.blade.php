@@ -152,12 +152,12 @@ new #[Layout('layouts::app')] class extends Component {
                                         </div>
                                         <h2 class="text-xl font-bold text-ink">{{ $student->name }}</h2>
                                         <p class="mt-0.5 text-sm text-ink-soft">
-                                            {{ $student->studentClass?->name ?? '—' }} · GR {{ $student->gr_no }}
+                                            {{ $student->studentClass?->name ?? '—' }} · GR {{ \App\Support\GrNumber::bare($student->gr_no) }}
                                         </p>
                                     </div>
                                 </div>
                                 <span class="rounded-lg border border-haze bg-mist px-3 py-1.5 font-mono text-sm font-bold tabular text-ink">
-                                    GR{{ $student->gr_no }}
+                                    GR{{ \App\Support\GrNumber::bare($student->gr_no) }}
                                 </span>
                             </div>
 
