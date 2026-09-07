@@ -87,7 +87,7 @@ final class TimetableForm
 
                                         if ($conflict !== null) {
                                             $fail(sprintf(
-                                                '%s is already booked: %s teaches %s to %s at %s-%s. A class can only have one subject in a slot, and a subject can only be scheduled once at the same time.',
+                                                '%s is already booked: %s teaches %s to %s at %s-%s. A class can only have one subject in a slot, and a teacher can only teach one class at a time.',
                                                 $conflict->dayLabel(),
                                                 $conflict->teacher()?->name ?? 'a teacher',
                                                 $conflict->subject?->name,
