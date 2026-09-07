@@ -43,6 +43,16 @@
                 color: #ffffff;
             }
             .att-btn[aria-pressed="true"]:hover { background-color: var(--primary-500, #3b82f6); }
+            /* Active status speaks in its own colour: red for a missed day,
+               yellow for sanctioned leave, primary blue for present. */
+            .att-btn[data-status="absent"][aria-pressed="true"] {
+                background-color: #dc2626; border-color: #dc2626; color: #ffffff;
+            }
+            .att-btn[data-status="absent"][aria-pressed="true"]:hover { background-color: #ef4444; }
+            .att-btn[data-status="leave"][aria-pressed="true"] {
+                background-color: #eab308; border-color: #ca8a04; color: #422006;
+            }
+            .att-btn[data-status="leave"][aria-pressed="true"]:hover { background-color: #facc15; }
         </style>
 
         <div x-data="{ statuses: @js($this->statuses) }" wire:key="attendance-board-{{ $classId }}">
@@ -67,6 +77,7 @@
                                                 <button
                                                     type="button"
                                                     class="att-btn"
+                                                    data-status="{{ $status->value }}"
                                                     :aria-pressed="(statuses['{{ $student->getKey() }}'] ?? '') === '{{ $status->value }}'"
                                                     @click="statuses['{{ $student->getKey() }}'] = '{{ $status->value }}'"
                                                 >
