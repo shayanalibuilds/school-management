@@ -1171,6 +1171,12 @@ parameters:
 			path: app/Models/TimetableSlot.php
 
 		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: app/Models/TimetableSlot.php
+
+		-
 			message: '#^Class App\\Models\\TimetableSlot uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
 			identifier: missingType.generics
 			count: 1
@@ -1969,6 +1975,12 @@ parameters:
 			path: tests/Feature/TableBulkActionsTest.php
 
 		-
+			message: '#^Cannot access property \$student_class_id on App\\Models\\TimetableSlot\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/TimetableTest.php
+
+		-
 			message: '#^Cannot access property \$subject_id on App\\Models\\TimetableSlot\|null\.$#'
 			identifier: property.nonObject
 			count: 1
@@ -1989,17 +2001,17 @@ parameters:
 		-
 			message: '#^Parameter \#1 \$classId of static method App\\Models\\TimetableSlot\:\:findConflict\(\) expects string, mixed given\.$#'
 			identifier: argument.type
-			count: 6
+			count: 8
 			path: tests/Feature/TimetableTest.php
 
 		-
 			message: '#^Parameter \#2 \$subjectId of static method App\\Models\\TimetableSlot\:\:findConflict\(\) expects string, mixed given\.$#'
 			identifier: argument.type
-			count: 6
+			count: 8
 			path: tests/Feature/TimetableTest.php
 
 		-
 			message: '#^Parameter \#6 \$ignoreId of static method App\\Models\\TimetableSlot\:\:findConflict\(\) expects string\|null, mixed given\.$#'
 			identifier: argument.type
-			count: 1
+			count: 2
 			path: tests/Feature/TimetableTest.php
