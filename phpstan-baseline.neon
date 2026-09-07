@@ -1681,6 +1681,36 @@ parameters:
 			path: tests/Feature/AttendanceTest.php
 
 		-
+			message: '#^Cannot call method getKey\(\) on App\\Models\\Student\|null\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: tests/Feature/AttendanceUpsertTest.php
+
+		-
+			message: '#^Cannot call method up\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/AttendanceUpsertTest.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 4
+			path: tests/Feature/AttendanceUpsertTest.php
+
+		-
+			message: '#^Parameter \#1 \$studentId of static method App\\Models\\Attendance\:\:updateOrCreateForDay\(\) expects int\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 5
+			path: tests/Feature/AttendanceUpsertTest.php
+
+		-
+			message: '#^Parameter \#2 \$markerId of static method App\\Support\\AttendanceSync\:\:execute\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: tests/Feature/AttendanceUpsertTest.php
+
+		-
 			message: '#^Parameter \#1 \$haystack of function str_contains expects string, string\|false given\.$#'
 			identifier: argument.type
 			count: 2
