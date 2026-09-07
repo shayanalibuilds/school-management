@@ -1,3 +1,57 @@
 @import 'tailwindcss';
 
 @custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Public portal design tokens — extracted from the institutional registry
+ * mockups (Newsreader + Plus Jakarta Sans, violet-tinted surfaces, navy
+ * primary containers, green verification accents, sharp 4px/8px radii).
+ */
+@theme {
+    --font-sans: 'Plus Jakarta Sans', 'Segoe UI', system-ui, ui-sans-serif, sans-serif;
+    --font-display: 'Newsreader', Georgia, 'Times New Roman', serif;
+
+    /* Surfaces */
+    --color-paper: #faf8ff;
+    --color-card: #ffffff;
+    --color-mist: #f2f3ff;
+    --color-tint: #eaedff;
+    --color-haze: #e2e7ff;
+    --color-haze-deep: #dae2fd;
+
+    /* Ink */
+    --color-ink: #131b2e;
+    --color-ink-soft: #45474d;
+    --color-line: #c6c6cd;
+
+    /* Navy primary container (buttons, table heads, footer) */
+    --color-navy: #121b2f;
+    --color-navy-hover: #283044;
+    --color-steel: #7a849c;
+    --color-glow: #98f5c5;
+
+    /* Green verification accent */
+    --color-green: #006c48;
+    --color-mint: #95f3c2;
+    --color-mint-ink: #00714c;
+
+    /* Warning (sanctioned leave, pending dues) */
+    --color-clay: #ffdbca;
+    --color-clay-ink: #763300;
+
+    /* Danger (absences, overdue balances) */
+    --color-alert: #ba1a1a;
+    --color-alert-soft: #ffdad6;
+    --color-alert-ink: #93000a;
+}
+
+@layer base {
+    body {
+        font-optical-sizing: auto;
+    }
+
+    /* Ledger-style numerals everywhere numbers are compared or scanned */
+    .tabular {
+        font-variant-numeric: tabular-nums;
+    }
+}
