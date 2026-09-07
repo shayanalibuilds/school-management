@@ -341,7 +341,18 @@
             </div>
             <div class="receipt-box">
                 <div class="label">Receipt No.</div>
-                <div class="number mono tabular">{{ $payment->reference ?? 'PENDING' }}</div>
+                <div class="number mono tabular">
+                    @if (filled($payment->reference))
+                        {{ $payment->reference }}
+                    @elseif ($payment->status->value === 'completed')
+                        {{-- Gateway callbacks always carry a reference; an
+                             office-recorded settlement may not, so every
+                             completed receipt still gets its own number. --}}
+                        RCPT-{{ strtoupper(substr($payment->getKey(), 0, 8)) }}
+                    @else
+                        PENDING
+                    @endif
+                </div>
                 <div class="label">Payment date</div>
                 <div class="small tabular" style="font-size:13px; font-weight:600; margin-bottom:2px;">
                     {{ $payment->paid_at?->format('d M Y, h:i A') ?? '—' }}
