@@ -42,7 +42,7 @@ final class ExamResultForm
                                     // A result belonging to a graduated or
                                     // departed student still needs its label
                                     // on the edit form instead of a raw id.
-                                    if ($record !== null && ! array_key_exists($record->student_id, $labels) && $record->student !== null) {
+                                    if ($record instanceof ExamResult && ! array_key_exists($record->student_id, $labels) && $record->student !== null) {
                                         $labels[$record->student_id] = $record->student->selectLabel();
                                     }
 

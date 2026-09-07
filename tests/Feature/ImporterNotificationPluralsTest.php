@@ -7,7 +7,6 @@ use App\Importers\StudentImporter;
 function countedNoun(int $count, string $singular, ?string $plural = null): string
 {
     $method = new ReflectionMethod(StudentImporter::class, 'countedNoun');
-    $method->setAccessible(true);
 
     return $method->invoke(null, $count, $singular, $plural);
 }
