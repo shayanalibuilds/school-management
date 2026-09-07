@@ -35,7 +35,9 @@ abstract class Importer extends FilamentImporter
     }
 
     /**
-     * Resolve a class by its name.
+     * Resolve a class by its name. Schools import students whose class
+     * names come from their own records, so a class that does not exist
+     * yet is created on the fly instead of failing the whole import.
      */
     protected static function classByName(mixed $value): ?StudentClass
     {
@@ -45,7 +47,7 @@ abstract class Importer extends FilamentImporter
             return null;
         }
 
-        return StudentClass::query()->where('name', $name)->first();
+        return StudentClass::query()->firstOrCreate(['name' => $name]);
     }
 
     /**

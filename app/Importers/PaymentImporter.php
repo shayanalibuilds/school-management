@@ -48,7 +48,7 @@ final class PaymentImporter extends Importer
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        return 'Imported '.$import->successful_rows->format('0,0').' payments.';
+        return 'Imported '.number_format($import->successful_rows).' payments.';
     }
 
     public function resolveRecord(): ?Payment

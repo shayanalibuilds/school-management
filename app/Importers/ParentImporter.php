@@ -37,7 +37,7 @@ final class ParentImporter extends Importer
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        return 'Imported '.$import->successful_rows->format('0,0').' parents.';
+        return 'Imported '.number_format($import->successful_rows).' parents.';
     }
 
     public function resolveRecord(): ?StudentParent

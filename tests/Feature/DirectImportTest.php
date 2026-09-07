@@ -18,19 +18,22 @@ use App\Models\Student;
 use App\Models\StudentClass;
 use App\Models\StudentParent;
 use App\Models\Subject;
+use Filament\Actions\Imports\Jobs\ImportCsv;
 use Filament\Actions\Imports\Models\Import as FilamentImport;
 use Illuminate\Support\Carbon;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 
-function testImport(string $importer): FilamentImport
+function testImport(string $importer, int $totalRows = 0): FilamentImport
 {
     return FilamentImport::query()->create([
         'file_name' => 'test.csv',
         'file_path' => 'test.csv',
         'importer' => $importer,
-        'total_rows' => 0,
+        'total_rows' => $totalRows,
+        'processed_rows' => 0,
+        'successful_rows' => 0,
         'user_id' => Admin::factory()->create()->getKey(),
     ]);
 }
@@ -158,4 +161,58 @@ it('imports staff keyed by CNIC with a default status', function (): void {
         ->and($imported->email)->toBe('updated@school.test')
         ->and($imported->status->value)->toBe('on_leave')
         ->and(Staff::query()->where('cnic', '22222-2222222-2')->first()->status->value)->toBe('active');
+});
+
+it('creates missing classes instead of failing the row when importing students', function (): void {
+    $importer = new StudentImporter(
+        testImport(StudentImporter::class),
+        ['gr_no' => 'gr_no', 'name' => 'name', 'class' => 'class', 'joining_date' => 'joining_date', 'status' => 'status'],
+        [],
+    );
+
+    $importer(['gr_no' => 'GR4001', 'name' => 'Fresh Arrival', 'class' => 'Class 12-B', 'joining_date' => '2026-09-01', 'status' => 'active']);
+
+    $student = Student::query()->where('gr_no', 'GR4001')->first();
+
+    expect($student)->not->toBeNull()
+        ->and(StudentClass::query()->where('name', 'Class 12-B')->exists())->toBeTrue()
+        ->and($student->studentClass->name)->toBe('Class 12-B');
+});
+
+it('rejects new student rows without joining date with a clear message', function (): void {
+    $import = testImport(StudentImporter::class, totalRows: 1);
+
+    $job = new ImportCsv(
+        $import,
+        base64_encode(serialize([
+            ['gr_no' => 'GR4002', 'name' => 'No Date Kid', 'class' => 'Class 1', 'joining_date' => '', 'status' => 'active'],
+        ])),
+        ['gr_no' => 'gr_no', 'name' => 'name', 'class' => 'class', 'joining_date' => 'joining_date', 'status' => 'status'],
+        [],
+    );
+
+    $job->handle();
+
+    expect(Student::query()->where('gr_no', 'GR4002')->exists())->toBeFalse()
+        ->and($import->getFailedRowsCount())->toBe(1)
+        ->and($import->failedRows()->first()->validation_error)->toContain('joining_date');
+});
+
+it('explains failed rows in the completed notification body', function (): void {
+    $import = testImport(StudentImporter::class, totalRows: 2);
+
+    $job = new ImportCsv(
+        $import,
+        base64_encode(serialize([
+            ['gr_no' => 'GR4003', 'name' => '', 'class' => 'Class 1', 'joining_date' => '2026-09-01', 'status' => 'active'],
+            ['gr_no' => 'GR4004', 'name' => 'Good Kid', 'class' => 'Class 1', 'joining_date' => '2026-09-01', 'status' => 'active'],
+        ])),
+        ['gr_no' => 'gr_no', 'name' => 'name', 'class' => 'class', 'joining_date' => 'joining_date', 'status' => 'status'],
+        [],
+    );
+
+    $job->handle();
+
+    expect($import->successful_rows)->toBe(1)
+        ->and(StudentImporter::getCompletedNotificationBody($import))->toContain('Imported 1 students. 1 rows failed - use the download button to see why each row was rejected.');
 });

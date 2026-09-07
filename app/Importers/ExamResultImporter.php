@@ -43,7 +43,7 @@ final class ExamResultImporter extends Importer
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        return 'Imported '.$import->successful_rows->format('0,0').' exam results.';
+        return 'Imported '.number_format($import->successful_rows).' exam results.';
     }
 
     /**
