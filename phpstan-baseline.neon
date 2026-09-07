@@ -1819,6 +1819,18 @@ parameters:
 			path: tests/Feature/DirectImportTest.php
 
 		-
+			message: '#^Part \$fee\-\>getKey\(\) \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: tests/Feature/EditFormStudentLabelsTest.php
+
+		-
+			message: '#^Part \$result\-\>getKey\(\) \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: tests/Feature/EditFormStudentLabelsTest.php
+
+		-
 			message: '#^Access to an undefined property Livewire\\Component\:\:\$globalPublish\.$#'
 			identifier: property.notFound
 			count: 3
@@ -2005,6 +2017,12 @@ parameters:
 			path: tests/Feature/FinanceTest.php
 
 		-
+			message: '#^Parameter \#1 \$string of function mb_substr expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Feature/FinanceTest.php
+
+		-
 			message: '#^Parameter \#1 \$value of method Illuminate\\Testing\\TestResponse\<Symfony\\Component\\HttpFoundation\\Response\>\:\:assertSee\(\) expects list\<string\>\|string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -2013,7 +2031,7 @@ parameters:
 		-
 			message: '#^Part \$payment\-\>getKey\(\) \(mixed\) of encapsed string cannot be cast to string\.$#'
 			identifier: encapsedStringPart.nonString
-			count: 1
+			count: 2
 			path: tests/Feature/FinanceTest.php
 
 		-
