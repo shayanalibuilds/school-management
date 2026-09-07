@@ -36,6 +36,8 @@ it('scopes students to active status', function (): void {
 });
 
 it('rejects duplicate class names', function (): void {
+    actingAs(Admin::factory()->create(), 'admin');
+
     StudentClass::factory()->create(['name' => 'Class 1']);
 
     Livewire::test(CreateStudentClass::class)
