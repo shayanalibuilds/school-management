@@ -99,6 +99,41 @@ final class ExamResultsSync
     }
 
     /**
+     * Publish every still-unpublished result of the whole school for
+     * the given year - all classes, all subjects - in one action and
+     * open the 30 day correction window for each. Already published
+     * rows (locked or not) keep their original published_at, so their
+     * correction windows are not restarted.
+     */
+    public static function publishAll(int $year, string $publisherName): int
+    {
+        $publishable = ExamResult::query()
+            ->where('year', $year)
+            ->whereNull('published_at')
+            ->count();
+
+        if ($publishable === 0) {
+            return 0;
+        }
+
+        ExamResult::query()
+            ->where('year', $year)
+            ->whereNull('published_at')
+            ->update([
+                'status' => ExamResultStatus::Published->value,
+                'published_at' => now(),
+            ]);
+
+        PanelNotifier::examResultsPublishedGlobally(
+            year: $year,
+            publisherName: $publisherName,
+            publishedCount: $publishable,
+        );
+
+        return $publishable;
+    }
+
+    /**
      * Display name of whoever triggered a sync or publish.
      */
     public static function actorName(string $markerType, string $markerId): string

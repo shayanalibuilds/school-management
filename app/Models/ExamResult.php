@@ -61,6 +61,58 @@ final class ExamResult extends Model
     }
 
     /**
+     * Class + subject sheets for the year that have no results recorded
+     * yet - i.e. exams that are still unchecked. A class counts as
+     * checked once every subject assigned to it has at least one result
+     * for the year; classes without active students are skipped because
+     * there is nobody to examine.
+     *
+     * @return list<string> e.g. ['Class 1 - Mathematics']
+     */
+    public static function uncheckedSheets(int $year): array
+    {
+        $missing = [];
+
+        $classes = StudentClass::query()
+            ->with('subjects')
+            ->orderBy('name')
+            ->get();
+
+        foreach ($classes as $class) {
+            $hasActiveStudents = $class->students()
+                ->where('status', 'active')
+                ->exists();
+
+            if (! $hasActiveStudents) {
+                continue;
+            }
+
+            foreach ($class->subjects as $subject) {
+                $hasResults = self::query()
+                    ->where('student_class_id', $class->getKey())
+                    ->where('subject_id', $subject->getKey())
+                    ->where('year', $year)
+                    ->exists();
+
+                if (! $hasResults) {
+                    $missing[] = $class->name.' - '.$subject->name;
+                }
+            }
+        }
+
+        return $missing;
+    }
+
+    /**
+     * Whether every class has checked exams for the year. The global
+     * publish button stays disabled until this is true.
+     */
+    public static function allClassesChecked(int $year): bool
+    {
+        return self::uncheckedSheets($year) === [];
+    }
+
+    /**
      * Whether a whole result sheet is locked (published more than
      * 30 days ago and therefore no longer editable anywhere).
      */

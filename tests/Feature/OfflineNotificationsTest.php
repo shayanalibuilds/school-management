@@ -47,8 +47,9 @@ it('persists attendance filled notifications for every admin device', function (
     expect($notifications->firstWhere('notifiable_id', $otherAdmin->getKey())->read_at)->toBeNull();
 });
 
-it('tells admins and the subject teacher when results are published', function (): void {
+it('tells admins and every assigned teacher when results are published globally', function (): void {
     $staff = Staff::factory()->create();
+    $otherStaff = Staff::factory()->create();
     $admin = Admin::factory()->create();
     $class = StudentClass::factory()->create(['name' => 'Class 3']);
     $subject = Subject::factory()->create(['name' => 'Physics']);
@@ -70,23 +71,26 @@ it('tells admins and the subject teacher when results are published', function (
         ->call('save')
         ->assertSuccessful();
 
-    Livewire::test(App\Filament\Staff\Pages\FillExamResults::class)
-        ->set('classId', $class->getKey())
-        ->set('subjectId', $subject->getKey())
+    // Publication is a school-wide admin action now.
+    actingAs($admin, 'admin');
+    Filament\Facades\Filament::setCurrentPanel('admin');
+
+    Livewire::test(App\Filament\Pages\FillExamResults::class)
         ->set('year', '2026')
-        ->call('publish')
+        ->call('publishAll')
         ->assertNotified();
 
     $notifications = DatabaseNotification::query()
-        ->where('type', App\Notifications\ExamResultsPublishedNotification::class)
+        ->where('type', App\Notifications\ExamResultsPublishedGloballyNotification::class)
         ->get();
 
+    // The assigned teacher gets one, the unassigned teacher does not.
     expect($notifications)->toHaveCount(2)
         ->and($notifications->where('notifiable_type', Admin::class))->toHaveCount(1)
         ->and($notifications->where('notifiable_type', Staff::class))->toHaveCount(1)
+        ->and($notifications->firstWhere('notifiable_id', $otherStaff->getKey()))->toBeNull()
         ->and($notifications->first()->data['title'])->toBe('Exam results published')
-        ->and($notifications->first()->data['body'])->toContain('Physics')
-        ->and($notifications->first()->data['body'])->toContain('Class 3');
+        ->and($notifications->first()->data['body'])->toContain('all classes');
 });
 
 it('renders database notifications through the Filament bell format', function (): void {

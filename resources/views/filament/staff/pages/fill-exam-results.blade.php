@@ -109,15 +109,6 @@
                         <x-filament::button wire:click="save" icon="heroicon-m-check">
                             Fill exam results
                         </x-filament::button>
-                        <x-filament::button
-                            wire:click="publish"
-                            wire:confirm="Publish these results? Students will see them, and corrections stay open for 30 days."
-                            color="success"
-                            outlined
-                            icon="heroicon-m-globe-alt"
-                        >
-                            Publish results
-                        </x-filament::button>
                     </div>
                 @else
                     <x-filament::badge color="danger" icon="heroicon-m-lock-closed">

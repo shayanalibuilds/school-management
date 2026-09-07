@@ -10,6 +10,7 @@ use App\Models\Staff;
 use App\Models\Student;
 use App\Models\StudentClass;
 use App\Models\Subject;
+use App\Support\ExamResultsSync;
 use App\Support\Positions;
 use Illuminate\Support\Carbon;
 use Livewire\Livewire;
@@ -74,10 +75,8 @@ it('publishes a whole result sheet and opens the 30 day correction window', func
         ->and(ExamResult::query()->sole()->status)->toBe(ExamResultStatus::Draft);
 
     Livewire::test(FillExamResults::class)
-        ->set('classId', $class->getKey())
-        ->set('subjectId', $subject->getKey())
         ->set('year', '2026')
-        ->call('publish')
+        ->call('publishAll')
         ->assertNotified();
 
     $result = ExamResult::query()->sole();
@@ -214,4 +213,99 @@ it('hides drafts from public results and class positions', function (): void {
         ->and($students[1]->examResults()->published()->count())->toBe(0)
         ->and(Positions::forClass($class, 2026)->has($students[1]->getKey()))->toBeFalse()
         ->and(Positions::forClass($class, 2026)->get($students[0]->getKey()))->toBe(1);
+});
+
+it('reports unchecked class subject sheets for the year', function (): void {
+    $class = StudentClass::factory()->create(['name' => 'Class 5']);
+    $otherClass = StudentClass::factory()->create(['name' => 'Class 6']);
+    $maths = Subject::factory()->create(['name' => 'Mathematics']);
+    $english = Subject::factory()->create(['name' => 'English']);
+    $class->subjects()->attach([$maths->getKey(), $english->getKey()]);
+    $student = Student::factory()->create(['student_class_id' => $class->getKey()]);
+    $otherStudent = Student::factory()->create(['student_class_id' => $otherClass->getKey()]);
+    $otherClass->subjects()->attach($maths->getKey());
+
+    expect(ExamResult::uncheckedSheets(2026))->toBe([
+        'Class 5 - Mathematics',
+        'Class 5 - English',
+        'Class 6 - Mathematics',
+    ])->and(ExamResult::allClassesChecked(2026))->toBeFalse();
+
+    ExamResult::factory()->create(['student_id' => $student->getKey(), 'student_class_id' => $class->getKey(), 'subject_id' => $maths->getKey(), 'year' => 2026, 'marks' => 60]);
+    ExamResult::factory()->create(['student_id' => $student->getKey(), 'student_class_id' => $class->getKey(), 'subject_id' => $english->getKey(), 'year' => 2026, 'marks' => 60]);
+    ExamResult::factory()->create(['student_id' => $otherStudent->getKey(), 'student_class_id' => $otherClass->getKey(), 'subject_id' => $maths->getKey(), 'year' => 2026, 'marks' => 60]);
+
+    expect(ExamResult::uncheckedSheets(2026))->toBe([])
+        ->and(ExamResult::allClassesChecked(2026))->toBeTrue();
+});
+
+it('publishes every class at once and keeps already published windows intact', function (): void {
+    Carbon::setTestNow(Carbon::parse('2026-05-01 10:00:00'));
+
+    $admin = Admin::factory()->create();
+    $classOne = StudentClass::factory()->create();
+    $classTwo = StudentClass::factory()->create();
+    $subject = Subject::factory()->create();
+    $studentOne = Student::factory()->create(['student_class_id' => $classOne->getKey()]);
+    $studentTwo = Student::factory()->create(['student_class_id' => $classTwo->getKey()]);
+
+    // A draft in class one, a draft in class two, and an already
+    // published row whose correction window must not restart.
+    ExamResult::factory()->create(['student_id' => $studentOne->getKey(), 'student_class_id' => $classOne->getKey(), 'subject_id' => $subject->getKey(), 'year' => 2026, 'marks' => 70]);
+    ExamResult::factory()->create(['student_id' => $studentTwo->getKey(), 'student_class_id' => $classTwo->getKey(), 'subject_id' => $subject->getKey(), 'year' => 2026, 'marks' => 80]);
+    $alreadyPublished = ExamResult::factory()->published()->create([
+        'student_id' => $studentTwo->getKey(),
+        'student_class_id' => $classTwo->getKey(),
+        'subject_id' => $subject->getKey(),
+        'year' => 2025,
+        'marks' => 90,
+        'published_at' => Carbon::parse('2026-04-01 10:00:00'),
+    ]);
+
+    $published = ExamResultsSync::publishAll(2026, $admin->name);
+
+    expect($published)->toBe(2)
+        ->and(ExamResult::query()->where('year', 2026)->whereNotNull('published_at')->count())->toBe(2)
+        ->and($alreadyPublished->refresh()->published_at->toDateTimeString())->toBe('2026-04-01 10:00:00')
+        ->and(ExamResult::query()->where('year', 2026)->where('status', ExamResultStatus::Published->value)->count())->toBe(2);
+
+    Carbon::setTestNow();
+});
+
+it('exposes the global publish state and refuses to publish unchecked sheets', function (): void {
+    $admin = Admin::factory()->create();
+    $class = StudentClass::factory()->create();
+    $subject = Subject::factory()->create();
+    $class->subjects()->attach($subject->getKey());
+    $student = Student::factory()->create(['student_class_id' => $class->getKey()]);
+
+    actingAs($admin, 'admin');
+    Filament\Facades\Filament::setCurrentPanel('admin');
+
+    $page = Livewire::test(FillExamResults::class)
+        ->set('year', '2026');
+
+    expect($page->instance()->globalPublish)->toBe([
+        'drafts' => 0,
+        'missing' => [$class->name.' - '.$subject->name],
+        'ready' => false,
+    ]);
+
+    // Fill the missing sheet: the state flips to ready only when drafts exist.
+    Livewire::test(FillExamResults::class)
+        ->set('classId', $class->getKey())
+        ->set('subjectId', $subject->getKey())
+        ->set('year', '2026')
+        ->set("marks.{$student->getKey()}", '64')
+        ->call('save')
+        ->assertNotified();
+
+    $page = Livewire::test(FillExamResults::class)->set('year', '2026');
+
+    expect($page->instance()->globalPublish['ready'])->toBeTrue()
+        ->and($page->instance()->globalPublish['drafts'])->toBe(1);
+
+    $page->call('publishAll')->assertNotified('Exam results published for all classes (1 students)');
+
+    expect(ExamResult::query()->sole()->status)->toBe(ExamResultStatus::Published);
 });

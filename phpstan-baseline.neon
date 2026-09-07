@@ -43,12 +43,6 @@ parameters:
 			path: app/Filament/Pages/FillAttendance.php
 
 		-
-			message: '#^Property App\\Filament\\Pages\\FillAttendance\:\:\$statuses \(array\<string, string\>\) does not accept array\<int\|string, string\>\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: app/Filament/Pages/FillAttendance.php
-
-		-
 			message: '#^Property App\\Filament\\Pages\\FillAttendance\:\:\$statuses \(array\<string, string\>\) does not accept array\<mixed\>\.$#'
 			identifier: assign.propertyType
 			count: 1
@@ -319,12 +313,6 @@ parameters:
 			path: app/Filament/Staff/Pages/FillAttendance.php
 
 		-
-			message: '#^Property App\\Filament\\Staff\\Pages\\FillAttendance\:\:\$statuses \(array\<string, string\>\) does not accept array\<int\|string, string\>\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: app/Filament/Staff/Pages/FillAttendance.php
-
-		-
 			message: '#^Property App\\Filament\\Staff\\Pages\\FillAttendance\:\:\$statuses \(array\<string, string\>\) does not accept array\<mixed\>\.$#'
 			identifier: assign.propertyType
 			count: 1
@@ -339,7 +327,7 @@ parameters:
 		-
 			message: '#^Cannot cast mixed to string\.$#'
 			identifier: cast.string
-			count: 4
+			count: 3
 			path: app/Filament/Staff/Pages/FillExamResults.php
 
 		-
@@ -1219,6 +1207,12 @@ parameters:
 			path: app/Support/PanelNotifier.php
 
 		-
+			message: '#^Parameter \#1 \$items of method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\Admin\>\:\:merge\(\) expects iterable\<\(int\|string\), App\\Models\\Admin\>, Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Staff\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Support/PanelNotifier.php
+
+		-
 			message: '#^Parameter \#1 \$items of method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\Admin\>\:\:merge\(\) expects iterable\<\(int\|string\), App\\Models\\Admin\>, Illuminate\\Support\\Collection\<\(int\|string\), mixed\> given\.$#'
 			identifier: argument.type
 			count: 1
@@ -1663,6 +1657,24 @@ parameters:
 			path: tests/Feature/DirectImportTest.php
 
 		-
+			message: '#^Access to an undefined property Livewire\\Component\:\:\$globalPublish\.$#'
+			identifier: property.notFound
+			count: 3
+			path: tests/Feature/ExamResultPublishingTest.php
+
+		-
+			message: '#^Cannot access offset ''drafts'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Feature/ExamResultPublishingTest.php
+
+		-
+			message: '#^Cannot access offset ''ready'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Feature/ExamResultPublishingTest.php
+
+		-
 			message: '#^Cannot access property \$marks on App\\Models\\ExamResult\|null\.$#'
 			identifier: property.nonObject
 			count: 1
@@ -1707,7 +1719,7 @@ parameters:
 		-
 			message: '#^Cannot call method toDateTimeString\(\) on string\|null\.$#'
 			identifier: method.nonObject
-			count: 1
+			count: 2
 			path: tests/Feature/ExamResultPublishingTest.php
 
 		-
@@ -1737,7 +1749,7 @@ parameters:
 		-
 			message: '#^Part \$student\-\>getKey\(\) \(mixed\) of encapsed string cannot be cast to string\.$#'
 			identifier: encapsedStringPart.nonString
-			count: 3
+			count: 4
 			path: tests/Feature/ExamResultPublishingTest.php
 
 		-
@@ -1753,9 +1765,21 @@ parameters:
 			path: tests/Feature/ExamResultPublishingTest.php
 
 		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\<0, max\>\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: tests/Feature/ExamResultPublishingTest.php
+
+		-
 			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<string\>\:\:and\(\)$#'
 			identifier: argument.templateType
 			count: 2
+			path: tests/Feature/ExamResultPublishingTest.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function expect$#'
+			identifier: argument.templateType
+			count: 1
 			path: tests/Feature/ExamResultPublishingTest.php
 
 		-
@@ -1863,7 +1887,7 @@ parameters:
 		-
 			message: '#^Cannot access property \$data on Illuminate\\Notifications\\DatabaseNotification\|null\.$#'
 			identifier: property.nonObject
-			count: 7
+			count: 6
 			path: tests/Feature/OfflineNotificationsTest.php
 
 		-
@@ -1911,7 +1935,7 @@ parameters:
 		-
 			message: '#^Cannot cast mixed to string\.$#'
 			identifier: cast.string
-			count: 11
+			count: 9
 			path: tests/Feature/QueueEverythingTest.php
 
 		-
