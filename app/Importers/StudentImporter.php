@@ -6,6 +6,7 @@ namespace App\Importers;
 
 use App\Enums\StudentStatus;
 use App\Models\Student;
+use Filament\Actions\Imports\Exceptions\RowImportFailedException;
 use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Models\Import;
 
@@ -37,7 +38,16 @@ final class StudentImporter extends Importer
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        return 'Imported '.$import->successful_rows->format('0,0').' students.';
+        $successful = number_format($import->successful_rows);
+        $failedRowsCount = $import->getFailedRowsCount();
+
+        if ($failedRowsCount === 0) {
+            return "Imported {$successful} students.";
+        }
+
+        $failed = number_format($failedRowsCount);
+
+        return "Imported {$successful} students. {$failed} rows failed - use the download button to see why each row was rejected.";
     }
 
     public function resolveRecord(): ?Student
@@ -54,13 +64,26 @@ final class StudentImporter extends Importer
     public function beforeSave(): void
     {
         $record = $this->getRecord();
+        $isNew = ! $record->exists;
 
-        $record->name = mb_trim((string) ($this->data['name'] ?? $record->name));
-        $record->student_class_id = self::classByName($this->data['class'] ?? null)?->getKey()
-            ?? $record->student_class_id;
-        $record->joining_date = filled($this->data['joining_date'] ?? null)
+        $name = mb_trim((string) ($this->data['name'] ?? ''));
+
+        if ($isNew && $name === '') {
+            throw new RowImportFailedException('name is required for new students.');
+        }
+
+        $joiningDate = filled($this->data['joining_date'] ?? null)
             ? $this->data['joining_date']
             : $record->joining_date;
+
+        if ($isNew && blank($joiningDate)) {
+            throw new RowImportFailedException('joining_date is required for new students.');
+        }
+
+        $record->name = $name !== '' ? $name : $record->name;
+        $record->student_class_id = self::classByName($this->data['class'] ?? null)?->getKey()
+            ?? $record->student_class_id;
+        $record->joining_date = $joiningDate;
         $record->status = StudentStatus::tryFrom((string) ($this->data['status'] ?? ''))
             ?? ($record->status ?? StudentStatus::Active);
     }

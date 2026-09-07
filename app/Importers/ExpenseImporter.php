@@ -35,7 +35,7 @@ final class ExpenseImporter extends Importer
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        return 'Imported '.$import->successful_rows->format('0,0').' expenses.';
+        return 'Imported '.number_format($import->successful_rows).' expenses.';
     }
 
     public function resolveRecord(): ?Expense

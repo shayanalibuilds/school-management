@@ -40,7 +40,16 @@ final class StaffImporter extends Importer
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        return 'Imported '.$import->successful_rows->format('0,0').' staff.';
+        $successful = number_format($import->successful_rows);
+        $failedRowsCount = $import->getFailedRowsCount();
+
+        if ($failedRowsCount === 0) {
+            return "Imported {$successful} staff.";
+        }
+
+        $failed = number_format($failedRowsCount);
+
+        return "Imported {$successful} staff. {$failed} rows failed - use the download button to see why each row was rejected.";
     }
 
     /**

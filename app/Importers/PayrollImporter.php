@@ -40,7 +40,7 @@ final class PayrollImporter extends Importer
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        return 'Imported '.$import->successful_rows->format('0,0').' payrolls.';
+        return 'Imported '.number_format($import->successful_rows).' payrolls.';
     }
 
     public function resolveRecord(): ?Payroll
