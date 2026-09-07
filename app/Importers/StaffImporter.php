@@ -40,16 +40,15 @@ final class StaffImporter extends Importer
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        $successful = number_format($import->successful_rows);
+        $successful = (int) $import->successful_rows;
         $failedRowsCount = $import->getFailedRowsCount();
 
         if ($failedRowsCount === 0) {
-            return "Imported {$successful} staff.";
+            return self::countedNoun($successful, 'staff').' imported.';
         }
 
-        $failed = number_format($failedRowsCount);
-
-        return "Imported {$successful} staff. {$failed} rows failed - use the download button to see why each row was rejected.";
+        return self::countedNoun($successful, 'staff').' imported, '.self::countedNoun($failedRowsCount, 'row')
+            .' failed - use the download button to see why each one was rejected.';
     }
 
     /**

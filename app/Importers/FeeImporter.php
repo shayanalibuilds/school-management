@@ -48,7 +48,7 @@ final class FeeImporter extends Importer
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        return 'Imported '.number_format($import->successful_rows).' fees.';
+        return self::countedNoun((int) $import->successful_rows, 'fee', 'fees').' imported.';
     }
 
     public function resolveRecord(): ?Fee

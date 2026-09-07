@@ -37,7 +37,7 @@ final class ParentImporter extends Importer
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        return 'Imported '.number_format($import->successful_rows).' parents.';
+        return self::countedNoun((int) $import->successful_rows, 'parent').' imported.';
     }
 
     public function resolveRecord(): ?StudentParent

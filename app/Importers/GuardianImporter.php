@@ -37,7 +37,7 @@ final class GuardianImporter extends Importer
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        return 'Imported '.number_format($import->successful_rows).' guardians.';
+        return self::countedNoun((int) $import->successful_rows, 'guardian').' imported.';
     }
 
     public function resolveRecord(): ?Guardian

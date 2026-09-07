@@ -38,16 +38,15 @@ final class StudentImporter extends Importer
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        $successful = number_format($import->successful_rows);
+        $successful = (int) $import->successful_rows;
         $failedRowsCount = $import->getFailedRowsCount();
 
         if ($failedRowsCount === 0) {
-            return "Imported {$successful} students.";
+            return self::countedNoun($successful, 'student').' imported.';
         }
 
-        $failed = number_format($failedRowsCount);
-
-        return "Imported {$successful} students. {$failed} rows failed - use the download button to see why each row was rejected.";
+        return self::countedNoun($successful, 'student').' imported, '.self::countedNoun($failedRowsCount, 'row')
+            .' failed - use the download button to see why each one was rejected.';
     }
 
     public function resolveRecord(): ?Student

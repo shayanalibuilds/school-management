@@ -34,7 +34,7 @@ final class AttendanceImporter extends Importer
 
     public static function getCompletedNotificationBody(Import $import): string
     {
-        return 'Imported '.number_format($import->successful_rows).' attendance rows.';
+        return self::countedNoun((int) $import->successful_rows, 'attendance row').' imported.';
     }
 
     public function resolveRecord(): ?Attendance

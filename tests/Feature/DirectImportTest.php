@@ -214,5 +214,5 @@ it('explains failed rows in the completed notification body', function (): void 
     $job->handle();
 
     expect($import->successful_rows)->toBe(1)
-        ->and(StudentImporter::getCompletedNotificationBody($import))->toContain('Imported 1 students. 1 rows failed - use the download button to see why each row was rejected.');
+        ->and(StudentImporter::getCompletedNotificationBody($import))->toContain('1 student imported, 1 row failed - use the download button to see why each one was rejected.');
 });
