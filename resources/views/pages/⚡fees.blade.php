@@ -2,6 +2,7 @@
 
 use App\Enums\PaymentProvider;
 use App\Enums\PaymentStatus;
+use App\Enums\FeeStatus;
 use App\Support\Payments\AvailableProviders;
 use App\Support\Payments\EasyPaisaService;
 use App\Support\Payments\JazzCashService;
@@ -91,9 +92,10 @@ new #[Layout('layouts::app')] class extends Component {
 
         $fee = $this->students
             ->flatMap(fn (array $entry) => $entry['fees'])
+            ->pluck('fee')
             ->firstWhere('id', $feeId);
 
-        if ($fee === null || $fee->status === PaymentStatus::Paid->value || (float) $fee->amount_paid >= (float) $fee->amount) {
+        if ($fee === null || $fee->status === FeeStatus::Paid || (float) $fee->amount_paid >= (float) $fee->amount) {
             return;
         }
 
