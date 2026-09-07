@@ -79,12 +79,19 @@ built-in **CSV import / export** page.
 - Fee structures, per-student fees, and partial payments
 - Online payments via **EasyPaisa** and **JazzCash** with sandbox/live environments,
   encrypted credentials, and official receipts
-- Payroll and expense tracking (admin only)
+- Payroll and expense tracking with daily, weekly, monthly, yearly, or one-time
+  recurrence (admin only)
+- Optional **monthly school progress stats**: income from completed payments,
+  estimated spending (paid salaries + recurring expenses) and the net result,
+  charted over the last 12 months — shown on the dashboard only when the admin
+  enables it in App settings
 
 **People & tools**
 - ID cards and staff cards, ready to print
 - CSV import for students, staff, parents, and guardians; CSV export for ten datasets
 - Gateway-agnostic payment settings guarded to admins
+- App settings page: feature toggles including "queue everything" (writes run on
+  the background queue for stability) and the monthly stats switch
 
 **Public portal**
 - Parents look up records by **parent/guardian CNIC** or **student GR #**,
