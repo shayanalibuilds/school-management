@@ -7,7 +7,7 @@ use App\Enums\ExamResultStatus;
 use App\Filament\Pages\AppSettingsPage;
 use App\Filament\Pages\FillAttendance;
 use App\Filament\Pages\FillExamResults;
-use App\Jobs\PublishExamResults;
+use App\Jobs\PublishAllExamResults;
 use App\Jobs\SyncAttendance;
 use App\Jobs\SyncExamResults;
 use App\Models\Admin;
@@ -124,12 +124,12 @@ it('queues results saves and publishing when queue everything is on', function (
 
     expect(ExamResult::query()->count())->toBe(1);
 
-    // Publishing is queued as well.
-    $page->call('publish')->assertNotified('Publishing queued');
+    // Publishing is queued as well - publication is school-wide.
+    $page->call('publishAll')->assertNotified('Publishing queued');
 
-    Queue::assertPushed(PublishExamResults::class);
+    Queue::assertPushed(PublishAllExamResults::class);
 
-    (new PublishExamResults('admin', (string) $admin->getKey(), (string) $class->getKey(), (string) $subject->getKey(), 2026))->handle();
+    (new PublishAllExamResults('admin', (string) $admin->getKey(), 2026))->handle();
 
     expect(ExamResult::query()->where('status', ExamResultStatus::Published->value)->count())->toBe(1)
         ->and(ExamResult::query()->whereNotNull('published_at')->count())->toBe(1);

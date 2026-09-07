@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\Staff\Pages;
 
-use App\Jobs\PublishExamResults;
 use App\Jobs\SyncExamResults;
 use App\Models\ExamResult;
 use App\Models\Staff;
@@ -246,78 +245,6 @@ final class FillExamResults extends Page
             ->title($saved === 0 ? 'Nothing to fill' : "Results filled for {$saved} students")
             ->body($saved === 0 ? 'Enter marks for at least one student first.' : 'Results are saved as drafts until you publish them.')
             ->{$saved === 0 ? 'warning' : 'success'}()
-            ->send();
-    }
-
-    public function publish(): void
-    {
-        $staff = auth('staff')->user();
-
-        if (! $staff instanceof Staff) {
-            throw new Halt('Not signed in.');
-        }
-
-        if ($this->classId === null || $this->subjectId === null || $this->year === null) {
-            $this->addError('classId', 'Select a class, subject and year first.');
-
-            return;
-        }
-
-        $isAssigned = $staff->assignments()
-            ->where('student_class_id', $this->classId)
-            ->where('subject_id', $this->subjectId)
-            ->exists();
-
-        if (! $isAssigned) {
-            $this->addError('classId', 'You are not assigned to teach this subject to this class.');
-
-            return;
-        }
-
-        if (ExamResult::sheetIsLocked($this->classId, $this->subjectId, (int) $this->year)) {
-            FilamentNotification::make()
-                ->title('These results are locked')
-                ->body('They were published more than 30 days ago, so no further corrections are possible.')
-                ->danger()
-                ->send();
-
-            return;
-        }
-
-        $publishable = ExamResult::query()
-            ->where('student_class_id', $this->classId)
-            ->where('subject_id', $this->subjectId)
-            ->where('year', (int) $this->year)
-            ->count();
-
-        if ($publishable === 0) {
-            FilamentNotification::make()
-                ->title('Nothing to publish')
-                ->body('Fill the results first, then publish them.')
-                ->warning()
-                ->send();
-
-            return;
-        }
-
-        if (AppSettings::queueEverything()) {
-            PublishExamResults::dispatch('staff', (string) $staff->getKey(), $this->classId, $this->subjectId, (int) $this->year);
-
-            FilamentNotification::make()
-                ->title('Publishing queued')
-                ->body('The results are being published in the background.')
-                ->info()
-                ->send();
-
-            return;
-        }
-
-        ExamResultsSync::publish($this->classId, $this->subjectId, (int) $this->year, $staff->name);
-
-        FilamentNotification::make()
-            ->title("Results published for {$publishable} students")
-            ->body('Students can see them now. Corrections stay open for 30 days.')
-            ->success()
             ->send();
     }
 }

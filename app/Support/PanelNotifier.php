@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Support;
 
 use App\Models\Admin;
+use App\Models\Staff;
 use App\Models\StaffAssignment;
 use App\Notifications\AttendanceFilledNotification;
+use App\Notifications\ExamResultsPublishedGloballyNotification;
 use App\Notifications\ExamResultsPublishedNotification;
 use Illuminate\Support\Collection;
 
@@ -43,6 +45,24 @@ final class PanelNotifier
 
         foreach ($recipients as $recipient) {
             $recipient->notify(new ExamResultsPublishedNotification($className, $subjectName, $publisherName));
+        }
+    }
+
+    /**
+     * Tell every admin plus every staff member teaching any class that
+     * the whole school's exam results have been published at once.
+     */
+    public static function examResultsPublishedGlobally(int $year, string $publisherName, int $publishedCount): void
+    {
+        $recipients = Admin::query()->get()
+            ->merge(Staff::query()->whereHas('assignments')->get());
+
+        if ($recipients->isEmpty()) {
+            return;
+        }
+
+        foreach ($recipients as $recipient) {
+            $recipient->notify(new ExamResultsPublishedGloballyNotification($year, $publisherName, $publishedCount));
         }
     }
 

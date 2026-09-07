@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Pages;
 
-use App\Jobs\PublishExamResults;
+use App\Jobs\PublishAllExamResults;
 use App\Jobs\SyncExamResults;
 use App\Models\Admin;
 use App\Models\ExamResult;
@@ -148,6 +148,29 @@ final class FillExamResults extends Page
     }
 
     /**
+     * Publishing state for the whole school in the selected year: the
+     * button is disabled until every class has checked exams, and the
+     * missing sheets are listed so the admin knows what is left.
+     *
+     * @return array{drafts: int, missing: list<string>, ready: bool}
+     */
+    public function getGlobalPublishProperty(): array
+    {
+        $missing = ExamResult::uncheckedSheets((int) $this->year);
+
+        $drafts = ExamResult::query()
+            ->where('year', (int) $this->year)
+            ->whereNull('published_at')
+            ->count();
+
+        return [
+            'drafts' => $drafts,
+            'missing' => $missing,
+            'ready' => $missing === [] && $drafts > 0,
+        ];
+    }
+
+    /**
      * @return array<string, string>
      */
     public function getYearsProperty(): array
@@ -221,7 +244,12 @@ final class FillExamResults extends Page
             ->send();
     }
 
-    public function publish(): void
+    /**
+     * Publish the exam results of every class at once. Publication is a
+     * school-wide action: all drafts of the selected year become visible
+     * to students and their 30 day correction windows open together.
+     */
+    public function publishAll(): void
     {
         $admin = auth('admin')->user();
 
@@ -231,32 +259,20 @@ final class FillExamResults extends Page
             return;
         }
 
-        if ($this->classId === null || $this->subjectId === null || $this->year === null) {
-            $this->addError('classId', 'Select a class, subject and year first.');
+        if ($this->year === null) {
+            $this->addError('classId', 'Select a year first.');
 
             return;
         }
 
-        if (ExamResult::sheetIsLocked($this->classId, $this->subjectId, (int) $this->year)) {
+        $year = (int) $this->year;
+
+        $missing = ExamResult::uncheckedSheets($year);
+
+        if ($missing !== []) {
             FilamentNotification::make()
-                ->title('These results are locked')
-                ->body('They were published more than 30 days ago, so no further corrections are possible.')
-                ->danger()
-                ->send();
-
-            return;
-        }
-
-        $publishable = ExamResult::query()
-            ->where('student_class_id', $this->classId)
-            ->where('subject_id', $this->subjectId)
-            ->where('year', (int) $this->year)
-            ->count();
-
-        if ($publishable === 0) {
-            FilamentNotification::make()
-                ->title('Nothing to publish')
-                ->body('Fill the results first, then publish them.')
+                ->title('Exams are not checked for every class yet')
+                ->body('Missing result sheets: '.implode(', ', array_slice($missing, 0, 5)).(count($missing) > 5 ? ' and '.(count($missing) - 5).' more.' : '.'))
                 ->warning()
                 ->send();
 
@@ -264,21 +280,31 @@ final class FillExamResults extends Page
         }
 
         if (AppSettings::queueEverything()) {
-            PublishExamResults::dispatch('admin', (string) $admin->getKey(), $this->classId, $this->subjectId, (int) $this->year);
+            PublishAllExamResults::dispatch('admin', (string) $admin->getKey(), $year);
 
             FilamentNotification::make()
                 ->title('Publishing queued')
-                ->body('The results are being published in the background.')
+                ->body('The results of every class are being published in the background.')
                 ->info()
                 ->send();
 
             return;
         }
 
-        ExamResultsSync::publish($this->classId, $this->subjectId, (int) $this->year, $admin->name);
+        $published = ExamResultsSync::publishAll($year, $admin->name);
+
+        if ($published === 0) {
+            FilamentNotification::make()
+                ->title('Nothing to publish')
+                ->body('Every result of '.$year.' is already published.')
+                ->warning()
+                ->send();
+
+            return;
+        }
 
         FilamentNotification::make()
-            ->title("Results published for {$publishable} students")
+            ->title("Exam results published for all classes ({$published} students)")
             ->body('Students can see them now. Corrections stay open for 30 days.')
             ->success()
             ->send();
