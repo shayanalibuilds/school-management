@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Fees\Schemas;
 
 use App\Filament\Support\WizardSubmitActions;
+use App\Models\Fee;
 use App\Models\Student;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
@@ -27,13 +28,24 @@ final class FeeForm
                         ->schema([
                             Select::make('student_id')
                                 ->label('Student')
-                                ->options(fn (): array => Student::query()
-                                    ->with('studentClass')
-                                    ->active()
-                                    ->orderBy('name')
-                                    ->get()
-                                    ->mapWithKeys(fn (Student $student): array => [$student->getKey() => $student->selectLabel()])
-                                    ->all())
+                                ->options(function (?Fee $record): array {
+                                    $labels = Student::query()
+                                        ->with('studentClass')
+                                        ->active()
+                                        ->orderBy('name')
+                                        ->get()
+                                        ->mapWithKeys(fn (Student $student): array => [$student->getKey() => $student->selectLabel()])
+                                        ->all();
+
+                                    // A fee belonging to a graduated or
+                                    // departed student still needs its label
+                                    // on the edit form instead of a raw id.
+                                    if ($record !== null && ! array_key_exists($record->student_id, $labels) && $record->student !== null) {
+                                        $labels[$record->student_id] = $record->student->selectLabel();
+                                    }
+
+                                    return $labels;
+                                })
                                 ->searchable()
                                 ->preload()
                                 ->required(),
