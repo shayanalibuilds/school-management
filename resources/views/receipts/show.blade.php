@@ -19,7 +19,7 @@
             --ink-soft: #45474d;
             --line: #c6c6cd;
             --navy: #121b2f;
-            --steel: #7a849c;
+            --steel: #5f6980;
             --green: #006c48;
             --mint: #95f3c2;
             --mint-ink: #00714c;

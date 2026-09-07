@@ -37,13 +37,13 @@
                 href="/staff"
                 class="rounded-lg border border-line px-3.5 py-2 text-sm font-medium text-ink transition-colors hover:bg-tint"
             >
-                Staff login
+                Staff sign in
             </a>
             <a
                 href="/dashboard"
                 class="rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-navy-hover"
             >
-                Admin login
+                Admin sign in
             </a>
         </div>
     </div>

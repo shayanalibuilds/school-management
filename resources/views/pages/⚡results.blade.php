@@ -160,7 +160,7 @@ new #[Layout('layouts::app')] class extends Component {
                                 required
                                 autocomplete="off"
                                 placeholder="35202-1234567-1 or GR 42"
-                                class="w-full rounded-lg border border-line bg-mist px-4 py-3 text-sm font-semibold tabular text-ink shadow-sm transition-all placeholder:font-normal placeholder:text-line focus:bg-card focus:outline-none focus:ring-2 focus:ring-navy"
+                                class="w-full rounded-lg border border-line bg-mist px-4 py-3 text-sm font-semibold tabular text-ink shadow-sm transition-[color,background-color,border-color,box-shadow] placeholder:font-normal placeholder:text-line focus:bg-card focus:outline-none focus:ring-2 focus:ring-navy"
                             />
                         </div>
                         <div>
@@ -169,7 +169,7 @@ new #[Layout('layouts::app')] class extends Component {
                                 <select
                                     id="year"
                                     wire:model="year"
-                                    class="w-full cursor-pointer appearance-none rounded-lg border border-line bg-mist px-4 py-3 pr-10 text-sm text-ink shadow-sm transition-all focus:bg-card focus:outline-none focus:ring-2 focus:ring-navy"
+                                    class="w-full cursor-pointer appearance-none rounded-lg border border-line bg-mist px-4 py-3 pr-10 text-sm text-ink shadow-sm transition-[color,background-color,border-color,box-shadow] focus:bg-card focus:outline-none focus:ring-2 focus:ring-navy"
                                 >
                                     <option value="">Select year</option>
                                     @foreach ($this->years as $availableYear)
@@ -185,7 +185,7 @@ new #[Layout('layouts::app')] class extends Component {
                                 <select
                                     id="type"
                                     wire:model="type"
-                                    class="w-full cursor-pointer appearance-none rounded-lg border border-line bg-mist px-4 py-3 pr-10 text-sm text-ink shadow-sm transition-all focus:bg-card focus:outline-none focus:ring-2 focus:ring-navy"
+                                    class="w-full cursor-pointer appearance-none rounded-lg border border-line bg-mist px-4 py-3 pr-10 text-sm text-ink shadow-sm transition-[color,background-color,border-color,box-shadow] focus:bg-card focus:outline-none focus:ring-2 focus:ring-navy"
                                 >
                                     <option value="grades">Grades</option>
                                     <option value="positions">Positions</option>
@@ -195,7 +195,7 @@ new #[Layout('layouts::app')] class extends Component {
                         </div>
                         <button
                             type="submit"
-                            class="group flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg bg-navy px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:bg-navy-hover"
+                            class="group flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg bg-navy px-6 py-3 text-sm font-semibold text-white shadow-sm transition-[color,background-color,border-color,box-shadow] hover:bg-navy-hover"
                         >
                             Look up results
                             <x-portal-icon name="arrow-right" class="h-4 w-4 text-glow transition-transform group-hover:translate-x-0.5" />

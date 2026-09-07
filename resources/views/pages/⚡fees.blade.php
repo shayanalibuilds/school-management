@@ -178,7 +178,7 @@ new #[Layout('layouts::app')] class extends Component {
                             required
                             autocomplete="off"
                             placeholder="35202-1234567-1 or GR 42"
-                            class="w-full rounded-lg border border-line bg-card px-3.5 py-2.5 text-sm font-semibold uppercase tracking-wide tabular text-ink shadow-sm transition-all placeholder:font-normal placeholder:normal-case placeholder:tracking-normal placeholder:text-line focus:outline-none focus:ring-2 focus:ring-navy"
+                            class="w-full rounded-lg border border-line bg-card px-3.5 py-2.5 text-sm font-semibold uppercase tracking-wide tabular text-ink shadow-sm transition-[color,background-color,border-color,box-shadow] placeholder:font-normal placeholder:normal-case placeholder:tracking-normal placeholder:text-line focus:outline-none focus:ring-2 focus:ring-navy"
                         />
                     </div>
                     <div>
@@ -187,7 +187,7 @@ new #[Layout('layouts::app')] class extends Component {
                             <select
                                 id="year"
                                 wire:model="year"
-                                class="w-full cursor-pointer appearance-none rounded-lg border border-line bg-card px-3.5 py-2.5 pr-10 text-sm text-ink shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-navy"
+                                class="w-full cursor-pointer appearance-none rounded-lg border border-line bg-card px-3.5 py-2.5 pr-10 text-sm text-ink shadow-sm transition-[color,background-color,border-color,box-shadow] focus:outline-none focus:ring-2 focus:ring-navy"
                             >
                                 <option value="">All years</option>
                                 @foreach ($this->years as $availableYear)
@@ -200,7 +200,7 @@ new #[Layout('layouts::app')] class extends Component {
                     <div class="pt-1">
                         <button
                             type="submit"
-                            class="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg bg-navy px-4 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:bg-navy-hover"
+                            class="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg bg-navy px-4 py-3 text-sm font-semibold text-white shadow-sm transition-[color,background-color,border-color,box-shadow] hover:bg-navy-hover"
                         >
                             <x-portal-icon name="search" class="h-4 w-4 text-glow" />
                             Look up fees
@@ -254,11 +254,11 @@ new #[Layout('layouts::app')] class extends Component {
                             <div>
                                 <div class="flex flex-wrap items-center gap-2.5">
                                     <span class="text-xs font-bold uppercase tracking-widest text-glow">Fee Ledger</span>
-                                    <span class="text-steel">•</span>
-                                    <span class="font-mono text-xs font-semibold tabular text-steel">GR {{ \App\Support\GrNumber::bare($student->gr_no) }}</span>
+                                    <span class="text-steel-bright">•</span>
+                                    <span class="font-mono text-xs font-semibold tabular text-steel-bright">GR {{ \App\Support\GrNumber::bare($student->gr_no) }}</span>
                                 </div>
                                 <h2 class="mt-1 text-xl font-bold text-white">{{ $student->name }}</h2>
-                                <span class="mt-0.5 block text-sm text-steel">
+                                <span class="mt-0.5 block text-sm text-steel-bright">
                                     {{ $student->studentClass?->name ?? '—' }} · Ledger year {{ $year ?? today()->year }}
                                 </span>
                             </div>
