@@ -138,7 +138,7 @@ it('never duplicates attendance rows on repeated saves of the same day', functio
     actingAs($admin, 'admin');
     Filament\Facades\Filament::setCurrentPanel('admin');
 
-    foreach (['present', 'absent'] as $pass => $status) {
+    foreach (['present', 'absent'] as $status) {
         Livewire::test(FillAttendance::class)
             ->set('classId', $class->getKey())
             ->set('statuses.'.$student->getKey(), $status)

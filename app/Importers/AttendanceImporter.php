@@ -41,7 +41,7 @@ final class AttendanceImporter extends Importer
     {
         $student = self::studentByGrNo($this->data['student_gr_no'] ?? null);
 
-        if ($student === null) {
+        if (! $student instanceof \App\Models\Student) {
             return null;
         }
 
@@ -60,7 +60,7 @@ final class AttendanceImporter extends Importer
         $record = $this->getRecord();
         $student = self::studentByGrNo($this->data['student_gr_no'] ?? null);
 
-        if ($student === null) {
+        if (! $student instanceof \App\Models\Student) {
             return;
         }
 

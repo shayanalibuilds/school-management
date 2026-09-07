@@ -19,12 +19,12 @@ final class ListTimetableSlots extends ListRecords
         ];
     }
 
-    protected function getDefaultTableSortColumn(): ?string
+    protected function getDefaultTableSortColumn(): string
     {
         return 'day_of_week';
     }
 
-    protected function getDefaultTableSortDirection(): ?string
+    protected function getDefaultTableSortDirection(): string
     {
         return 'asc';
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Pest\Rector\Set\PestSetList;
 use Rector\Config\RectorConfig;
+use Rector\TypeDeclaration\Rector\ArrowFunction\AddArrowFunctionReturnTypeRector;
 
 return RectorConfig::configure()
     ->withPaths([
@@ -24,4 +25,9 @@ return RectorConfig::configure()
         privatization: true,
         earlyReturn: true,
     )
-    ->withPhpSets();
+    ->withPhpSets()
+    // Pest's expect() chains return Expectation mixins whose generics the
+    // rule misreads; the added types broke every assertion closure.
+    ->withSkip([
+        AddArrowFunctionReturnTypeRector::class => [__DIR__.'/tests'],
+    ]);

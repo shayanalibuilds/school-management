@@ -57,46 +57,44 @@ final class TimetableForm
                                 ->label('Starts at')
                                 ->seconds(false)
                                 ->required()
-                                ->rule(static function (?TimetableSlot $record, $get): Closure {
-                                    return static function (string $attribute, mixed $value, Closure $fail) use ($record, $get): void {
-                                        if ($value === null || $get('end_time') === null) {
-                                            return;
-                                        }
+                                ->rule(static fn (?TimetableSlot $record, $get): Closure => static function (string $attribute, mixed $value, Closure $fail) use ($record, $get): void {
+                                    if ($value === null || $get('end_time') === null) {
+                                        return;
+                                    }
 
-                                        if ((string) $get('end_time') <= (string) $value) {
-                                            $fail('The end time must be after the start time.');
+                                    if ((string) $get('end_time') <= (string) $value) {
+                                        $fail('The end time must be after the start time.');
 
-                                            return;
-                                        }
+                                        return;
+                                    }
 
-                                        $classId = $get('student_class_id');
-                                        $subjectId = $get('subject_id');
+                                    $classId = $get('student_class_id');
+                                    $subjectId = $get('subject_id');
 
-                                        if ($classId === null || $subjectId === null) {
-                                            return;
-                                        }
+                                    if ($classId === null || $subjectId === null) {
+                                        return;
+                                    }
 
-                                        $conflict = TimetableSlot::findConflict(
-                                            (string) $classId,
-                                            (string) $subjectId,
-                                            (int) $get('day_of_week'),
-                                            (string) $value,
-                                            (string) $get('end_time'),
-                                            $record?->getKey(),
-                                        );
+                                    $conflict = TimetableSlot::findConflict(
+                                        (string) $classId,
+                                        (string) $subjectId,
+                                        (int) $get('day_of_week'),
+                                        (string) $value,
+                                        (string) $get('end_time'),
+                                        $record?->getKey(),
+                                    );
 
-                                        if ($conflict !== null) {
-                                            $fail(sprintf(
-                                                '%s is already booked: %s teaches %s to %s at %s-%s. A class can only have one subject in a slot, and a teacher can only teach one class at a time.',
-                                                $conflict->dayLabel(),
-                                                $conflict->teacher()?->name ?? 'a teacher',
-                                                $conflict->subject?->name,
-                                                $conflict->studentClass?->name,
-                                                mb_substr((string) $conflict->start_time, 0, 5),
-                                                mb_substr((string) $conflict->end_time, 0, 5),
-                                            ));
-                                        }
-                                    };
+                                    if ($conflict instanceof TimetableSlot) {
+                                        $fail(sprintf(
+                                            '%s is already booked: %s teaches %s to %s at %s-%s. A class can only have one subject in a slot, and a teacher can only teach one class at a time.',
+                                            $conflict->dayLabel(),
+                                            $conflict->teacher()?->name ?? 'a teacher',
+                                            $conflict->subject?->name,
+                                            $conflict->studentClass?->name,
+                                            mb_substr((string) $conflict->start_time, 0, 5),
+                                            mb_substr((string) $conflict->end_time, 0, 5),
+                                        ));
+                                    }
                                 }),
                             TimePicker::make('end_time')
                                 ->label('Ends at')

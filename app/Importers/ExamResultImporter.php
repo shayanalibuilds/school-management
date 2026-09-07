@@ -56,7 +56,7 @@ final class ExamResultImporter extends Importer
         $student = self::studentByGrNo($this->data['student_gr_no'] ?? null);
         $subject = Subject::query()->where('name', mb_trim((string) ($this->data['subject'] ?? '')))->first();
 
-        if ($student === null || $subject === null) {
+        if (! $student instanceof \App\Models\Student || $subject === null) {
             return null;
         }
 
@@ -80,7 +80,7 @@ final class ExamResultImporter extends Importer
         $student = self::studentByGrNo($this->data['student_gr_no'] ?? null);
         $subject = Subject::query()->where('name', mb_trim((string) ($this->data['subject'] ?? '')))->first();
 
-        if ($student === null || $subject === null) {
+        if (! $student instanceof \App\Models\Student || $subject === null) {
             return;
         }
 

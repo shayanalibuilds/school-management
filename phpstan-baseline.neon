@@ -241,18 +241,6 @@ parameters:
 			path: app/Filament/Resources/StaffAssignments/Schemas/StaffAssignmentForm.php
 
 		-
-			message: '#^Method App\\Filament\\Resources\\Timetables\\Pages\\ListTimetableSlots\:\:getDefaultTableSortColumn\(\) never returns null so it can be removed from the return type\.$#'
-			identifier: return.unusedType
-			count: 1
-			path: app/Filament/Resources/Timetables/Pages/ListTimetableSlots.php
-
-		-
-			message: '#^Method App\\Filament\\Resources\\Timetables\\Pages\\ListTimetableSlots\:\:getDefaultTableSortDirection\(\) never returns null so it can be removed from the return type\.$#'
-			identifier: return.unusedType
-			count: 1
-			path: app/Filament/Resources/Timetables/Pages/ListTimetableSlots.php
-
-		-
 			message: '#^Cannot cast mixed to int\.$#'
 			identifier: cast.int
 			count: 1

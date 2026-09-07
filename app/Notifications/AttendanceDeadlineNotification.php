@@ -39,7 +39,7 @@ final class AttendanceDeadlineNotification extends Notification
                 $this->studentClass->name,
                 today()->toDateString(),
             ))
-            ->line('Please fill today\'s attendance so the record stays complete.')
+            ->line("Please fill today's attendance so the record stays complete.")
             ->action('Fill attendance', route('filament.admin.pages.fill-attendance'))
             ->line('You are receiving this because you are an administrator of the school management system.');
     }

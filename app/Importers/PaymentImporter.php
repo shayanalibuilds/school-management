@@ -67,12 +67,12 @@ final class PaymentImporter extends Importer
         $record = $this->getRecord();
 
         $student = self::studentByGrNo($this->data['student_gr_no'] ?? null);
-        $fee = $student === null
-            ? null
-            : Fee::query()
+        $fee = $student instanceof \App\Models\Student
+            ? Fee::query()
                 ->where('student_id', $student->getKey())
                 ->whereHas('feeStructure', fn ($query) => $query->where('name', mb_trim((string) ($this->data['fee'] ?? ''))))
-                ->first();
+                ->first()
+            : null;
 
         if ($fee !== null) {
             $record->fee_id = $fee->getKey();

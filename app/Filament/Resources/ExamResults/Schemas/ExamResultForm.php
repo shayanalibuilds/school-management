@@ -20,7 +20,7 @@ final class ExamResultForm
     {
         $currentYear = (int) today()->year;
 
-        $locked = fn (?ExamResult $record): bool => $record !== null && ! $record->isEditable();
+        $locked = fn (?ExamResult $record): bool => $record instanceof ExamResult && ! $record->isEditable();
 
         return $schema
             ->components([

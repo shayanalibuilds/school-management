@@ -48,7 +48,7 @@ final class StudentLookup
     {
         /** @var Collection<int, Student> */
         return Student::query()
-            ->whereRaw('REPLACE(REPLACE(LOWER(gr_no), \'-\', \'\'), \' \', \'\') = ?', [mb_strtolower($identifier)])
+            ->whereRaw("REPLACE(REPLACE(LOWER(gr_no), '-', ''), ' ', '') = ?", [mb_strtolower($identifier)])
             ->get();
     }
 

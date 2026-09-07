@@ -23,7 +23,7 @@ final class ExamResult extends Model
      * report mistakes and the teacher can fix them within this window;
      * afterwards the results are locked for good.
      */
-    final public const RECHECK_WINDOW_DAYS = 30;
+    public const int RECHECK_WINDOW_DAYS = 30;
 
     /**
      * @var list<string>
@@ -120,7 +120,7 @@ final class ExamResult extends Model
     {
         $windowEndsAt = self::recheckWindowFor($classId, $subjectId, $year);
 
-        return $windowEndsAt !== null && $windowEndsAt->isPast();
+        return $windowEndsAt instanceof CarbonInterface && $windowEndsAt->isPast();
     }
 
     /**
@@ -189,7 +189,7 @@ final class ExamResult extends Model
     {
         $endsAt = $this->recheckWindowEndsAt();
 
-        return $endsAt === null || $endsAt->isFuture();
+        return ! $endsAt instanceof CarbonInterface || $endsAt->isFuture();
     }
 
     /**

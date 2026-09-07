@@ -68,7 +68,7 @@ class in one table**, and every dataset moves in and out through the built-in
 
 **Attendance**
 - Whole-class attendance entry on one screen (admin and teacher pages); clicks are instant and local, one write on submit
-- Status buttons speak in colour: red for absent, yellow for sanctioned leave
+- Status buttons speak in color: red for absent, yellow for sanctioned leave
 - Automated 8:20 AM deadline check — admins are notified when attendance is missing
 
 **Exams**
@@ -110,7 +110,7 @@ class in one table**, and every dataset moves in and out through the built-in
 git clone https://github.com/shayanalibuilds/school-management.git
 ```
 
-2. Cd into the school-management directory:
+2. `cd` into the school-management directory:
 
 ```bash
 cd school-management
