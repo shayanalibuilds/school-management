@@ -75,6 +75,23 @@
         "dev": [
             "Composer\\Config::disableProcessTimeout",
             "php ./bin/dev"
+        ],
+        "test:style": "pint --test",
+        "test:types": "phpstan analyse --memory-limit=1G",
+        "test:spell": "@php scripts/spellcheck.php",
+        "test:typos": "peck",
+        "test:refactor": "rector --dry-run --no-progress-bar",
+        "test": [
+            "@test:style",
+            "@test:types",
+            "@test:spell",
+            "@test:typos",
+            "@test:refactor",
+            "@php artisan test"
+        ],
+        "lint": [
+            "pint",
+            "@php scripts/spellcheck.php"
         ]
     },
     "extra": {
