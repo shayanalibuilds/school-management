@@ -6,8 +6,6 @@ namespace App\Filament\Resources\Fees\Tables;
 
 use App\Enums\FeeStatus;
 use App\Models\StudentClass;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -81,10 +79,8 @@ final class FeesTable
             ])
             ->recordActions([
                 EditAction::make(),
-                DeleteAction::make(),
             ])
             ->toolbarActions([
-                DeleteBulkAction::make(),
             ]);
     }
 }

@@ -9,7 +9,6 @@ use App\Models\Admin;
 use App\Models\Payroll;
 use Filament\Actions\Action;
 use Filament\Actions\BulkAction;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -88,7 +87,6 @@ final class PayrollsTable
                         },
                     )
                     ->deselectRecordsAfterCompletion(),
-                DeleteBulkAction::make(),
             ]);
     }
 }

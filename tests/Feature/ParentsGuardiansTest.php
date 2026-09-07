@@ -50,15 +50,16 @@ it('lists parents with their linked children count', function (): void {
         ->assertSee('2');
 });
 
-it('bulk deletes parents', function (): void {
+it('bulk archives parents instead of deleting them', function (): void {
     actingAs(Admin::factory()->create(), 'admin');
     $parents = StudentParent::factory()->count(2)->create();
 
     Livewire::test(ListParents::class)
-        ->callTableBulkAction('delete', $parents);
+        ->callTableBulkAction('archive', $parents);
 
-    $parents->each(fn (StudentParent $parent) => expect(StudentParent::query()->find($parent->getKey()))->toBeNull()
-        ->and($parent->refresh()->trashed())->toBeTrue());
+    // Rows are kept: the school never deletes, the status flips.
+    $parents->each(fn (StudentParent $parent) => expect(StudentParent::query()->find($parent->getKey()))->not->toBeNull()
+        ->and($parent->refresh()->status)->toBe('inactive'));
 });
 
 it('creates a guardian through the wizard form', function (): void {

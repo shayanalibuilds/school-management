@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\RecordStatus;
+use App\Models\Concerns\ArchivesInsteadOfDeleting;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,6 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 final class Subject extends Model
 {
+    use ArchivesInsteadOfDeleting;
     use HasFactory;
     use HasUuids;
     use SoftDeletes;
@@ -37,5 +40,15 @@ final class Subject extends Model
     public function staffAssignments(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(StaffAssignment::class, 'subject_id');
+    }
+
+    protected function archiveStatus(): string
+    {
+        return RecordStatus::Inactive->value;
+    }
+
+    protected function activeStatus(): string
+    {
+        return RecordStatus::Active->value;
     }
 }

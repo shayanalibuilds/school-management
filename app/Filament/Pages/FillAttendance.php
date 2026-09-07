@@ -57,7 +57,7 @@ final class FillAttendance extends Page
      */
     public function getClassesProperty(): Collection
     {
-        return StudentClass::query()->orderBy('name')->get();
+        return StudentClass::query()->where('status', 'active')->orderBy('name')->get();
     }
 
     /**

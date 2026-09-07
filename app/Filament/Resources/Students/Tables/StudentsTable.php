@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Students\Tables;
 
 use App\Enums\StudentStatus;
+use App\Filament\Support\ArchiveAction;
 use App\Models\Student;
 use Filament\Actions\BulkAction;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
@@ -67,7 +66,7 @@ final class StudentsTable
             ])
             ->recordActions([
                 EditAction::make(),
-                DeleteAction::make(),
+                ArchiveAction::make(),
             ])
             ->toolbarActions([
                 BulkAction::make('changeStatus')
@@ -89,7 +88,7 @@ final class StudentsTable
                         },
                     )
                     ->deselectRecordsAfterCompletion(),
-                DeleteBulkAction::make(),
+                ArchiveAction::bulk(),
             ]);
     }
 }

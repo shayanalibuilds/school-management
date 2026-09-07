@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Filament\Resources\ExamResults\Tables;
 
 use App\Support\Grades;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -76,10 +74,8 @@ final class ExamResultsTable
             ->recordActions([
                 EditAction::make()
                     ->visible(fn (\App\Models\ExamResult $record): bool => $record->isEditable()),
-                DeleteAction::make(),
             ])
             ->toolbarActions([
-                DeleteBulkAction::make(),
             ]);
     }
 }

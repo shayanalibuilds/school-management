@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\StudentStatus;
+use App\Models\Concerns\ArchivesInsteadOfDeleting;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,6 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 final class Student extends Model
 {
+    use ArchivesInsteadOfDeleting;
     use HasFactory;
     use HasUuids;
     use SoftDeletes;
@@ -119,5 +121,15 @@ final class Student extends Model
             'date_of_birth' => 'date',
             'status' => StudentStatus::class,
         ];
+    }
+
+    protected function archiveStatus(): string
+    {
+        return StudentStatus::Left->value;
+    }
+
+    protected function activeStatus(): string
+    {
+        return StudentStatus::Active->value;
     }
 }
