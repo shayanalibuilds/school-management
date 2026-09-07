@@ -1,6 +1,6 @@
+<x-filament-panels::page>
 <div style="display: grid; gap: 1.5rem;">
     <x-filament::section
-        heading="Payment settings"
         description="Configure JazzCash and EasyPaisa credentials. Only active providers with complete credentials are offered to parents — credentials are stored encrypted."
     >
         <form wire:submit="save" style="display: grid; gap: 1.5rem;">
@@ -58,3 +58,4 @@
         </form>
     </x-filament::section>
 </div>
+</x-filament-panels::page>

@@ -1,6 +1,6 @@
+<x-filament-panels::page>
 <div style="display: grid; gap: 1.5rem;">
     <x-filament::section
-        heading="Fill attendance"
         description="Daily attendance must be submitted before 8:20 AM and can only be filled for the current day."
     >
         <div style="display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));">
@@ -67,3 +67,4 @@
         </x-filament::section>
     @endif
 </div>
+</x-filament-panels::page>

@@ -12,6 +12,8 @@ final class MyAssignments extends Page
 {
     protected string $view = 'filament.staff.pages.my-assignments';
 
+    protected ?string $heading = 'My assignments';
+
     protected static ?string $navigationLabel = 'My Assignments';
 
     protected static string|BackedEnum|null $navigationIcon = \Filament\Support\Icons\Heroicon::OutlinedBookOpen;

@@ -1,6 +1,6 @@
+<x-filament-panels::page>
 <div style="display: grid; gap: 1.5rem;">
     <x-filament::section
-        heading="My assignments"
         description="The classes and subjects you are currently teaching."
     >
         @if ($assignments->isEmpty())
@@ -29,3 +29,4 @@
         @endif
     </x-filament::section>
 </div>
+</x-filament-panels::page>

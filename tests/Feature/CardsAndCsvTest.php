@@ -5,11 +5,9 @@ declare(strict_types=1);
 use App\Models\Admin;
 use App\Models\Staff;
 use App\Models\Student;
-use Illuminate\Http\UploadedFile;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
-use function Pest\Laravel\post;
 
 it('shows a printable student id card to admins', function (): void {
     $student = Student::factory()->create(['gr_no' => 'GR-77']);
@@ -62,40 +60,11 @@ it('exports staff attendance and exam results as csv', function (): void {
     }
 });
 
-it('imports students from an uploaded csv', function (): void {
-    $csv = "gr_no,name,class,joining_date,status\nGR-101,Imported Kid,Nursery,2026-08-15,active\n";
-
-    $class = App\Models\StudentClass::factory()->create(['name' => 'Nursery']);
-
-    actingAs(Admin::factory()->create(), 'admin');
-
-    post('/imports/students', [
-        'csv' => UploadedFile::fake()->createWithContent('students.csv', $csv),
-    ])->assertRedirect();
-
-    $student = Student::query()->where('gr_no', 'GR-101')->first();
-
-    expect($student)->not->toBeNull()
-        ->and($student->name)->toBe('Imported Kid')
-        ->and($student->student_class_id)->toBe($class->getKey());
-});
-
-it('imports staff from an uploaded csv', function (): void {
-    $csv = "name,cnic,email,joining_date,status\nImported Teacher,11111-1111111-1,imported@school.test,2025-04-01,active\n";
-
-    actingAs(Admin::factory()->create(), 'admin');
-
-    post('/imports/staff', [
-        'csv' => UploadedFile::fake()->createWithContent('staff.csv', $csv),
-    ])->assertRedirect();
-
-    expect(Staff::query()->where('cnic', '11111-1111111-1')->exists())->toBeTrue();
-});
-
-it('shows the import export page to admins', function (): void {
+it('shows the import export page to admins with the native import action', function (): void {
     actingAs(Admin::factory()->create(), 'admin')
         ->get('/dashboard/import-export')
         ->assertOk()
+        ->assertSee('Import / Export')
         ->assertSee('Import staff')
         ->assertSee('Export to CSV');
 });

@@ -457,24 +457,6 @@ parameters:
 			path: app/Http/Controllers/ExportController.php
 
 		-
-			message: '#^Cannot cast mixed to string\.$#'
-			identifier: cast.string
-			count: 22
-			path: app/Http/Controllers/ImportController.php
-
-		-
-			message: '#^Method App\\Http\\Controllers\\ImportController\:\:studentsByGrNos\(\) should return list\<string\> but returns array\<string\>\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Http/Controllers/ImportController.php
-
-		-
-			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(string\|null\)\: mixed\)\|null, Closure\(string\)\: lowercase\-string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Http/Controllers/ImportController.php
-
-		-
 			message: '#^Access to an undefined property App\\Models\\Payment\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Payment\>\:\:\$provider\.$#'
 			identifier: property.notFound
 			count: 1
@@ -923,6 +905,54 @@ parameters:
 			identifier: cast.string
 			count: 3
 			path: app/Importers/PayrollImporter.php
+
+		-
+			message: '#^Binary operation "\." between ''Imported '' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: app/Importers/StaffImporter.php
+
+		-
+			message: '#^Cannot access property \$email on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Importers/StaffImporter.php
+
+		-
+			message: '#^Cannot access property \$joining_date on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Importers/StaffImporter.php
+
+		-
+			message: '#^Cannot access property \$name on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Importers/StaffImporter.php
+
+		-
+			message: '#^Cannot access property \$phone on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Importers/StaffImporter.php
+
+		-
+			message: '#^Cannot access property \$status on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Importers/StaffImporter.php
+
+		-
+			message: '#^Cannot call method format\(\) on int\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Importers/StaffImporter.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 5
+			path: app/Importers/StaffImporter.php
 
 		-
 			message: '#^Binary operation "\." between ''Imported '' and mixed results in an error\.$#'
@@ -1621,18 +1651,6 @@ parameters:
 			path: tests/Feature/AttendanceTest.php
 
 		-
-			message: '#^Cannot access property \$name on App\\Models\\Student\|null\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: tests/Feature/CardsAndCsvTest.php
-
-		-
-			message: '#^Cannot access property \$student_class_id on App\\Models\\Student\|null\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: tests/Feature/CardsAndCsvTest.php
-
-		-
 			message: '#^Parameter \#1 \$haystack of function str_contains expects string, string\|false given\.$#'
 			identifier: argument.type
 			count: 2
@@ -1663,6 +1681,18 @@ parameters:
 			path: tests/Feature/ClassSubjectLinkTest.php
 
 		-
+			message: '#^Cannot access property \$email on App\\Models\\Staff\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/DirectImportTest.php
+
+		-
+			message: '#^Cannot access property \$name on App\\Models\\Staff\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/DirectImportTest.php
+
+		-
 			message: '#^Cannot access property \$name on App\\Models\\Student\|null\.$#'
 			identifier: property.nonObject
 			count: 1
@@ -1675,9 +1705,15 @@ parameters:
 			path: tests/Feature/DirectImportTest.php
 
 		-
+			message: '#^Cannot access property \$status on App\\Models\\Staff\|null\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: tests/Feature/DirectImportTest.php
+
+		-
 			message: '#^Cannot access property \$value on string\.$#'
 			identifier: property.nonObject
-			count: 1
+			count: 3
 			path: tests/Feature/DirectImportTest.php
 
 		-
@@ -1694,6 +1730,18 @@ parameters:
 
 		-
 			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\<0, max\>\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: tests/Feature/DirectImportTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: tests/Feature/DirectImportTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<string\|null\>\:\:and\(\)$#'
 			identifier: argument.templateType
 			count: 1
 			path: tests/Feature/DirectImportTest.php
@@ -1871,18 +1919,6 @@ parameters:
 			identifier: argument.templateType
 			count: 1
 			path: tests/Feature/FinanceTest.php
-
-		-
-			message: '#^Cannot access property \$students on App\\Models\\Guardian\|null\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: tests/Feature/ImportExportTest.php
-
-		-
-			message: '#^Cannot access property \$students on App\\Models\\StudentParent\|null\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: tests/Feature/ImportExportTest.php
 
 		-
 			message: '#^Cannot access property \$value on string\.$#'

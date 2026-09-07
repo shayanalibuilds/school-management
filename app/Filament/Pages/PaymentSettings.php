@@ -20,6 +20,8 @@ final class PaymentSettings extends Page
 
     protected string $view = 'filament.admin.pages.payment-settings';
 
+    protected ?string $heading = 'Payment settings';
+
     protected static ?string $navigationLabel = 'Payment Settings';
 
     protected static string|UnitEnum|null $navigationGroup = 'Settings';

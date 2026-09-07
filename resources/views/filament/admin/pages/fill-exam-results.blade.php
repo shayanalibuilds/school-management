@@ -1,10 +1,10 @@
+<x-filament-panels::page>
 @php
     $sheetState = $this->sheetState;
     $locked = $sheetState !== null && $sheetState['locked'];
 @endphp
 <div style="display: grid; gap: 1.5rem;">
     <x-filament::section
-        heading="Fill exam results"
         description="Record exam marks for a whole class at once."
     >
         <div style="display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));">
@@ -128,3 +128,4 @@
         </x-filament::section>
     @endif
 </div>
+</x-filament-panels::page>
