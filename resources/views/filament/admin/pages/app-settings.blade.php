@@ -4,10 +4,10 @@
         description="Toggle application-wide features."
     >
         <div style="display: grid; gap: 1.25rem;">
-            <div style="display: flex; gap: 1rem; align-items: flex-start; justify-content: space-between; border: 1px solid #e5e7eb; border-radius: 0.75rem; padding: 1rem; background: #ffffff;">
+            <div class="ledger-card" style="display: flex; gap: 1rem; align-items: flex-start; justify-content: space-between; padding: 1rem;">
                 <div>
-                    <p style="font-weight: 600; color: #111827; margin: 0 0 0.25rem;">Queue everything</p>
-                    <p style="font-size: 0.8rem; color: #6b7280; margin: 0;">
+                    <p style="font-weight: 600; margin: 0 0 0.25rem;" class="ledger-strong">Queue everything</p>
+                    <p style="font-size: 0.8rem; margin: 0;" class="ledger-muted">
                         When enabled, every write &mdash; attendance and results saves, publishing &mdash;
                         is processed by the background queue instead of during the page request,
                         keeping the UI responsive under load. Reads always stay direct.
@@ -21,10 +21,10 @@
                 </x-filament::input.wrapper>
             </div>
 
-            <div style="display: flex; gap: 1rem; align-items: flex-start; justify-content: space-between; border: 1px solid #e5e7eb; border-radius: 0.75rem; padding: 1rem; background: #ffffff;">
+            <div class="ledger-card" style="display: flex; gap: 1rem; align-items: flex-start; justify-content: space-between; padding: 1rem;">
                 <div>
-                    <p style="font-weight: 600; color: #111827; margin: 0 0 0.25rem;">Monthly stats</p>
-                    <p style="font-size: 0.8rem; color: #6b7280; margin: 0;">
+                    <p style="font-weight: 600; margin: 0 0 0.25rem;" class="ledger-strong">Monthly stats</p>
+                    <p style="font-size: 0.8rem; margin: 0;" class="ledger-muted">
                         When enabled, the admin dashboard shows school progress stats &mdash;
                         monthly income from completed fee payments, estimated spending
                         (paid salaries plus recurring expenses) and the net result, for the

@@ -27,51 +27,26 @@
         {{-- Status picking happens entirely in the browser: clicking
              Present/Absent/Leave only updates local state instantly. The
              single database write happens when "Fill attendance" submits
-             the whole board at once. --}}
-        <style>
-            .att-btn {
-                display: inline-flex; align-items: center; justify-content: center;
-                border-radius: 0.5rem; border: 1px solid #d1d5db; padding: 0.3rem 0.85rem;
-                font-size: 0.8125rem; font-weight: 500; line-height: 1.25rem;
-                cursor: pointer; background-color: #ffffff; color: #4b5563;
-                transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
-            }
-            .att-btn:hover { border-color: var(--primary-500, #3b82f6); color: var(--primary-600, #2563eb); }
-            .att-btn:focus-visible { outline: 2px solid var(--primary-500, #3b82f6); outline-offset: 2px; }
-            .att-btn[aria-pressed="true"] {
-                background-color: var(--primary-600, #2563eb); border-color: var(--primary-600, #2563eb);
-                color: #ffffff;
-            }
-            .att-btn[aria-pressed="true"]:hover { background-color: var(--primary-500, #3b82f6); }
-            /* Active status speaks in its own colour: red for a missed day,
-               yellow for sanctioned leave, primary blue for present. */
-            .att-btn[data-status="absent"][aria-pressed="true"] {
-                background-color: #dc2626; border-color: #dc2626; color: #ffffff;
-            }
-            .att-btn[data-status="absent"][aria-pressed="true"]:hover { background-color: #ef4444; }
-            .att-btn[data-status="leave"][aria-pressed="true"] {
-                background-color: #eab308; border-color: #ca8a04; color: #422006;
-            }
-            .att-btn[data-status="leave"][aria-pressed="true"]:hover { background-color: #facc15; }
-        </style>
-
+             the whole board at once. The button colours live in the
+             shared filament::panel-styles partial so they follow the
+             panel theme. --}}
         <div x-data="{ statuses: @js($this->statuses) }" wire:key="attendance-board-{{ $classId }}">
             <x-filament::section heading="Students">
-                <div style="overflow-x: auto; border: 1px solid #e5e7eb; border-radius: 0.75rem; background-color: #ffffff;">
-                    <table style="width: 100%; border-collapse: collapse; font-size: 0.875rem;">
-                        <thead style="background-color: #f9fafb;">
-                            <tr style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.025em; color: #6b7280;">
-                                <th style="padding: 0.625rem 1rem; text-align: start;">Student</th>
-                                <th style="padding: 0.625rem 1rem; text-align: start;">GR #</th>
-                                <th style="padding: 0.625rem 1rem; text-align: start;">Status</th>
+                <div class="ledger-card">
+                    <table class="ledger-table">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>GR #</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($this->students as $student)
-                                <tr style="border-top: 1px solid #e5e7eb; color: #111827;">
-                                    <td style="padding: 0.625rem 1rem;">{{ $student->name }}</td>
-                                    <td style="padding: 0.625rem 1rem; color: #6b7280;">{{ $student->gr_no }}</td>
-                                    <td style="padding: 0.625rem 1rem;">
+                                <tr>
+                                    <td>{{ $student->name }}</td>
+                                    <td class="ledger-muted">{{ $student->gr_no }}</td>
+                                    <td>
                                         <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;" role="group" aria-label="Attendance status for {{ $student->name }}">
                                             @foreach (\App\Enums\AttendanceStatus::cases() as $status)
                                                 <button

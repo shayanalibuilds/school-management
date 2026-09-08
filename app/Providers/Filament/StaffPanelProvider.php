@@ -34,17 +34,9 @@ final class StaffPanelProvider extends PanelProvider
             ->login()
             ->renderHook(
                 PanelsRenderHook::STYLES_BEFORE,
-                fn (): HtmlString => new HtmlString(<<<'HTML'
-                    <style>
-                        /* Sidebar accordions: indent the Active / Inactive
-                           children so the parent relationship is visible. */
-                        .fi-sidebar-sub-group-items {
-                            margin-left: 1.125rem;
-                            padding-left: 0.75rem;
-                            border-left: 2px solid color-mix(in oklab, currentColor 14%, transparent);
-                        }
-                    </style>
-                    HTML),
+                fn (): HtmlString => new HtmlString(
+                    (string) view('filament.panel-styles'),
+                ),
             )
             ->navigationGroups([
                 'Teaching',
