@@ -2091,7 +2091,7 @@ parameters:
 		-
 			message: '#^Binary operation "\." between ''marks\.'' and mixed results in an error\.$#'
 			identifier: binaryOp.invalid
-			count: 12
+			count: 13
 			path: tests/Feature/ExamResultsTest.php
 
 		-

@@ -77,6 +77,13 @@
 
     @if ($this->students->isNotEmpty())
         <x-filament::section heading="Marks">
+            @if ($errors->has('marks'))
+                <x-filament::callout
+                    color="danger"
+                    icon="heroicon-m-exclamation-triangle"
+                    :description="$errors->first('marks')"
+                />
+            @endif
             <p style="margin: 0 0 0.75rem; font-size: 0.8rem;" class="ledger-muted">
                 {{ $this->savedResults->count() }} of {{ $this->students->count() }} students recorded — you can save anytime and finish the rest later.
             </p>

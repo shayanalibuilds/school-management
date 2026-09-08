@@ -347,6 +347,30 @@ it('validates staff marks against the marking scheme bounds too', function (): v
     expect(ExamResult::query()->sole()->total_marks)->toBe(50.0);
 });
 
+it('shows the bounds error message on the admin fill sheet', function (): void {
+    $class = StudentClass::factory()->create();
+    $subject = Subject::factory()->create();
+    $student = Student::factory()->create(['student_class_id' => $class->getKey()]);
+
+    MarkingScheme::factory()->create([
+        'student_class_id' => $class->getKey(),
+        'subject_id' => $subject->getKey(),
+        'min_marks' => 0,
+        'max_marks' => 40,
+    ]);
+
+    actingAs(Admin::factory()->create(), 'admin');
+    Filament\Facades\Filament::setCurrentPanel('admin');
+
+    Livewire::test(App\Filament\Pages\FillExamResults::class)
+        ->set('classId', $class->getKey())
+        ->set('subjectId', $subject->getKey())
+        ->set('year', (string) today()->year)
+        ->set('marks.'.$student->getKey(), '45')
+        ->call('save')
+        ->assertSee('must be between 0 and 40');
+});
+
 it('shows the exam results resource to admins', function (): void {
     actingAs(Admin::factory()->create(), 'admin');
 

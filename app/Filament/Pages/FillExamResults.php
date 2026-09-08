@@ -296,6 +296,8 @@ final class FillExamResults extends Page
             }
         }
 
+        $this->resetErrorBag();
+
         $marks = $this->marks;
 
         if (AppSettings::queueEverything()) {
