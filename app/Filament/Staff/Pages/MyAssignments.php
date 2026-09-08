@@ -7,6 +7,7 @@ namespace App\Filament\Staff\Pages;
 use App\Models\Staff;
 use BackedEnum;
 use Filament\Pages\Page;
+use UnitEnum;
 
 final class MyAssignments extends Page
 {
@@ -15,6 +16,10 @@ final class MyAssignments extends Page
     protected ?string $heading = 'My assignments';
 
     protected static ?string $navigationLabel = 'My Assignments';
+
+    protected static string|UnitEnum|null $navigationGroup = 'Teaching';
+
+    protected static ?int $navigationSort = 1;
 
     protected static string|BackedEnum|null $navigationIcon = \Filament\Support\Icons\Heroicon::OutlinedBookOpen;
 

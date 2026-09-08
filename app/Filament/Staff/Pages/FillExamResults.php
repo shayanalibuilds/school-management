@@ -38,6 +38,8 @@ final class FillExamResults extends Page
 
     protected static ?string $navigationLabel = 'Fill exam results';
 
+    protected static ?int $navigationSort = 2;
+
     protected static string|BackedEnum|null $navigationIcon = \Filament\Support\Icons\Heroicon::OutlinedPencilSquare;
 
     public function mount(): void

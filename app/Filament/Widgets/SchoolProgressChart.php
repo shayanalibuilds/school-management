@@ -14,7 +14,7 @@ final class SchoolProgressChart extends ChartWidget
 
     protected ?string $maxHeight = '280px';
 
-    protected static ?int $sort = -1;
+    protected static ?int $sort = -2;
 
     public static function canView(): bool
     {
