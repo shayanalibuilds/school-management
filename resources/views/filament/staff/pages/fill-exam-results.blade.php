@@ -41,6 +41,12 @@
             </x-filament-forms::field-wrapper>
         </div>
 
+        @if ($this->classId !== null && $this->subjects->isEmpty())
+            <p style="margin: 0.25rem 0 0; font-size: 0.8rem;" class="ledger-muted">
+                No subjects are assigned to you in this class yet.
+            </p>
+        @endif
+
         @if ($sheetState !== null)
             @if ($locked)
                 <x-filament::callout

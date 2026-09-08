@@ -487,12 +487,6 @@ parameters:
 			path: app/Filament/Staff/Pages/FillExamResults.php
 
 		-
-			message: '#^Method App\\Filament\\Staff\\Pages\\FillExamResults\:\:getSubjectsProperty\(\) should return Illuminate\\Support\\Collection\<int, App\\Models\\Subject\> but returns Illuminate\\Support\\Collection\<\(int\|string\), mixed\>\.$#'
-			identifier: return.type
-			count: 1
-			path: app/Filament/Staff/Pages/FillExamResults.php
-
-		-
 			message: '#^Method App\\Filament\\Staff\\Pages\\FillExamResults\:\:getYearsProperty\(\) should return array\<string, string\> but returns array\<int, string\>\.$#'
 			identifier: return.type
 			count: 1
