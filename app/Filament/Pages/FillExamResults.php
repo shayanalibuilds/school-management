@@ -278,9 +278,7 @@ final class FillExamResults extends Page
             return;
         }
 
-        $bounds = $this->classId !== null && $this->subjectId !== null
-            ? MarkingScheme::boundsFor($this->classId, $this->subjectId)
-            : MarkingScheme::DEFAULT_BOUNDS;
+        $bounds = MarkingScheme::boundsFor($this->classId, $this->subjectId);
 
         // Validate every provided mark before any write happens.
         foreach ($this->marks as $studentId => $value) {
@@ -289,8 +287,8 @@ final class FillExamResults extends Page
             }
 
             if (! is_numeric($value) || (float) $value < $bounds['min'] || (float) $value > $bounds['max']) {
-                $student = $this->students->find($studentId);
-                $who = $student instanceof Student ? $student->name.'\'s mark' : 'Every mark';
+                $student = $this->getStudentsProperty()->firstWhere('id', $studentId);
+                $who = $student instanceof Student ? $student->name."'s mark" : 'Every mark';
 
                 $this->addError('marks', $who.' must be between '.MarkingScheme::formatBound($bounds['min']).' and '.MarkingScheme::formatBound($bounds['max']).'.');
 

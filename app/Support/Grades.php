@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Cache;
 
 final class Grades
 {
+    public const string CACHE_KEY = 'grading_scale';
+
     /**
      * Built-in grade boundaries used while the admin has not configured
      * a custom grading scale: minimum percentage required for each grade.
@@ -22,8 +24,6 @@ final class Grades
         'C' => 60.0,
         'D' => 50.0,
     ];
-
-    public const string CACHE_KEY = 'grading_scale';
 
     public static function fromMarks(float|int $marks, float|int $totalMarks): string
     {
@@ -53,16 +53,14 @@ final class Grades
     public static function boundaries(): array
     {
         /** @var array<string, float> $rows */
-        $rows = Cache::remember(self::CACHE_KEY, now()->addMinutes(5), function (): array {
-            return GradingScale::query()
-                ->orderByDesc('min_percentage')
-                ->orderBy('name')
-                ->get()
-                ->mapWithKeys(fn (GradingScale $scale): array => [
-                    $scale->name => (float) $scale->min_percentage,
-                ])
-                ->all();
-        });
+        $rows = Cache::remember(self::CACHE_KEY, now()->addMinutes(5), fn (): array => GradingScale::query()
+            ->orderByDesc('min_percentage')
+            ->orderBy('name')
+            ->get()
+            ->mapWithKeys(fn (GradingScale $scale): array => [
+                $scale->name => (float) $scale->min_percentage,
+            ])
+            ->all());
 
         return $rows === [] ? self::BOUNDARIES : $rows;
     }

@@ -29,7 +29,7 @@ final class ExamSettings extends Page
      * Editable grading scale rows. Rows with an id update existing
      * grades, rows without are created on save, missing ids are deleted.
      *
-     * @var list<array{id: ?string, name: string, min_percentage: string}>
+     * @var array<int, array{id: ?string, name: string, min_percentage: string}>
      */
     public array $scale = [];
 
@@ -52,7 +52,10 @@ final class ExamSettings extends Page
     public function mount(): void
     {
         $this->reportMode = AppSettingsStore::examReportMode();
-        $this->schemeClassId = $this->classes->first()?->getKey();
+
+        $firstClass = $this->getClassesProperty()->first();
+        $this->schemeClassId = $firstClass !== null ? $firstClass->id : null;
+
         $this->loadSchemes();
         $this->loadScale();
     }
@@ -75,9 +78,9 @@ final class ExamSettings extends Page
      */
     public function getSchemeSubjectsProperty(): Collection
     {
-        $class = $this->schemeClass;
+        $class = $this->getSchemeClassProperty();
 
-        if ($class === null) {
+        if (! $class instanceof StudentClass) {
             /** @var Collection<int, Subject> */
             return collect();
         }
@@ -88,9 +91,6 @@ final class ExamSettings extends Page
             ->get();
     }
 
-    /**
-     * @return StudentClass|null
-     */
     public function getSchemeClassProperty(): ?StudentClass
     {
         if ($this->schemeClassId === null) {
@@ -106,17 +106,18 @@ final class ExamSettings extends Page
     }
 
     /**
-     * Prefill the mark-limit inputs from the stored schemes, defaulting
+     * Fill in the mark-limit inputs from the stored schemes, defaulting
      * to the legacy 0 - 100 scale for subjects without one yet.
      */
     public function loadSchemes(): void
     {
         $this->schemes = [];
 
-        foreach ($this->schemeSubjects as $subject) {
-            $bounds = MarkingScheme::boundsFor((string) $this->schemeClassId, $subject->getKey());
+        foreach ($this->getSchemeSubjectsProperty() as $subject) {
+            $subjectId = (string) ($subject->id);
+            $bounds = MarkingScheme::boundsFor((string) $this->schemeClassId, $subjectId);
 
-            $this->schemes[$subject->getKey()] = [
+            $this->schemes[$subjectId] = [
                 'min' => MarkingScheme::formatBound($bounds['min']),
                 'max' => MarkingScheme::formatBound($bounds['max']),
             ];
@@ -130,7 +131,7 @@ final class ExamSettings extends Page
             ->orderBy('name')
             ->get()
             ->map(fn (GradingScale $grade): array => [
-                'id' => $grade->getKey(),
+                'id' => $grade->id,
                 'name' => $grade->name,
                 'min_percentage' => MarkingScheme::formatBound($grade->min_percentage),
             ])
@@ -168,9 +169,9 @@ final class ExamSettings extends Page
 
     public function saveSchemes(): void
     {
-        $class = $this->schemeClass;
+        $class = $this->getSchemeClassProperty();
 
-        if ($class === null) {
+        if (! $class instanceof StudentClass) {
             FilamentNotification::make()
                 ->title('Select a class first')
                 ->danger()
@@ -181,8 +182,9 @@ final class ExamSettings extends Page
 
         $prepared = [];
 
-        foreach ($this->schemeSubjects as $subject) {
-            $state = $this->schemes[$subject->getKey()] ?? ['min' => '0', 'max' => '100'];
+        foreach ($this->getSchemeSubjectsProperty() as $subject) {
+            $subjectId = (string) ($subject->id);
+            $state = $this->schemes[$subjectId] ?? ['min' => '0', 'max' => '100'];
 
             $min = $state['min'] === '' ? 0.0 : (float) $state['min'];
             $max = $state['max'] === '' ? 100.0 : (float) $state['max'];
@@ -198,7 +200,7 @@ final class ExamSettings extends Page
                 return;
             }
 
-            $prepared[$subject->getKey()] = ['min' => $min, 'max' => $max];
+            $prepared[$subjectId] = ['min' => $min, 'max' => $max];
         }
 
         foreach ($prepared as $subjectId => $bounds) {

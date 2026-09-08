@@ -287,8 +287,8 @@ final class FillExamResults extends Page
             }
 
             if (! is_numeric($value) || (float) $value < $bounds['min'] || (float) $value > $bounds['max']) {
-                $student = $this->students->find($studentId);
-                $who = $student instanceof Student ? $student->name.'\'s mark' : 'Every mark';
+                $student = $this->getStudentsProperty()->firstWhere('id', $studentId);
+                $who = $student instanceof Student ? $student->name."'s mark" : 'Every mark';
 
                 $this->addError('marks', $who.' must be between '.MarkingScheme::formatBound($bounds['min']).' and '.MarkingScheme::formatBound($bounds['max']).'.');
 
