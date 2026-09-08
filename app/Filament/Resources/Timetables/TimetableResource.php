@@ -25,6 +25,8 @@ final class TimetableResource extends Resource
 
     protected static string|UnitEnum|null $navigationGroup = 'Academics';
 
+    protected static ?int $navigationSort = 5;
+
     protected static ?string $navigationLabel = 'Timetable';
 
     protected static ?string $modelLabel = 'timetable slot';

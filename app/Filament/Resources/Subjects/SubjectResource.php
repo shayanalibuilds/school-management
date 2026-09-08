@@ -9,6 +9,7 @@ use App\Filament\Resources\Subjects\Pages\EditSubject;
 use App\Filament\Resources\Subjects\Pages\ListSubjects;
 use App\Filament\Resources\Subjects\Schemas\SubjectForm;
 use App\Filament\Resources\Subjects\Tables\SubjectsTable;
+use App\Filament\Support\ArchiveNavigation;
 use App\Models\Subject;
 use BackedEnum;
 use Filament\Resources\Resource;
@@ -24,6 +25,8 @@ final class SubjectResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBookOpen;
 
     protected static string|UnitEnum|null $navigationGroup = 'Academics';
+
+    protected static ?int $navigationSort = 8;
 
     public static function form(Schema $schema): Schema
     {
@@ -49,5 +52,14 @@ final class SubjectResource extends Resource
             'create' => CreateSubject::route('/create'),
             'edit' => EditSubject::route('/{record}/edit'),
         ];
+    }
+
+    /**
+     * The sidebar entry is an accordion: the active and archived views of
+     * this ledger are nested entries underneath it.
+     */
+    public static function getNavigationItems(): array
+    {
+        return ArchiveNavigation::make(self::class);
     }
 }

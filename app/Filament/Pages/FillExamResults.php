@@ -43,6 +43,8 @@ final class FillExamResults extends Page
 
     protected static string|UnitEnum|null $navigationGroup = 'Academics';
 
+    protected static ?int $navigationSort = 2;
+
     public function mount(): void
     {
         $this->year = (string) today()->year;

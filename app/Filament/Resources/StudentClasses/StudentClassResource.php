@@ -9,6 +9,7 @@ use App\Filament\Resources\StudentClasses\Pages\EditStudentClass;
 use App\Filament\Resources\StudentClasses\Pages\ListStudentClasses;
 use App\Filament\Resources\StudentClasses\Schemas\StudentClassForm;
 use App\Filament\Resources\StudentClasses\Tables\StudentClassesTable;
+use App\Filament\Support\ArchiveNavigation;
 use App\Models\StudentClass;
 use BackedEnum;
 use Filament\Resources\Resource;
@@ -24,6 +25,8 @@ final class StudentClassResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAcademicCap;
 
     protected static string|UnitEnum|null $navigationGroup = 'Academics';
+
+    protected static ?int $navigationSort = 7;
 
     protected static ?string $navigationLabel = 'Classes';
 
@@ -57,5 +60,14 @@ final class StudentClassResource extends Resource
             'create' => CreateStudentClass::route('/create'),
             'edit' => EditStudentClass::route('/{record}/edit'),
         ];
+    }
+
+    /**
+     * The sidebar entry is an accordion: the active and archived views of
+     * this ledger are nested entries underneath it.
+     */
+    public static function getNavigationItems(): array
+    {
+        return ArchiveNavigation::make(self::class);
     }
 }

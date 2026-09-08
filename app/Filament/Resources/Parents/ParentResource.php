@@ -9,6 +9,7 @@ use App\Filament\Resources\Parents\Pages\EditParent;
 use App\Filament\Resources\Parents\Pages\ListParents;
 use App\Filament\Resources\Parents\Schemas\ParentForm;
 use App\Filament\Resources\Parents\Tables\ParentsTable;
+use App\Filament\Support\ArchiveNavigation;
 use App\Models\StudentParent;
 use BackedEnum;
 use Filament\Resources\Resource;
@@ -23,7 +24,9 @@ final class ParentResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUsers;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Academics';
+    protected static string|UnitEnum|null $navigationGroup = 'People';
+
+    protected static ?int $navigationSort = 1;
 
     protected static ?string $navigationLabel = 'Parents';
 
@@ -46,5 +49,14 @@ final class ParentResource extends Resource
             'create' => CreateParent::route('/create'),
             'edit' => EditParent::route('/{record}/edit'),
         ];
+    }
+
+    /**
+     * The sidebar entry is an accordion: the active and archived views of
+     * this ledger are nested entries underneath it.
+     */
+    public static function getNavigationItems(): array
+    {
+        return ArchiveNavigation::make(self::class);
     }
 }

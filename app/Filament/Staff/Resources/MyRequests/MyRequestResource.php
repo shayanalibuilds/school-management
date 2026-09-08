@@ -23,6 +23,8 @@ final class MyRequestResource extends Resource
 
     protected static string|UnitEnum|null $navigationGroup = 'Teaching';
 
+    protected static ?int $navigationSort = 2;
+
     protected static ?string $navigationLabel = 'My Requests';
 
     public static function form(\Filament\Schemas\Schema $schema): \Filament\Schemas\Schema

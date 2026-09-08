@@ -30,6 +30,9 @@ final class StaffPanelProvider extends PanelProvider
             ->path('staff')
             ->authGuard('staff')
             ->login()
+            ->navigationGroups([
+                'Teaching',
+            ])
             ->colors([
                 'primary' => Color::Blue,
             ])

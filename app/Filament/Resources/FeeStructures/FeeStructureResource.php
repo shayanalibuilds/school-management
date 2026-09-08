@@ -9,6 +9,7 @@ use App\Filament\Resources\FeeStructures\Pages\EditFeeStructure;
 use App\Filament\Resources\FeeStructures\Pages\ListFeeStructures;
 use App\Filament\Resources\FeeStructures\Schemas\FeeStructureForm;
 use App\Filament\Resources\FeeStructures\Tables\FeeStructuresTable;
+use App\Filament\Support\ArchiveNavigation;
 use App\Models\FeeStructure;
 use BackedEnum;
 use Filament\Resources\Resource;
@@ -26,6 +27,8 @@ final class FeeStructureResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBanknotes;
 
     protected static string|UnitEnum|null $navigationGroup = 'Finance';
+
+    protected static ?int $navigationSort = 1;
 
     public static function form(Schema $schema): Schema
     {
@@ -59,5 +62,14 @@ final class FeeStructureResource extends Resource
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
+    }
+
+    /**
+     * The sidebar entry is an accordion: the active and archived views of
+     * this ledger are nested entries underneath it.
+     */
+    public static function getNavigationItems(): array
+    {
+        return ArchiveNavigation::make(self::class);
     }
 }

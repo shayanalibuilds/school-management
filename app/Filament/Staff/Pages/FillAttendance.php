@@ -33,6 +33,8 @@ final class FillAttendance extends Page
 
     protected static ?string $navigationLabel = 'Fill attendance';
 
+    protected static ?int $navigationSort = 1;
+
     protected static string|BackedEnum|null $navigationIcon = \Filament\Support\Icons\Heroicon::OutlinedClipboardDocumentList;
 
     /**

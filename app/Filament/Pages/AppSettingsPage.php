@@ -26,6 +26,8 @@ final class AppSettingsPage extends Page
 
     protected static string|UnitEnum|null $navigationGroup = 'Settings';
 
+    protected static ?int $navigationSort = 3;
+
     public function mount(): void
     {
         $this->queueEverything = AppSettingsStore::queueEverything();

@@ -16,7 +16,7 @@ final class StudentPerformanceChart extends ChartWidget
 
     protected ?string $maxHeight = '280px';
 
-    protected static ?int $sort = -2;
+    protected static ?int $sort = -3;
 
     /**
      * @return array<int, string>

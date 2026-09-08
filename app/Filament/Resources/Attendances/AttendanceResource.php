@@ -24,6 +24,8 @@ final class AttendanceResource extends Resource
 
     protected static string|UnitEnum|null $navigationGroup = 'Academics';
 
+    protected static ?int $navigationSort = 3;
+
     protected static ?string $navigationLabel = 'Attendance';
 
     public static function form(Schema $schema): Schema

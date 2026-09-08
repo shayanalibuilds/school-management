@@ -23,7 +23,9 @@ final class StaffAssignmentResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedLink;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Academics';
+    protected static string|UnitEnum|null $navigationGroup = 'People';
+
+    protected static ?int $navigationSort = 3;
 
     protected static ?string $navigationLabel = 'Assignments';
 

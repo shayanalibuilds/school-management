@@ -37,6 +37,8 @@ final class FillAttendance extends Page
 
     protected static string|UnitEnum|null $navigationGroup = 'Academics';
 
+    protected static ?int $navigationSort = 1;
+
     /**
      * Attendance can only ever be recorded for the current day.
      */
