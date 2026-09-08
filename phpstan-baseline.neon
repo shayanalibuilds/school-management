@@ -2091,11 +2091,17 @@ parameters:
 		-
 			message: '#^Binary operation "\." between ''marks\.'' and mixed results in an error\.$#'
 			identifier: binaryOp.invalid
-			count: 5
+			count: 13
 			path: tests/Feature/ExamResultsTest.php
 
 		-
 			message: '#^Call to an undefined method Illuminate\\Testing\\TestResponse\:\:assertNotified\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: tests/Feature/ExamResultsTest.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Testing\\TestResponse\:\:instance\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: tests/Feature/ExamResultsTest.php
@@ -2117,6 +2123,36 @@ parameters:
 			identifier: method.nonObject
 			count: 5
 			path: tests/Feature/ExamResultsTest.php
+
+		-
+			message: '#^Possibly invalid array key type mixed\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 2
+			path: tests/Feature/ExamResultsTest.php
+
+		-
+			message: '#^Invalid array key type float\.$#'
+			identifier: array.invalidKey
+			count: 2
+			path: tests/Feature/ExamSettingsTest.php
+
+		-
+			message: '#^Parameter \#1 \$key of method Pest\\Mixins\\Expectation\<array\<string, array\<string, string\>\>\>\:\:toHaveKey\(\) expects int\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Feature/ExamSettingsTest.php
+
+		-
+			message: '#^Part \$maths\-\>getKey\(\) \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 4
+			path: tests/Feature/ExamSettingsTest.php
+
+		-
+			message: '#^Possibly invalid array key type mixed\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 1
+			path: tests/Feature/ExamSettingsTest.php
 
 		-
 			message: '#^Cannot access property \$credentials on App\\Models\\PaymentSetting\|null\.$#'
@@ -2195,6 +2231,18 @@ parameters:
 			identifier: return.type
 			count: 1
 			path: tests/Feature/ImporterNotificationPluralsTest.php
+
+		-
+			message: '#^Parameter \#1 \$classId of static method App\\Models\\MarkingScheme\:\:boundsFor\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 3
+			path: tests/Feature/MarkingSystemTest.php
+
+		-
+			message: '#^Parameter \#2 \$subjectId of static method App\\Models\\MarkingScheme\:\:boundsFor\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 3
+			path: tests/Feature/MarkingSystemTest.php
 
 		-
 			message: '#^Binary operation "\." between ''statuses\.'' and mixed results in an error\.$#'

@@ -4,10 +4,16 @@ declare(strict_types=1);
 
 namespace App\Support;
 
+use App\Models\GradingScale;
+use Illuminate\Support\Facades\Cache;
+
 final class Grades
 {
+    public const string CACHE_KEY = 'grading_scale';
+
     /**
-     * Grade boundaries: minimum percentage required for each grade.
+     * Built-in grade boundaries used while the admin has not configured
+     * a custom grading scale: minimum percentage required for each grade.
      *
      * @var array<string, float>
      */
@@ -27,12 +33,43 @@ final class Grades
 
         $percentage = ($marks / $totalMarks) * 100;
 
-        foreach (self::BOUNDARIES as $grade => $minimum) {
+        foreach (self::boundaries() as $grade => $minimum) {
             if ($percentage >= $minimum) {
                 return $grade;
             }
         }
 
         return 'F';
+    }
+
+    /**
+     * Grade boundaries currently in force, highest threshold first.
+     * Rows come from the admin-editable grading scale; while the scale
+     * is empty the built-in boundaries apply. Marks below the lowest
+     * threshold always grade F.
+     *
+     * @return array<string, float> grade name => minimum percentage
+     */
+    public static function boundaries(): array
+    {
+        /** @var array<string, float> $rows */
+        $rows = Cache::remember(self::CACHE_KEY, now()->addMinutes(5), fn (): array => GradingScale::query()
+            ->orderByDesc('min_percentage')
+            ->orderBy('name')
+            ->get()
+            ->mapWithKeys(fn (GradingScale $scale): array => [
+                $scale->name => (float) $scale->min_percentage,
+            ])
+            ->all());
+
+        return $rows === [] ? self::BOUNDARIES : $rows;
+    }
+
+    /**
+     * Drop the cached boundaries so admin edits take effect at once.
+     */
+    public static function flushCache(): void
+    {
+        Cache::forget(self::CACHE_KEY);
     }
 }

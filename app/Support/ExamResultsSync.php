@@ -7,6 +7,7 @@ namespace App\Support;
 use App\Enums\ExamResultStatus;
 use App\Models\Admin;
 use App\Models\ExamResult;
+use App\Models\MarkingScheme;
 use App\Models\Staff;
 use App\Models\Student;
 use App\Models\StudentClass;
@@ -28,6 +29,10 @@ final class ExamResultsSync
             ->where('student_class_id', $classId)
             ->get();
 
+        // The marking scheme's maximum is the sheet's total: rows the
+        // admin caps at 75 are stored as out of 75, not out of 100.
+        $totalMarks = MarkingScheme::boundsFor($classId, $subjectId)['max'];
+
         $saved = 0;
 
         foreach ($students as $student) {
@@ -45,7 +50,7 @@ final class ExamResultsSync
 
             $result->student_class_id = $classId;
             $result->marks = (float) $value;
-            $result->total_marks = 100;
+            $result->total_marks = $totalMarks;
 
             if (! $result->exists) {
                 $result->status = ExamResultStatus::Draft->value;

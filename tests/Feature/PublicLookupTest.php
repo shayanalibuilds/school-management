@@ -10,6 +10,7 @@ use App\Models\Student;
 use App\Models\StudentClass;
 use App\Models\StudentParent as ParentModel;
 use App\Models\Subject;
+use App\Support\AppSettings;
 use App\Support\StudentLookup;
 
 use function Pest\Laravel\get;
@@ -103,14 +104,16 @@ it('shows public results for a child by year as grades', function (): void {
         'total_marks' => 100,
     ]);
 
-    get('/results?identifier=35202-7654321-9&year=2025&type=grades')
+    get('/results?identifier=35202-7654321-9&year=2025')
         ->assertOk()
         ->assertSee($student->name)
         ->assertSee('Mathematics')
         ->assertSee('A+');
 });
 
-it('shows public results as positions searched by gr number', function (): void {
+it('shows public results as positions when the school chose positions reporting', function (): void {
+    AppSettings::set(AppSettings::EXAM_REPORT_MODE, 'positions');
+
     $class = StudentClass::factory()->create();
     $subject = Subject::factory()->create();
 
@@ -126,7 +129,7 @@ it('shows public results as positions searched by gr number', function (): void 
         'subject_id' => $subject->getKey(), 'year' => 2025, 'marks' => 80,
     ]);
 
-    get('/results?identifier=GR-301&year=2025&type=positions')
+    get('/results?identifier=GR-301&year=2025')
         ->assertOk()
         ->assertSee('1st');
 });

@@ -6,6 +6,7 @@ namespace App\Filament\Staff\Pages;
 
 use App\Jobs\SyncExamResults;
 use App\Models\ExamResult;
+use App\Models\MarkingScheme;
 use App\Models\Staff;
 use App\Models\Student;
 use App\Models\StudentClass;
@@ -155,6 +156,57 @@ final class FillExamResults extends Page
     }
 
     /**
+     * Mark limits in force for the selected class + subject, or null
+     * before both are picked. Drives the input range and the column
+     * heading in the view.
+     *
+     * @return array{min: float, max: float}|null
+     */
+    public function getBoundsProperty(): ?array
+    {
+        if ($this->classId === null || $this->subjectId === null) {
+            return null;
+        }
+
+        return MarkingScheme::boundsFor($this->classId, $this->subjectId);
+    }
+
+    /**
+     * Already recorded results for the sheet, keyed by student id, so
+     * the view can flag who is done — a half-filled sheet can be saved
+     * any time and finished later.
+     *
+     * @return Collection<string, array{marks: float, total: float}>
+     */
+    public function getSavedResultsProperty(): Collection
+    {
+        if ($this->classId === null || $this->subjectId === null || $this->year === null) {
+            /** @var Collection<string, array{marks: float, total: float}> */
+            return collect();
+        }
+
+        return ExamResult::query()
+            ->where('student_class_id', $this->classId)
+            ->where('subject_id', $this->subjectId)
+            ->where('year', (int) $this->year)
+            ->get(['student_id', 'marks', 'total_marks'])
+            ->mapWithKeys(fn (ExamResult $result): array => [
+                (string) $result->student_id => [
+                    'marks' => (float) $result->marks,
+                    'total' => (float) $result->total_marks,
+                ],
+            ]);
+    }
+
+    /**
+     * Report style the school chose: grades or positions.
+     */
+    public function getReportModeProperty(): string
+    {
+        return AppSettings::examReportMode();
+    }
+
+    /**
      * Publishing state of the selected result sheet, used by the
      * view to show the recheck window and lock the form once it closes.
      *
@@ -226,18 +278,25 @@ final class FillExamResults extends Page
             return;
         }
 
+        $bounds = MarkingScheme::boundsFor($this->classId, $this->subjectId);
+
         // Validate every provided mark before any write happens.
-        foreach ($this->marks as $value) {
+        foreach ($this->marks as $studentId => $value) {
             if ($value === null || $value === '') {
                 continue;
             }
 
-            if ((float) $value < 0 || (float) $value > 100) {
-                $this->addError('marks', 'Marks must be between 0 and 100.');
+            if (! is_numeric($value) || (float) $value < $bounds['min'] || (float) $value > $bounds['max']) {
+                $student = $this->getStudentsProperty()->firstWhere('id', $studentId);
+                $who = $student instanceof Student ? $student->name."'s mark" : 'Every mark';
+
+                $this->addError('marks', $who.' must be between '.MarkingScheme::formatBound($bounds['min']).' and '.MarkingScheme::formatBound($bounds['max']).'.');
 
                 return;
             }
         }
+
+        $this->resetErrorBag();
 
         $marks = $this->marks;
 
