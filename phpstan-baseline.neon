@@ -169,16 +169,88 @@ parameters:
 			path: app/Filament/Resources/ExamResults/Tables/ExamResultsTable.php
 
 		-
+			message: '#^Method App\\Filament\\Resources\\FeeStructures\\Pages\\ListFeeStructures\:\:modifyQueryWithActiveTab\(\) has invalid return type App\\Filament\\Resources\\FeeStructures\\Pages\\FeeStructure\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Filament/Resources/FeeStructures/Pages/ListFeeStructures.php
+
+		-
+			message: '#^Parameter \$query of method App\\Filament\\Resources\\FeeStructures\\Pages\\ListFeeStructures\:\:modifyQueryWithActiveTab\(\) has invalid type App\\Filament\\Resources\\FeeStructures\\Pages\\FeeStructure\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Filament/Resources/FeeStructures/Pages/ListFeeStructures.php
+
+		-
+			message: '#^Type App\\Filament\\Resources\\FeeStructures\\Pages\\FeeStructure in generic type Illuminate\\Database\\Eloquent\\Builder\<App\\Filament\\Resources\\FeeStructures\\Pages\\FeeStructure\> in PHPDoc tag @param for parameter \$query is not subtype of template type TModel of Illuminate\\Database\\Eloquent\\Model of class Illuminate\\Database\\Eloquent\\Builder\.$#'
+			identifier: generics.notSubtype
+			count: 1
+			path: app/Filament/Resources/FeeStructures/Pages/ListFeeStructures.php
+
+		-
+			message: '#^Type App\\Filament\\Resources\\FeeStructures\\Pages\\FeeStructure in generic type Illuminate\\Database\\Eloquent\\Builder\<App\\Filament\\Resources\\FeeStructures\\Pages\\FeeStructure\> in PHPDoc tag @return is not subtype of template type TModel of Illuminate\\Database\\Eloquent\\Model of class Illuminate\\Database\\Eloquent\\Builder\.$#'
+			identifier: generics.notSubtype
+			count: 1
+			path: app/Filament/Resources/FeeStructures/Pages/ListFeeStructures.php
+
+		-
 			message: '#^Possibly invalid array key type mixed\.$#'
 			identifier: array.invalidKey
 			count: 1
 			path: app/Filament/Resources/Fees/Schemas/FeeForm.php
 
 		-
+			message: '#^Method App\\Filament\\Resources\\Guardians\\Pages\\ListGuardians\:\:modifyQueryWithActiveTab\(\) has invalid return type App\\Filament\\Resources\\Guardians\\Pages\\Guardian\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Filament/Resources/Guardians/Pages/ListGuardians.php
+
+		-
+			message: '#^Parameter \$query of method App\\Filament\\Resources\\Guardians\\Pages\\ListGuardians\:\:modifyQueryWithActiveTab\(\) has invalid type App\\Filament\\Resources\\Guardians\\Pages\\Guardian\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Filament/Resources/Guardians/Pages/ListGuardians.php
+
+		-
+			message: '#^Type App\\Filament\\Resources\\Guardians\\Pages\\Guardian in generic type Illuminate\\Database\\Eloquent\\Builder\<App\\Filament\\Resources\\Guardians\\Pages\\Guardian\> in PHPDoc tag @param for parameter \$query is not subtype of template type TModel of Illuminate\\Database\\Eloquent\\Model of class Illuminate\\Database\\Eloquent\\Builder\.$#'
+			identifier: generics.notSubtype
+			count: 1
+			path: app/Filament/Resources/Guardians/Pages/ListGuardians.php
+
+		-
+			message: '#^Type App\\Filament\\Resources\\Guardians\\Pages\\Guardian in generic type Illuminate\\Database\\Eloquent\\Builder\<App\\Filament\\Resources\\Guardians\\Pages\\Guardian\> in PHPDoc tag @return is not subtype of template type TModel of Illuminate\\Database\\Eloquent\\Model of class Illuminate\\Database\\Eloquent\\Builder\.$#'
+			identifier: generics.notSubtype
+			count: 1
+			path: app/Filament/Resources/Guardians/Pages/ListGuardians.php
+
+		-
 			message: '#^Possibly invalid array key type mixed\.$#'
 			identifier: array.invalidKey
 			count: 1
 			path: app/Filament/Resources/Guardians/Schemas/GuardianForm.php
+
+		-
+			message: '#^Method App\\Filament\\Resources\\Parents\\Pages\\ListParents\:\:modifyQueryWithActiveTab\(\) has invalid return type App\\Filament\\Resources\\Parents\\Pages\\StudentParent\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Filament/Resources/Parents/Pages/ListParents.php
+
+		-
+			message: '#^Parameter \$query of method App\\Filament\\Resources\\Parents\\Pages\\ListParents\:\:modifyQueryWithActiveTab\(\) has invalid type App\\Filament\\Resources\\Parents\\Pages\\StudentParent\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Filament/Resources/Parents/Pages/ListParents.php
+
+		-
+			message: '#^Type App\\Filament\\Resources\\Parents\\Pages\\StudentParent in generic type Illuminate\\Database\\Eloquent\\Builder\<App\\Filament\\Resources\\Parents\\Pages\\StudentParent\> in PHPDoc tag @param for parameter \$query is not subtype of template type TModel of Illuminate\\Database\\Eloquent\\Model of class Illuminate\\Database\\Eloquent\\Builder\.$#'
+			identifier: generics.notSubtype
+			count: 1
+			path: app/Filament/Resources/Parents/Pages/ListParents.php
+
+		-
+			message: '#^Type App\\Filament\\Resources\\Parents\\Pages\\StudentParent in generic type Illuminate\\Database\\Eloquent\\Builder\<App\\Filament\\Resources\\Parents\\Pages\\StudentParent\> in PHPDoc tag @return is not subtype of template type TModel of Illuminate\\Database\\Eloquent\\Model of class Illuminate\\Database\\Eloquent\\Builder\.$#'
+			identifier: generics.notSubtype
+			count: 1
+			path: app/Filament/Resources/Parents/Pages/ListParents.php
 
 		-
 			message: '#^Possibly invalid array key type mixed\.$#'
@@ -239,6 +311,78 @@ parameters:
 			identifier: class.notFound
 			count: 1
 			path: app/Filament/Resources/StaffAssignments/Schemas/StaffAssignmentForm.php
+
+		-
+			message: '#^Method App\\Filament\\Resources\\StudentClasses\\Pages\\ListStudentClasses\:\:modifyQueryWithActiveTab\(\) has invalid return type App\\Filament\\Resources\\StudentClasses\\Pages\\StudentClass\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Filament/Resources/StudentClasses/Pages/ListStudentClasses.php
+
+		-
+			message: '#^Parameter \$query of method App\\Filament\\Resources\\StudentClasses\\Pages\\ListStudentClasses\:\:modifyQueryWithActiveTab\(\) has invalid type App\\Filament\\Resources\\StudentClasses\\Pages\\StudentClass\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Filament/Resources/StudentClasses/Pages/ListStudentClasses.php
+
+		-
+			message: '#^Type App\\Filament\\Resources\\StudentClasses\\Pages\\StudentClass in generic type Illuminate\\Database\\Eloquent\\Builder\<App\\Filament\\Resources\\StudentClasses\\Pages\\StudentClass\> in PHPDoc tag @param for parameter \$query is not subtype of template type TModel of Illuminate\\Database\\Eloquent\\Model of class Illuminate\\Database\\Eloquent\\Builder\.$#'
+			identifier: generics.notSubtype
+			count: 1
+			path: app/Filament/Resources/StudentClasses/Pages/ListStudentClasses.php
+
+		-
+			message: '#^Type App\\Filament\\Resources\\StudentClasses\\Pages\\StudentClass in generic type Illuminate\\Database\\Eloquent\\Builder\<App\\Filament\\Resources\\StudentClasses\\Pages\\StudentClass\> in PHPDoc tag @return is not subtype of template type TModel of Illuminate\\Database\\Eloquent\\Model of class Illuminate\\Database\\Eloquent\\Builder\.$#'
+			identifier: generics.notSubtype
+			count: 1
+			path: app/Filament/Resources/StudentClasses/Pages/ListStudentClasses.php
+
+		-
+			message: '#^Method App\\Filament\\Resources\\Students\\Pages\\ListStudents\:\:modifyQueryWithActiveTab\(\) has invalid return type App\\Filament\\Resources\\Students\\Pages\\Student\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Filament/Resources/Students/Pages/ListStudents.php
+
+		-
+			message: '#^Parameter \$query of method App\\Filament\\Resources\\Students\\Pages\\ListStudents\:\:modifyQueryWithActiveTab\(\) has invalid type App\\Filament\\Resources\\Students\\Pages\\Student\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Filament/Resources/Students/Pages/ListStudents.php
+
+		-
+			message: '#^Type App\\Filament\\Resources\\Students\\Pages\\Student in generic type Illuminate\\Database\\Eloquent\\Builder\<App\\Filament\\Resources\\Students\\Pages\\Student\> in PHPDoc tag @param for parameter \$query is not subtype of template type TModel of Illuminate\\Database\\Eloquent\\Model of class Illuminate\\Database\\Eloquent\\Builder\.$#'
+			identifier: generics.notSubtype
+			count: 1
+			path: app/Filament/Resources/Students/Pages/ListStudents.php
+
+		-
+			message: '#^Type App\\Filament\\Resources\\Students\\Pages\\Student in generic type Illuminate\\Database\\Eloquent\\Builder\<App\\Filament\\Resources\\Students\\Pages\\Student\> in PHPDoc tag @return is not subtype of template type TModel of Illuminate\\Database\\Eloquent\\Model of class Illuminate\\Database\\Eloquent\\Builder\.$#'
+			identifier: generics.notSubtype
+			count: 1
+			path: app/Filament/Resources/Students/Pages/ListStudents.php
+
+		-
+			message: '#^Method App\\Filament\\Resources\\Subjects\\Pages\\ListSubjects\:\:modifyQueryWithActiveTab\(\) has invalid return type App\\Filament\\Resources\\Subjects\\Pages\\Subject\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Filament/Resources/Subjects/Pages/ListSubjects.php
+
+		-
+			message: '#^Parameter \$query of method App\\Filament\\Resources\\Subjects\\Pages\\ListSubjects\:\:modifyQueryWithActiveTab\(\) has invalid type App\\Filament\\Resources\\Subjects\\Pages\\Subject\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Filament/Resources/Subjects/Pages/ListSubjects.php
+
+		-
+			message: '#^Type App\\Filament\\Resources\\Subjects\\Pages\\Subject in generic type Illuminate\\Database\\Eloquent\\Builder\<App\\Filament\\Resources\\Subjects\\Pages\\Subject\> in PHPDoc tag @param for parameter \$query is not subtype of template type TModel of Illuminate\\Database\\Eloquent\\Model of class Illuminate\\Database\\Eloquent\\Builder\.$#'
+			identifier: generics.notSubtype
+			count: 1
+			path: app/Filament/Resources/Subjects/Pages/ListSubjects.php
+
+		-
+			message: '#^Type App\\Filament\\Resources\\Subjects\\Pages\\Subject in generic type Illuminate\\Database\\Eloquent\\Builder\<App\\Filament\\Resources\\Subjects\\Pages\\Subject\> in PHPDoc tag @return is not subtype of template type TModel of Illuminate\\Database\\Eloquent\\Model of class Illuminate\\Database\\Eloquent\\Builder\.$#'
+			identifier: generics.notSubtype
+			count: 1
+			path: app/Filament/Resources/Subjects/Pages/ListSubjects.php
 
 		-
 			message: '#^Cannot cast mixed to int\.$#'
@@ -1603,12 +1747,6 @@ parameters:
 			path: tests/Feature/ArchiveOnDeleteTest.php
 
 		-
-			message: '#^Parameter \#1 \$array of function array_keys expects array, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: tests/Feature/ArchiveOnDeleteTest.php
-
-		-
 			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<App\\Models\\Student\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Student\>\|null\>\:\:and\(\)$#'
 			identifier: argument.templateType
 			count: 1
@@ -1623,7 +1761,7 @@ parameters:
 		-
 			message: '#^Unable to resolve the template type TValue in call to function expect$#'
 			identifier: argument.templateType
-			count: 3
+			count: 4
 			path: tests/Feature/ArchiveOnDeleteTest.php
 
 		-

@@ -65,16 +65,16 @@ it('shows active and inactive tabs on the students list and hides archived recor
     actingAs($admin, 'admin');
     Filament::setCurrentPanel('admin');
 
-    expect(array_keys(Livewire::test(ListStudents::class)->instance()->getTabs()))->toBe(['active', 'inactive']);
+    expect(Livewire::test(ListStudents::class)->instance()->getTabs())->toBe([]);
 
-    // The Active tab is the default view: archived records stay out of
-    // the table until the admin opens the Inactive tab.
+    // The Active view is the default: archived records stay out of
+    // the table until the sidebar's "Inactive students" entry is opened.
     Livewire::test(ListStudents::class)
         ->assertSee('Current Kid')
         ->assertDontSee('Old Kid');
 
     Livewire::test(ListStudents::class)
-        ->set('activeTab', 'inactive')
+        ->set('tab', 'inactive')
         ->assertSee('Old Kid')
         ->assertDontSee('Current Kid');
 });
