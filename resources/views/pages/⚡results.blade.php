@@ -1,5 +1,6 @@
 <?php
 
+use App\Support\AppSettings;
 use App\Support\Grades;
 use App\Support\Positions;
 use App\Support\StudentLookup;
@@ -14,8 +15,17 @@ new #[Layout('layouts::app')] class extends Component {
     #[Url]
     public ?string $year = null;
 
-    #[Url]
+    /**
+     * Report style the school chose in Exam settings — grades or
+     * positions. Visitors see the gazette exactly the way the school
+     * reports it; there is no per-visitor toggle.
+     */
     public string $type = 'grades';
+
+    public function mount(): void
+    {
+        $this->type = AppSettings::examReportMode();
+    }
 
     /**
      * @return array<int, array<string, mixed>>
@@ -180,18 +190,16 @@ new #[Layout('layouts::app')] class extends Component {
                             </div>
                         </div>
                         <div>
-                            <label for="type" class="mb-1.5 block text-sm font-semibold text-ink">Show as</label>
-                            <div class="relative">
-                                <select
-                                    id="type"
-                                    wire:model="type"
-                                    class="w-full cursor-pointer appearance-none rounded-lg border border-line bg-mist px-4 py-3 pr-10 text-sm text-ink shadow-sm transition-[color,background-color,border-color,box-shadow] focus:bg-card focus:outline-none focus:ring-2 focus:ring-navy"
-                                >
-                                    <option value="grades">Grades</option>
-                                    <option value="positions">Positions</option>
-                                </select>
-                                <x-portal-icon name="chevron-down" class="pointer-events-none absolute right-3 top-3.5 h-4 w-4 text-ink-soft" />
+                            <span class="mb-1.5 block text-sm font-semibold text-ink">Reported as</span>
+                            <div class="flex items-center gap-2 rounded-lg border border-line bg-mist px-4 py-3 text-sm font-semibold text-ink">
+                                <x-portal-icon name="{{ $type === 'positions' ? 'trophy' : 'academic-cap' }}" class="h-4 w-4 text-green" />
+                                @if ($type === 'positions')
+                                    Positions — 1st, 2nd, 3rd by total marks
+                                @else
+                                    Grades — from the school grading scale
+                                @endif
                             </div>
+                            <p class="mt-1 text-xs text-ink-soft">The school reports results this way.</p>
                         </div>
                         <button
                             type="submit"
@@ -311,8 +319,8 @@ new #[Layout('layouts::app')] class extends Component {
                                             <x-portal-icon name="document-text" class="h-5 w-5 text-navy" />
                                         </div>
                                         <p class="text-sm text-ink-soft">
-                                            Subject marks are hidden in this view — switch
-                                            <span class="font-semibold text-ink">Show as: Grades</span> to see the full breakdown.
+                                            The school reports this year's results as positions — subject marks
+                                            are not shown in this view.
                                         </p>
                                     </div>
                                 @endif
