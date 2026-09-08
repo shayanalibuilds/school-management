@@ -14,6 +14,8 @@ final class AppSettings
 
     public const string STATS_ENABLED = 'stats_enabled';
 
+    public const string EXAM_REPORT_MODE = 'exam_report_mode';
+
     public static function get(string $key, ?string $default = null): ?string
     {
         $cached = Cache::remember("app_settings:{$key}", now()->addMinutes(5), function () use ($key, $default): ?string {
@@ -60,5 +62,16 @@ final class AppSettings
     public static function statsEnabled(): bool
     {
         return self::get(self::STATS_ENABLED, '0') === '1';
+    }
+
+    /**
+     * How the school reports exam performance this year: letter grades
+     * (A+, A, B, ... from the admin-editable grading scale) or class
+     * positions (1st, 2nd, 3rd ... from total marks). The school
+     * decides once; the public gazette and every result view follow.
+     */
+    public static function examReportMode(): string
+    {
+        return self::get(self::EXAM_REPORT_MODE, 'grades') === 'positions' ? 'positions' : 'grades';
     }
 }
