@@ -139,6 +139,47 @@ it('blocks staff from entering results for unassigned class-subject pairs', func
     expect(ExamResult::query()->count())->toBe(0);
 });
 
+it('offers staff only the subjects assigned for the selected class', function (): void {
+    $staff = Staff::factory()->create();
+    $classOne = StudentClass::factory()->create();
+    $classTwo = StudentClass::factory()->create();
+    $maths = Subject::factory()->create(['name' => 'Maths']);
+    $biology = Subject::factory()->create(['name' => 'Biology']);
+
+    $staff->assignments()->create([
+        'student_class_id' => $classOne->getKey(),
+        'subject_id' => $maths->getKey(),
+    ]);
+    $staff->assignments()->create([
+        'student_class_id' => $classTwo->getKey(),
+        'subject_id' => $biology->getKey(),
+    ]);
+
+    actingAs($staff, 'staff');
+    Filament\Facades\Filament::setCurrentPanel('staff');
+
+    $page = Livewire::test(App\Filament\Staff\Pages\FillExamResults::class);
+
+    // No class selected: nothing is on offer yet.
+    $component = $page->instance();
+    assert($component instanceof App\Filament\Staff\Pages\FillExamResults);
+    expect($component->getSubjectsProperty()->pluck('name')->all())->toBeEmpty();
+
+    $page->set('classId', $classOne->getKey());
+    $component = $page->instance();
+    assert($component instanceof App\Filament\Staff\Pages\FillExamResults);
+    expect($component->getSubjectsProperty()->pluck('name')->all())->toBe(['Maths']);
+
+    // Switching classes drops the subject picked for the previous one.
+    $page->set('subjectId', $maths->getKey());
+    $page->set('classId', $classTwo->getKey());
+
+    $component = $page->instance();
+    assert($component instanceof App\Filament\Staff\Pages\FillExamResults);
+    expect($component->getSubjectsProperty()->pluck('name')->all())->toBe(['Biology'])
+        ->and($page->get('subjectId'))->toBeNull();
+});
+
 it('shows the exam results resource to admins', function (): void {
     actingAs(Admin::factory()->create(), 'admin');
 

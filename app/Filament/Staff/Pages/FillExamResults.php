@@ -17,6 +17,7 @@ use Carbon\CarbonInterface;
 use Filament\Notifications\Notification as FilamentNotification;
 use Filament\Pages\Page;
 use Filament\Support\Exceptions\Halt;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
 final class FillExamResults extends Page
@@ -67,7 +68,10 @@ final class FillExamResults extends Page
     }
 
     /**
-     * Subjects the signed-in staff member is assigned to teach.
+     * Subjects the signed-in staff member is assigned to teach in the
+     * selected class: the subject list only offers combinations that
+     * save() will accept, instead of every subject the teacher touches
+     * anywhere.
      *
      * @return Collection<int, Subject>
      */
@@ -75,12 +79,16 @@ final class FillExamResults extends Page
     {
         $staff = auth('staff')->user();
 
-        if (! $staff instanceof Staff) {
+        if (! $staff instanceof Staff || $this->classId === null) {
+            /** @var Collection<int, Subject> */
             return collect();
         }
 
         return Subject::query()
-            ->whereRelation('staffAssignments', 'staff_id', $staff->getKey())
+            ->where('status', 'active')
+            ->whereRelation('staffAssignments', fn (Builder $query) => $query
+                ->where('staff_id', $staff->getKey())
+                ->where('student_class_id', $this->classId))
             ->orderBy('name')
             ->get();
     }
@@ -129,6 +137,10 @@ final class FillExamResults extends Page
 
     public function updatedClassId(): void
     {
+        // The subject dropdown is scoped to the selected class, so a
+        // subject picked for the previous class is no longer on offer.
+        $this->subjectId = null;
+
         $this->loadExistingMarks();
     }
 
