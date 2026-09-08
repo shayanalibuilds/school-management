@@ -54,19 +54,39 @@ it('deep links the sidebar inactive entry into the archived tab of the list page
     get('/dashboard/students')
         ->assertOk()
         ->assertSee('Present Kid')
-        ->assertDontSee('Past Kid');
+        ->assertDontSee('Past Kid')
+        ->assertDontSee('tablist', false);
 
     get('/dashboard/students?tab=inactive')
         ->assertOk()
         ->assertSee('Past Kid')
-        ->assertDontSee('Present Kid');
+        ->assertDontSee('Present Kid')
+        ->assertDontSee('tablist', false);
 });
 
-it('keeps the active tab as the default when the query parameter is unknown', function (): void {
+it('renders no active/inactive tab bar on any archivable list page', function (): void {
     $admin = Admin::factory()->create();
 
     actingAs($admin, 'admin');
     Filament::setCurrentPanel('admin');
 
-    Livewire::test(ListStudents::class)->assertSet('activeTab', 'active');
+    foreach ([
+        '/dashboard/students',
+        '/dashboard/student-classes',
+        '/dashboard/subjects',
+        '/dashboard/parents',
+        '/dashboard/guardians',
+        '/dashboard/fee-structures',
+    ] as $url) {
+        get($url)->assertOk()->assertDontSee('tablist', false);
+    }
+});
+
+it('keeps the active view as the default when the query parameter is unknown', function (): void {
+    $admin = Admin::factory()->create();
+
+    actingAs($admin, 'admin');
+    Filament::setCurrentPanel('admin');
+
+    Livewire::test(ListStudents::class)->assertSet('tab', 'active');
 });

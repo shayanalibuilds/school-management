@@ -16,11 +16,13 @@ use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\View\PanelsRenderHook;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\HtmlString;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 final class AdminPanelProvider extends PanelProvider
@@ -33,6 +35,20 @@ final class AdminPanelProvider extends PanelProvider
             ->path('dashboard')
             ->authGuard('admin')
             ->login()
+            ->renderHook(
+                PanelsRenderHook::STYLES_BEFORE,
+                fn (): HtmlString => new HtmlString(<<<'HTML'
+                    <style>
+                        /* Sidebar accordions: indent the Active / Inactive
+                           children so the parent relationship is visible. */
+                        .fi-sidebar-sub-group-items {
+                            margin-left: 1.125rem;
+                            padding-left: 0.75rem;
+                            border-left: 2px solid color-mix(in oklab, currentColor 14%, transparent);
+                        }
+                    </style>
+                    HTML),
+            )
             ->navigationGroups([
                 'Academics',
                 'People',
