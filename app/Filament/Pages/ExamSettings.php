@@ -117,8 +117,8 @@ final class ExamSettings extends Page
             $bounds = MarkingScheme::boundsFor((string) $this->schemeClassId, $subject->getKey());
 
             $this->schemes[$subject->getKey()] = [
-                'min' => self::formatMarks($bounds['min']),
-                'max' => self::formatMarks($bounds['max']),
+                'min' => MarkingScheme::formatBound($bounds['min']),
+                'max' => MarkingScheme::formatBound($bounds['max']),
             ];
         }
     }
@@ -132,18 +132,9 @@ final class ExamSettings extends Page
             ->map(fn (GradingScale $grade): array => [
                 'id' => $grade->getKey(),
                 'name' => $grade->name,
-                'min_percentage' => self::formatMarks($grade->min_percentage),
+                'min_percentage' => MarkingScheme::formatBound($grade->min_percentage),
             ])
             ->all();
-    }
-
-    /**
-     * Render a mark threshold without trailing zeros: 0.0 -> "0",
-     * 100.0 -> "100", 7.5 -> "7.5".
-     */
-    private static function formatMarks(float $value): string
-    {
-        return (string) $value;
     }
 
     public function addScaleRow(): void

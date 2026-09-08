@@ -56,6 +56,15 @@ final class MarkingScheme extends Model
     }
 
     /**
+     * Render a bound without trailing zeros: 0.0 -> "0", 100.0 -> "100",
+     * 7.5 -> "7.5" — used in validation messages and headings.
+     */
+    public static function formatBound(float $value): string
+    {
+        return (string) $value;
+    }
+
+    /**
      * @return BelongsTo<StudentClass, $this>
      */
     public function studentClass(): BelongsTo

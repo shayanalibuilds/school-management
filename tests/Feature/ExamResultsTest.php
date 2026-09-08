@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Models\Admin;
 use App\Models\ExamResult;
+use App\Models\MarkingScheme;
 use App\Models\Staff;
 use App\Models\Student;
 use App\Models\StudentClass;
@@ -178,6 +179,172 @@ it('offers staff only the subjects assigned for the selected class', function ()
     assert($component instanceof App\Filament\Staff\Pages\FillExamResults);
     expect($component->getSubjectsProperty()->pluck('name')->all())->toBe(['Biology'])
         ->and($page->get('subjectId'))->toBeNull();
+});
+
+it('offers admins only the subjects attached to the selected class', function (): void {
+    $class = StudentClass::factory()->create();
+    $maths = Subject::factory()->create(['name' => 'Maths']);
+    $unrelated = Subject::factory()->create(['name' => 'Unrelated']);
+
+    $class->subjects()->attach($maths->getKey());
+
+    actingAs(Admin::factory()->create(), 'admin');
+    Filament\Facades\Filament::setCurrentPanel('admin');
+
+    $page = Livewire::test(App\Filament\Pages\FillExamResults::class);
+
+    // No class selected: nothing is on offer yet.
+    $component = $page->instance();
+    assert($component instanceof App\Filament\Pages\FillExamResults);
+    expect($component->getSubjectsProperty()->pluck('name')->all())->toBeEmpty();
+
+    $page->set('classId', $class->getKey());
+
+    $component = $page->instance();
+    assert($component instanceof App\Filament\Pages\FillExamResults);
+    expect($component->getSubjectsProperty()->pluck('name')->all())->toBe(['Maths'])
+        ->and($component->getSubjectsProperty()->contains('name', $unrelated->name))->toBeFalse();
+});
+
+it('validates marks against the marking scheme bounds and stores the scheme total', function (): void {
+    $class = StudentClass::factory()->create();
+    $subject = Subject::factory()->create();
+    $student = Student::factory()->create(['student_class_id' => $class->getKey()]);
+
+    MarkingScheme::factory()->create([
+        'student_class_id' => $class->getKey(),
+        'subject_id' => $subject->getKey(),
+        'min_marks' => 5,
+        'max_marks' => 75,
+    ]);
+
+    actingAs(Admin::factory()->create(), 'admin');
+    Filament\Facades\Filament::setCurrentPanel('admin');
+
+    // 80 is inside the legacy 0-100 scale but above this subject's maximum.
+    Livewire::test(App\Filament\Pages\FillExamResults::class)
+        ->set('classId', $class->getKey())
+        ->set('subjectId', $subject->getKey())
+        ->set('year', (string) today()->year)
+        ->set('marks.'.$student->getKey(), '80')
+        ->call('save')
+        ->assertHasErrors(['marks']);
+
+    expect(ExamResult::query()->count())->toBe(0);
+
+    // 4 is below the configured minimum.
+    Livewire::test(App\Filament\Pages\FillExamResults::class)
+        ->set('classId', $class->getKey())
+        ->set('subjectId', $subject->getKey())
+        ->set('year', (string) today()->year)
+        ->set('marks.'.$student->getKey(), '4')
+        ->call('save')
+        ->assertHasErrors(['marks']);
+
+    expect(ExamResult::query()->count())->toBe(0);
+
+    // A mark inside the bounds is stored out of the scheme maximum.
+    Livewire::test(App\Filament\Pages\FillExamResults::class)
+        ->set('classId', $class->getKey())
+        ->set('subjectId', $subject->getKey())
+        ->set('year', (string) today()->year)
+        ->set('marks.'.$student->getKey(), '70')
+        ->call('save')
+        ->assertSuccessful();
+
+    $result = ExamResult::query()->sole();
+
+    expect($result->marks)->toBe(70.0)
+        ->and($result->total_marks)->toBe(75.0);
+});
+
+it('lets a half-filled sheet be saved and finished later', function (): void {
+    $class = StudentClass::factory()->create();
+    $subject = Subject::factory()->create();
+    $done = Student::factory()->create(['student_class_id' => $class->getKey(), 'name' => 'Ada']);
+    $later = Student::factory()->create(['student_class_id' => $class->getKey(), 'name' => 'Ben']);
+
+    actingAs(Admin::factory()->create(), 'admin');
+    Filament\Facades\Filament::setCurrentPanel('admin');
+
+    // Half the class is filled: only Ada has a mark.
+    $page = Livewire::test(App\Filament\Pages\FillExamResults::class)
+        ->set('classId', $class->getKey())
+        ->set('subjectId', $subject->getKey())
+        ->set('year', (string) today()->year)
+        ->set('marks.'.$done->getKey(), '88')
+        ->call('save')
+        ->assertSuccessful();
+
+    $component = $page->instance();
+    assert($component instanceof App\Filament\Pages\FillExamResults);
+
+    expect($component->getSavedResultsProperty()->count())->toBe(1)
+        ->and(ExamResult::query()->where('student_id', $done->getKey())->exists())->toBeTrue()
+        ->and(ExamResult::query()->where('student_id', $later->getKey())->exists())->toBeFalse();
+
+    // The saved sheet reloads with the recorded mark prefilled.
+    $page = Livewire::test(App\Filament\Pages\FillExamResults::class)
+        ->set('classId', $class->getKey())
+        ->set('subjectId', $subject->getKey())
+        ->set('year', (string) today()->year);
+
+    $component = $page->instance();
+    assert($component instanceof App\Filament\Pages\FillExamResults);
+
+    expect($component->marks[$done->getKey()] ?? null)->toBe('88')
+        ->and($component->marks[$later->getKey()] ?? null)->toBeNull();
+
+    // Later the rest of the class is filled in without touching Ada.
+    $page->set('marks.'.$later->getKey(), '42')
+        ->call('save')
+        ->assertSuccessful();
+
+    expect(ExamResult::query()->where('student_id', $later->getKey())->sole()->marks)->toBe(42.0)
+        ->and(ExamResult::query()->where('student_id', $done->getKey())->sole()->marks)->toBe(88.0)
+        ->and(ExamResult::query()->count())->toBe(2);
+});
+
+it('validates staff marks against the marking scheme bounds too', function (): void {
+    $staff = Staff::factory()->create();
+    $class = StudentClass::factory()->create();
+    $subject = Subject::factory()->create();
+    $student = Student::factory()->create(['student_class_id' => $class->getKey()]);
+
+    $staff->assignments()->create([
+        'student_class_id' => $class->getKey(),
+        'subject_id' => $subject->getKey(),
+    ]);
+
+    MarkingScheme::factory()->create([
+        'student_class_id' => $class->getKey(),
+        'subject_id' => $subject->getKey(),
+        'min_marks' => 0,
+        'max_marks' => 50,
+    ]);
+
+    actingAs($staff, 'staff');
+    Filament\Facades\Filament::setCurrentPanel('staff');
+
+    Livewire::test(App\Filament\Staff\Pages\FillExamResults::class)
+        ->set('classId', $class->getKey())
+        ->set('subjectId', $subject->getKey())
+        ->set('year', (string) today()->year)
+        ->set('marks.'.$student->getKey(), '55')
+        ->call('save')
+        ->assertHasErrors(['marks']);
+
+    expect(ExamResult::query()->count())->toBe(0);
+
+    Livewire::test(App\Filament\Staff\Pages\FillExamResults::class)
+        ->set('classId', $class->getKey())
+        ->set('subjectId', $subject->getKey())
+        ->set('year', (string) today()->year)
+        ->set('marks.'.$student->getKey(), '45')
+        ->call('save')
+        ->assertSuccessful();
+
+    expect(ExamResult::query()->sole()->total_marks)->toBe(50.0);
 });
 
 it('shows the exam results resource to admins', function (): void {

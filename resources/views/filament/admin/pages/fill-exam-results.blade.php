@@ -73,6 +73,12 @@
             </x-filament-forms::field-wrapper>
         </div>
 
+        @if ($this->classId !== null && $this->subjects->isEmpty())
+            <p style="margin: 0.25rem 0 0; font-size: 0.8rem;" class="ledger-muted">
+                No subjects are attached to this class yet.
+            </p>
+        @endif
+
         @if ($sheetState !== null)
             @if ($locked)
                 <x-filament::callout
@@ -103,26 +109,47 @@
 
     @if ($this->students->isNotEmpty())
         <x-filament::section heading="Marks">
+            <p style="margin: 0 0 0.75rem; font-size: 0.8rem;" class="ledger-muted">
+                {{ $this->savedResults->count() }} of {{ $this->students->count() }} students recorded — you can save anytime and finish the rest later.
+            </p>
             <div class="ledger-card">
                 <table class="ledger-table">
                     <thead>
                         <tr>
                             <th>Student</th>
                             <th>GR #</th>
-                            <th>Marks (out of 100)</th>
+                            <th>Recorded</th>
+                            <th>{{ $this->bounds !== null ? 'Marks (out of '.\App\Models\MarkingScheme::formatBound($this->bounds['max']).')' : 'Marks' }}</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($this->students as $student)
+                            @php
+                                $saved = $this->savedResults->get((string) $student->getKey());
+                            @endphp
                             <tr>
                                 <td>{{ $student->name }}</td>
                                 <td class="ledger-muted">{{ $student->gr_no }}</td>
+                                <td>
+                                    @if ($saved !== null)
+                                        <span style="display: inline-flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
+                                            <x-filament::badge color="success" icon="heroicon-m-check">Saved</x-filament::badge>
+                                            @if ($this->reportMode === 'grades')
+                                                <x-filament::badge color="info">
+                                                    {{ \App\Support\Grades::fromMarks($saved['marks'], $saved['total']) }}
+                                                </x-filament::badge>
+                                            @endif
+                                        </span>
+                                    @else
+                                        <span class="ledger-muted" style="font-size: 0.75rem;">Not yet</span>
+                                    @endif
+                                </td>
                                 <td style="max-width: 12rem;">
                                     <x-filament::input.wrapper>
                                         <x-filament::input
                                             type="number"
-                                            min="0"
-                                            max="100"
+                                            :min="\App\Models\MarkingScheme::formatBound($this->bounds['min'] ?? 0)"
+                                            :max="\App\Models\MarkingScheme::formatBound($this->bounds['max'] ?? 100)"
                                             step="0.5"
                                             wire:model="marks.{{ $student->getKey() }}"
                                             :readonly="$locked"

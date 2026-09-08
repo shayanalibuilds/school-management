@@ -8,6 +8,7 @@ use App\Jobs\PublishAllExamResults;
 use App\Jobs\SyncExamResults;
 use App\Models\Admin;
 use App\Models\ExamResult;
+use App\Models\MarkingScheme;
 use App\Models\Student;
 use App\Models\StudentClass;
 use App\Models\Subject;
@@ -59,11 +60,23 @@ final class FillExamResults extends Page
     }
 
     /**
+     * Subjects attached to the selected class: only combinations the
+     * class actually offers, instead of every active subject.
+     *
      * @return Collection<int, Subject>
      */
     public function getSubjectsProperty(): Collection
     {
-        return Subject::query()->where('status', 'active')->orderBy('name')->get();
+        if ($this->classId === null) {
+            /** @var Collection<int, Subject> */
+            return collect();
+        }
+
+        return Subject::query()
+            ->where('status', 'active')
+            ->whereRelation('studentClasses', 'student_classes.id', $this->classId)
+            ->orderBy('name')
+            ->get();
     }
 
     /**
@@ -111,6 +124,10 @@ final class FillExamResults extends Page
 
     public function updatedClassId(): void
     {
+        // The subject dropdown is scoped to the selected class, so a
+        // subject picked for the previous class is no longer on offer.
+        $this->subjectId = null;
+
         $this->loadExistingMarks();
     }
 
@@ -122,6 +139,57 @@ final class FillExamResults extends Page
     public function updatedYear(): void
     {
         $this->loadExistingMarks();
+    }
+
+    /**
+     * Mark limits in force for the selected class + subject, or null
+     * before both are picked. Drives the input range and the column
+     * heading in the view.
+     *
+     * @return array{min: float, max: float}|null
+     */
+    public function getBoundsProperty(): ?array
+    {
+        if ($this->classId === null || $this->subjectId === null) {
+            return null;
+        }
+
+        return MarkingScheme::boundsFor($this->classId, $this->subjectId);
+    }
+
+    /**
+     * Already recorded results for the sheet, keyed by student id, so
+     * the view can flag who is done — a half-filled sheet can be saved
+     * any time and finished later.
+     *
+     * @return Collection<string, array{marks: float, total: float}>
+     */
+    public function getSavedResultsProperty(): Collection
+    {
+        if ($this->classId === null || $this->subjectId === null || $this->year === null) {
+            /** @var Collection<string, array{marks: float, total: float}> */
+            return collect();
+        }
+
+        return ExamResult::query()
+            ->where('student_class_id', $this->classId)
+            ->where('subject_id', $this->subjectId)
+            ->where('year', (int) $this->year)
+            ->get(['student_id', 'marks', 'total_marks'])
+            ->mapWithKeys(fn (ExamResult $result): array => [
+                (string) $result->student_id => [
+                    'marks' => (float) $result->marks,
+                    'total' => (float) $result->total_marks,
+                ],
+            ]);
+    }
+
+    /**
+     * Report style the school chose: grades or positions.
+     */
+    public function getReportModeProperty(): string
+    {
+        return AppSettings::examReportMode();
     }
 
     /**
@@ -210,14 +278,21 @@ final class FillExamResults extends Page
             return;
         }
 
+        $bounds = $this->classId !== null && $this->subjectId !== null
+            ? MarkingScheme::boundsFor($this->classId, $this->subjectId)
+            : MarkingScheme::DEFAULT_BOUNDS;
+
         // Validate every provided mark before any write happens.
-        foreach ($this->marks as $value) {
+        foreach ($this->marks as $studentId => $value) {
             if ($value === null || $value === '') {
                 continue;
             }
 
-            if ((float) $value < 0 || (float) $value > 100) {
-                $this->addError('marks', 'Marks must be between 0 and 100.');
+            if (! is_numeric($value) || (float) $value < $bounds['min'] || (float) $value > $bounds['max']) {
+                $student = $this->students->find($studentId);
+                $who = $student instanceof Student ? $student->name.'\'s mark' : 'Every mark';
+
+                $this->addError('marks', $who.' must be between '.MarkingScheme::formatBound($bounds['min']).' and '.MarkingScheme::formatBound($bounds['max']).'.');
 
                 return;
             }
