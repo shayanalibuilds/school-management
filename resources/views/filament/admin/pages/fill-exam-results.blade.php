@@ -22,38 +22,6 @@
                 color="success"
                 icon="heroicon-m-globe-alt"
                 :disabled="! $globalPublish['ready']"
-                :title="$missingHint ?? ('Publish every class results for '.$this->year)"
-            >
-                Publish exam results
-            </x-filament::button>
-            @if ($missingHint !== null)
-                <span style="font-size: 0.75rem; color: #6b7280;">{{ $missingHint }}</span>
-            @elseif ($globalPublish['ready'])
-                <span style="font-size: 0.75rem; color: #16a34a;">{{ $globalPublish['drafts'] }} result{{ $globalPublish['drafts'] === 1 ? '' : 's' }} ready to publish.</span>
-            @else
-                <span style="font-size: 0.75rem; color: #6b7280;">Nothing to publish yet - fill the result sheets first.</span>
-            @endif
-        </div>
-    </x-filament::section>
-
-    @php
-        $globalPublish = $this->globalPublish;
-        $missingHint = $globalPublish['missing'] === []
-            ? null
-            : 'Not checked yet: '.implode(', ', array_slice($globalPublish['missing'], 0, 4)).(count($globalPublish['missing']) > 4 ? ' and '.(count($globalPublish['missing']) - 4).' more' : '');
-    @endphp
-
-    <x-filament::section
-        heading="Publish exam results"
-        description="Publication is school-wide: publishing makes every checked class's results visible to students at once and opens the 30 day correction window. It stays disabled until every class has its exams checked."
-    >
-        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;">
-            <x-filament::button
-                wire:click="publishAll"
-                wire:confirm="Publish exam results for every class? Students will see them, and corrections stay open for 30 days."
-                color="success"
-                icon="heroicon-m-globe-alt"
-                :disabled="! $globalPublish['ready']"
                 :title="$missingHint ?? 'Publish every class\'s results for '.$this->year"
             >
                 Publish exam results
