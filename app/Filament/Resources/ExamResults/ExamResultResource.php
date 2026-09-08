@@ -24,6 +24,8 @@ final class ExamResultResource extends Resource
 
     protected static string|UnitEnum|null $navigationGroup = 'Academics';
 
+    protected static ?int $navigationSort = 4;
+
     protected static ?string $navigationLabel = 'Exam Results';
 
     public static function form(Schema $schema): Schema

@@ -6,11 +6,14 @@ namespace App\Filament\Resources\Subjects\Pages;
 
 use App\Filament\Resources\Subjects\SubjectResource;
 use App\Filament\Support\ArchiveTabs;
+use App\Filament\Support\ReadsArchiveTabFromUrl;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
 final class ListSubjects extends ListRecords
 {
+    use ReadsArchiveTabFromUrl;
+
     protected static string $resource = SubjectResource::class;
 
     /**

@@ -6,11 +6,14 @@ namespace App\Filament\Resources\FeeStructures\Pages;
 
 use App\Filament\Resources\FeeStructures\FeeStructureResource;
 use App\Filament\Support\ArchiveTabs;
+use App\Filament\Support\ReadsArchiveTabFromUrl;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
 final class ListFeeStructures extends ListRecords
 {
+    use ReadsArchiveTabFromUrl;
+
     protected static string $resource = FeeStructureResource::class;
 
     /**

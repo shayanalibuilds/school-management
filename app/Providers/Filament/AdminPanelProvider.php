@@ -35,6 +35,7 @@ final class AdminPanelProvider extends PanelProvider
             ->login()
             ->navigationGroups([
                 'Academics',
+                'People',
                 'Finance',
                 'Settings',
             ])

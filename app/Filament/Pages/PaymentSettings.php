@@ -26,6 +26,8 @@ final class PaymentSettings extends Page
 
     protected static string|UnitEnum|null $navigationGroup = 'Settings';
 
+    protected static ?int $navigationSort = 2;
+
     protected static string|BackedEnum|null $navigationIcon = \Filament\Support\Icons\Heroicon::OutlinedCreditCard;
 
     public function mount(): void

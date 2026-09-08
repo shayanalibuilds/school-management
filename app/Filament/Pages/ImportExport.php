@@ -22,6 +22,8 @@ final class ImportExport extends Page
 
     protected static string|UnitEnum|null $navigationGroup = 'Settings';
 
+    protected static ?int $navigationSort = 1;
+
     protected function getHeaderActions(): array
     {
         return [

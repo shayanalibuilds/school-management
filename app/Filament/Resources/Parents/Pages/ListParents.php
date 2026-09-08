@@ -7,6 +7,7 @@ namespace App\Filament\Resources\Parents\Pages;
 use App\Filament\Resources\Parents\ParentResource;
 use App\Filament\Support\ArchiveTabs;
 use App\Filament\Support\ExportCsvAction;
+use App\Filament\Support\ReadsArchiveTabFromUrl;
 use App\Importers\ParentImporter;
 use Filament\Actions\CreateAction;
 use Filament\Actions\ImportAction;
@@ -14,6 +15,8 @@ use Filament\Resources\Pages\ListRecords;
 
 final class ListParents extends ListRecords
 {
+    use ReadsArchiveTabFromUrl;
+
     protected static string $resource = ParentResource::class;
 
     /**

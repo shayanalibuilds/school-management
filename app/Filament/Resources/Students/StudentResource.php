@@ -9,6 +9,7 @@ use App\Filament\Resources\Students\Pages\EditStudent;
 use App\Filament\Resources\Students\Pages\ListStudents;
 use App\Filament\Resources\Students\Schemas\StudentForm;
 use App\Filament\Resources\Students\Tables\StudentsTable;
+use App\Filament\Support\ArchiveNavigation;
 use App\Models\Student;
 use BackedEnum;
 use Filament\Resources\Resource;
@@ -24,6 +25,8 @@ final class StudentResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUserGroup;
 
     protected static string|UnitEnum|null $navigationGroup = 'Academics';
+
+    protected static ?int $navigationSort = 6;
 
     public static function form(Schema $schema): Schema
     {
@@ -49,5 +52,14 @@ final class StudentResource extends Resource
             'create' => CreateStudent::route('/create'),
             'edit' => EditStudent::route('/{record}/edit'),
         ];
+    }
+
+    /**
+     * The sidebar entry is an accordion: the active and archived views of
+     * this ledger are nested entries underneath it.
+     */
+    public static function getNavigationItems(): array
+    {
+        return ArchiveNavigation::make(self::class);
     }
 }
