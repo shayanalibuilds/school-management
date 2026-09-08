@@ -27,11 +27,11 @@
                 Publish exam results
             </x-filament::button>
             @if ($missingHint !== null)
-                <span style="font-size: 0.75rem; color: #6b7280;">{{ $missingHint }}</span>
+                <span class="ledger-muted" style="font-size: 0.75rem;">{{ $missingHint }}</span>
             @elseif ($globalPublish['ready'])
-                <span style="font-size: 0.75rem; color: #16a34a;">{{ $globalPublish['drafts'] }} result{{ $globalPublish['drafts'] === 1 ? '' : 's' }} ready to publish.</span>
+                <span class="ledger-success" style="font-size: 0.75rem;">{{ $globalPublish['drafts'] }} result{{ $globalPublish['drafts'] === 1 ? '' : 's' }} ready to publish.</span>
             @else
-                <span style="font-size: 0.75rem; color: #6b7280;">Nothing to publish yet - fill the result sheets first.</span>
+                <span class="ledger-muted" style="font-size: 0.75rem;">Nothing to publish yet - fill the result sheets first.</span>
             @endif
         </div>
     </x-filament::section>
@@ -103,21 +103,21 @@
 
     @if ($this->students->isNotEmpty())
         <x-filament::section heading="Marks">
-            <div style="overflow-x: auto; border: 1px solid #e5e7eb; border-radius: 0.75rem; background-color: #ffffff;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 0.875rem;">
-                    <thead style="background-color: #f9fafb;">
-                        <tr style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.025em; color: #6b7280;">
-                            <th style="padding: 0.625rem 1rem; text-align: start;">Student</th>
-                            <th style="padding: 0.625rem 1rem; text-align: start;">GR #</th>
-                            <th style="padding: 0.625rem 1rem; text-align: start;">Marks (out of 100)</th>
+            <div class="ledger-card">
+                <table class="ledger-table">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>GR #</th>
+                            <th>Marks (out of 100)</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($this->students as $student)
-                            <tr style="border-top: 1px solid #e5e7eb; color: #111827;">
-                                <td style="padding: 0.625rem 1rem;">{{ $student->name }}</td>
-                                <td style="padding: 0.625rem 1rem; color: #6b7280;">{{ $student->gr_no }}</td>
-                                <td style="padding: 0.625rem 1rem; max-width: 12rem;">
+                            <tr>
+                                <td>{{ $student->name }}</td>
+                                <td class="ledger-muted">{{ $student->gr_no }}</td>
+                                <td style="max-width: 12rem;">
                                     <x-filament::input.wrapper>
                                         <x-filament::input
                                             type="number"

@@ -5,12 +5,12 @@
     >
         <form wire:submit="save" style="display: grid; gap: 1.5rem;">
             @foreach (\App\Enums\PaymentProvider::cases() as $provider)
-                <div style="border: 1px solid #e5e7eb; border-radius: 0.75rem; padding: 1.25rem; display: grid; gap: 1rem;">
+                <div class="ledger-card" style="padding: 1.25rem; display: grid; gap: 1rem;">
                     <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
-                        <h2 style="margin: 0; font-size: 1rem; font-weight: 600; color: #111827;">
+                        <h2 style="margin: 0; font-size: 1rem; font-weight: 600;" class="ledger-strong">
                             {{ $provider->label() }}
                         </h2>
-                        <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; font-weight: 500; color: #374151;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; font-weight: 500;" class="ledger-label">
                             <x-filament::input.checkbox wire:model="settings.{{ $provider->value }}.is_active" />
                             Active
                         </label>
