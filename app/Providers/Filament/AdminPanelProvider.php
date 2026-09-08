@@ -8,7 +8,6 @@ use App\Filament\Widgets\AttendanceChart;
 use App\Filament\Widgets\SchoolProgressChart;
 use App\Filament\Widgets\SchoolProgressStats;
 use App\Filament\Widgets\StudentPerformanceChart;
-use App\Filament\Widgets\WelcomeWidget;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -51,7 +50,6 @@ final class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
-                WelcomeWidget::class,
                 SchoolProgressStats::class,
                 StudentPerformanceChart::class,
                 SchoolProgressChart::class,

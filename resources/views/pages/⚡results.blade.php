@@ -120,7 +120,7 @@ new #[Layout('layouts::app')] class extends Component {
             </div>
             <h1 class="font-display text-4xl font-medium tracking-tight text-ink">Exam results</h1>
             <p class="mt-1.5 text-base text-ink-soft">
-                Enter a CNIC or GR number to see marks, grades, and class position.
+                Published examination gazettes — marks, grades, and class positions, year by year.
             </p>
         </div>
         <div class="flex items-center gap-2.5 rounded-xl border border-haze bg-card px-4 py-2.5 shadow-sm">
@@ -201,13 +201,6 @@ new #[Layout('layouts::app')] class extends Component {
                             <x-portal-icon name="arrow-right" class="h-4 w-4 text-glow transition-transform group-hover:translate-x-0.5" />
                         </button>
                     </form>
-
-                    <div class="mt-4 flex items-start gap-2 text-ink-soft">
-                        <x-portal-icon name="shield-check" class="mt-0.5 h-4 w-4 shrink-0 text-green" />
-                        <p class="text-[13px] leading-snug">
-                            Only published results appear here. Marks and grades are issued exactly as recorded by the school office.
-                        </p>
-                    </div>
                 </div>
             </div>
 

@@ -53,12 +53,8 @@ new #[Layout('layouts::app')] class extends Component {
             </div>
             <h1 class="font-display text-4xl font-medium tracking-tight text-ink">Daily attendance ledger</h1>
             <p class="mt-1.5 text-base text-ink-soft">
-                Official roll call archives. Enter a CNIC or GR number to view the last 30 recorded school days.
+                Official roll call archives for every class, day by day.
             </p>
-        </div>
-        <div class="flex items-center gap-2.5 rounded-lg border border-haze bg-mist px-3.5 py-2 text-xs font-medium text-ink-soft">
-            <x-portal-icon name="shield-check" class="h-4.5 w-4.5 text-green" />
-            <span>Synchronized with the daily register · Academic year {{ today()->year }}</span>
         </div>
     </div>
 

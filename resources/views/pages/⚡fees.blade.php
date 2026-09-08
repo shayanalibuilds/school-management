@@ -142,7 +142,7 @@ new #[Layout('layouts::app')] class extends Component {
             </div>
             <h1 class="font-display text-4xl font-medium tracking-tight text-ink">Fee status &amp; ledger</h1>
             <p class="mt-1.5 text-base text-ink-soft">
-                Public verified ledger for tuition and fees. Enter a CNIC or GR number to check dues and pay online.
+                Tuition and fee dues, settlements, and official receipts.
             </p>
         </div>
         <div class="flex items-center gap-2.5 rounded-xl border border-haze bg-card px-4 py-2.5 shadow-sm">
