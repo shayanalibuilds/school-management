@@ -12,7 +12,10 @@ use Filament\Actions\Action;
 use Filament\Auth\Pages\Register;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
+use Filament\Schemas\Components\Actions;
 use Filament\Schemas\Components\Component;
+use Filament\Schemas\Components\EmbeddedSchema;
+use Filament\Schemas\Components\Form;
 use Filament\Schemas\Schema;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
@@ -96,6 +99,8 @@ final class RegisterTeacher extends Register
         $this->verifiedTeacherId = $teacher->id;
         $this->data['name'] = $teacher->name;
         $this->data['cnic'] = null;
+
+        $this->forgetStepSchemas();
     }
 
     public function getTitle(): string
@@ -106,6 +111,22 @@ final class RegisterTeacher extends Register
     public function getHeading(): string
     {
         return 'Set up your teacher account';
+    }
+
+    public function getFormContentComponent(): Form
+    {
+        // The vendor page pins the form submit handler to `register`; the
+        // CNIC step needs its own handler, so the form submits whichever
+        // step is currently on screen.
+        return Form::make([EmbeddedSchema::make('form')])
+            ->id('form')
+            ->livewireSubmitHandler($this->verifiedTeacherId === null ? 'verifyCnic' : 'register')
+            ->footer([
+                Actions::make($this->getFormActions())
+                    ->alignment($this->getFormActionsAlignment())
+                    ->fullWidth($this->hasFullWidthFormActions())
+                    ->key('form-actions'),
+            ]);
     }
 
     /**
@@ -212,11 +233,22 @@ final class RegisterTeacher extends Register
 
         if ($teacher === null || $teacher->isRegistered()) {
             $this->verifiedTeacherId = null;
+            $this->forgetStepSchemas();
 
             return null;
         }
 
         return $teacher;
+    }
+
+    /**
+     * Filament caches each schema across Livewire requests, so the cached
+     * `form` and `content` schemas must be dropped whenever the page steps
+     * between the CNIC gate and the account form.
+     */
+    private function forgetStepSchemas(): void
+    {
+        unset($this->cachedSchemas['form'], $this->cachedSchemas['content']);
     }
 
     private function sendLookupFailure(): void
