@@ -4,24 +4,32 @@ declare(strict_types=1);
 
 use App\Enums\AssignmentAction;
 use App\Enums\AssignmentRequestStatus;
+use App\Enums\AttendanceStatus;
+use App\Enums\ExpenseRecurrence;
+use App\Enums\FeeStatus;
 use App\Enums\PaymentStatus;
 use App\Enums\StudentStatus;
 use App\Filament\Resources\Attendances\Pages\ListAttendances;
 use App\Filament\Resources\ExamResults\Pages\ListExamResults;
+use App\Filament\Resources\Expenses\Pages\ListExpenses;
 use App\Filament\Resources\Fees\Pages\ListFees;
 use App\Filament\Resources\Payments\Pages\ListPayments;
 use App\Filament\Resources\Payrolls\Pages\ListPayrolls;
 use App\Filament\Resources\StaffAssignmentRequests\Pages\ListStaffAssignmentRequests;
 use App\Filament\Resources\Students\Pages\ListStudents;
+use App\Filament\Staff\Resources\MyRequests\Pages\ListMyRequests;
 use App\Models\Admin;
 use App\Models\Attendance;
 use App\Models\ExamResult;
+use App\Models\Expense;
 use App\Models\Fee;
 use App\Models\Payment;
 use App\Models\Payroll;
+use App\Models\Staff;
 use App\Models\StaffAssignmentRequest;
 use App\Models\Student;
 use App\Models\Subject;
+use Filament\Facades\Filament;
 use Livewire\Livewire;
 
 use function Pest\Laravel\actingAs;
@@ -134,4 +142,71 @@ it('hides the new assignment request button from admins', function (): void {
 
     Livewire::test(ListStaffAssignmentRequests::class)
         ->assertActionDoesNotExist('create');
+});
+
+it('bulk changes the status of many attendance rows at once', function (): void {
+    actingAs(Admin::factory()->create(), 'admin');
+    $attendances = Attendance::factory()->count(3)->create();
+
+    Livewire::test(ListAttendances::class)
+        ->callTableBulkAction('changeStatus', $attendances, ['status' => AttendanceStatus::Absent->value]);
+
+    $attendances->each(fn (Attendance $attendance) => expect($attendance->refresh()->status)->toBe(AttendanceStatus::Absent));
+});
+
+it('bulk sets due dates on unpaid fees and skips settled ones', function (): void {
+    actingAs(Admin::factory()->create(), 'admin');
+    // Fee status is derived from amount_paid on every save, so the settled
+    // and partial fees are built through their amounts.
+    $unpaid = Fee::factory()->create(['amount' => 5000, 'amount_paid' => 0, 'due_date' => '2026-01-31']);
+    $partial = Fee::factory()->create(['amount' => 5000, 'amount_paid' => 2000, 'due_date' => '2026-01-31']);
+    $paid = Fee::factory()->create(['amount' => 5000, 'amount_paid' => 5000, 'due_date' => '2026-01-31']);
+
+    Livewire::test(ListFees::class)
+        ->callTableBulkAction('setDueDate', [$unpaid, $partial, $paid], ['due_date' => '2026-10-01']);
+
+    expect($unpaid->refresh()->status)->toBe(FeeStatus::Unpaid)
+        ->and($unpaid->due_date->toDateString())->toBe('2026-10-01')
+        ->and($partial->refresh()->status)->toBe(FeeStatus::Partial)
+        ->and($partial->due_date->toDateString())->toBe('2026-10-01')
+        ->and($paid->refresh()->status)->toBe(FeeStatus::Paid)
+        // Settled fees keep their original date: money records do not move
+        // under a bulk action.
+        ->and($paid->due_date->toDateString())->toBe('2026-01-31');
+});
+
+it('bulk changes the recurrence of many expenses at once', function (): void {
+    actingAs(Admin::factory()->create(), 'admin');
+    $expenses = Expense::factory()->count(2)->create(['recurrence' => ExpenseRecurrence::OneTime]);
+
+    Livewire::test(ListExpenses::class)
+        ->callTableBulkAction('changeRecurrence', $expenses, ['recurrence' => ExpenseRecurrence::Monthly->value]);
+
+    $expenses->each(fn (Expense $expense) => expect($expense->refresh()->recurrence)->toBe(ExpenseRecurrence::Monthly));
+});
+
+it('lets a teacher bulk withdraw their own pending requests only', function (): void {
+    Filament::setCurrentPanel(Filament::getPanel('staff'));
+
+    $teacher = Staff::factory()->create();
+    actingAs($teacher, 'staff');
+
+    $ownPending = StaffAssignmentRequest::factory()->create([
+        'staff_id' => $teacher->getKey(),
+        'action' => AssignmentAction::Add->value,
+        'status' => AssignmentRequestStatus::Pending,
+    ]);
+    $ownReviewed = StaffAssignmentRequest::factory()->create([
+        'staff_id' => $teacher->getKey(),
+        'action' => AssignmentAction::Add->value,
+        'status' => AssignmentRequestStatus::Rejected,
+    ]);
+
+    Livewire::test(ListMyRequests::class)
+        ->callTableBulkAction('withdraw', [$ownPending, $ownReviewed]);
+
+    // Nothing in the school is deleted: withdrawal is a status.
+    expect($ownPending->refresh()->status)->toBe(AssignmentRequestStatus::Withdrawn)
+        // Reviewed requests are school records and survive the sweep.
+        ->and($ownReviewed->refresh()->status)->toBe(AssignmentRequestStatus::Rejected);
 });

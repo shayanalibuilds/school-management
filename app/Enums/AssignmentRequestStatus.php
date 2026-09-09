@@ -12,12 +12,15 @@ enum AssignmentRequestStatus: string
 
     case Rejected = 'rejected';
 
+    case Withdrawn = 'withdrawn';
+
     public function label(): string
     {
         return match ($this) {
             self::Pending => 'Pending',
             self::Approved => 'Approved',
             self::Rejected => 'Rejected',
+            self::Withdrawn => 'Withdrawn',
         };
     }
 }

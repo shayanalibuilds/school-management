@@ -5,12 +5,16 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Fees\Tables;
 
 use App\Enums\FeeStatus;
+use App\Models\Fee;
 use App\Models\StudentClass;
+use Filament\Actions\BulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 final class FeesTable
 {
@@ -79,6 +83,30 @@ final class FeesTable
                 EditAction::make(),
             ])
             ->toolbarActions([
+                // Amounts and payment state stay out of reach of a bulk
+                // action on purpose; extending due dates is the safe bulk
+                // fix-up, and settled fees are skipped.
+                BulkAction::make('setDueDate')
+                    ->label('Set due date')
+                    ->icon('heroicon-m-calendar-days')
+                    ->form([
+                        DatePicker::make('due_date')
+                            ->label('Due date')
+                            ->required(),
+                    ])
+                    ->action(
+                        /** @param Collection<int, Fee> $records */
+                        function (Collection $records, array $data): void {
+                            foreach ($records as $record) {
+                                if (! $record instanceof Fee || $record->status === FeeStatus::Paid) {
+                                    continue;
+                                }
+
+                                $record->update(['due_date' => $data['due_date']]);
+                            }
+                        },
+                    )
+                    ->deselectRecordsAfterCompletion(),
             ]);
     }
 }

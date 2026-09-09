@@ -11,6 +11,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property AssignmentRequestStatus $status
+ * @property string $staff_id
+ * @property string|null $admin_note
+ */
 final class StaffAssignmentRequest extends Model
 {
     use HasFactory;

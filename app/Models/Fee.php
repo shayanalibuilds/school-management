@@ -11,7 +11,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property numeric-string $amount
+ * @property numeric-string $amount_paid
+ * @property FeeStatus $status
+ * @property Carbon|null $due_date
+ * @property Carbon|null $paid_at
+ */
 final class Fee extends Model
 {
     use HasFactory;

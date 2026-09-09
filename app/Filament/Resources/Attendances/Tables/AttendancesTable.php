@@ -5,13 +5,17 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Attendances\Tables;
 
 use App\Enums\AttendanceStatus;
+use App\Models\Attendance;
+use Filament\Actions\BulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 final class AttendancesTable
 {
@@ -79,6 +83,25 @@ final class AttendancesTable
                 EditAction::make(),
             ])
             ->toolbarActions([
+                BulkAction::make('changeStatus')
+                    ->label('Change status')
+                    ->icon('heroicon-m-flag')
+                    ->form([
+                        Select::make('status')
+                            ->options(collect(AttendanceStatus::cases())
+                                ->mapWithKeys(fn (AttendanceStatus $status): array => [$status->value => $status->label()])
+                                ->all())
+                            ->required(),
+                    ])
+                    ->action(
+                        /** @param Collection<int, Attendance> $records */
+                        function (Collection $records, array $data): void {
+                            foreach ($records as $record) {
+                                $record->update(['status' => $data['status']]);
+                            }
+                        },
+                    )
+                    ->deselectRecordsAfterCompletion(),
             ]);
     }
 }
