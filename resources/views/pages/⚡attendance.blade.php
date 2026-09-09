@@ -67,7 +67,7 @@ new #[Layout('layouts::app')] class extends Component {
                         <span class="block text-xs font-bold uppercase tracking-wider text-ink-soft">Public Search</span>
                         <span class="text-lg font-bold text-ink">Attendance Query</span>
                     </div>
-                    <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-mist text-navy">
+                    <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-mist text-shell">
                         <x-portal-icon name="identification" class="h-5 w-5" />
                     </span>
                 </div>
@@ -84,7 +84,7 @@ new #[Layout('layouts::app')] class extends Component {
                             required
                             autocomplete="off"
                             placeholder="35202-1234567-1 or GR 42"
-                            class="w-full rounded-lg border border-line bg-card px-3.5 py-2.5 text-sm font-semibold uppercase tracking-wide tabular text-ink shadow-sm transition-[color,background-color,border-color,box-shadow] placeholder:font-normal placeholder:normal-case placeholder:tracking-normal placeholder:text-line focus:outline-none focus:ring-2 focus:ring-navy"
+                            class="w-full rounded-lg border border-line bg-card px-3.5 py-2.5 text-sm font-semibold uppercase tracking-wide tabular text-ink shadow-sm transition-[color,background-color,border-color,box-shadow] placeholder:font-normal placeholder:normal-case placeholder:tracking-normal placeholder:text-line focus:outline-none focus:ring-2 focus:ring-shell"
                         />
                         <p class="mt-1.5 text-xs text-ink-soft">
                             The GR number is printed on the student ID card and every fee receipt.
@@ -93,7 +93,7 @@ new #[Layout('layouts::app')] class extends Component {
                     <div class="pt-1">
                         <button
                             type="submit"
-                            class="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg bg-navy px-4 py-3 text-sm font-semibold text-white shadow-sm transition-[color,background-color,border-color,box-shadow] hover:bg-navy-hover"
+                            class="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg bg-shell px-4 py-3 text-sm font-semibold text-white shadow-sm transition-[color,background-color,border-color,box-shadow] hover:bg-shell-hover"
                         >
                             <x-portal-icon name="search" class="h-4 w-4 text-glow" />
                             Look up attendance
@@ -137,7 +137,7 @@ new #[Layout('layouts::app')] class extends Component {
                                 <div class="flex items-center gap-4">
                                     <span
                                         aria-hidden="true"
-                                        class="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-navy font-display text-xl font-semibold text-white shadow-sm"
+                                        class="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-shell font-display text-xl font-semibold text-white shadow-sm"
                                     >{{ $initials }}</span>
                                     <div>
                                         <div class="mb-1 flex flex-wrap items-center gap-2">
@@ -264,7 +264,7 @@ new #[Layout('layouts::app')] class extends Component {
                 </div>
             @else
                 <div class="flex flex-col items-center justify-center rounded-xl bg-card p-12 text-center shadow-md">
-                    <span class="mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-tint text-navy shadow-inner">
+                    <span class="mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-tint text-shell shadow-inner">
                         <x-portal-icon name="calendar" class="h-10 w-10" />
                     </span>
                     <h3 class="mb-2 font-display text-2xl font-semibold text-ink">Attendance appears here</h3>

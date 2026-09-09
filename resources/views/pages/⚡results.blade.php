@@ -146,14 +146,14 @@ new #[Layout('layouts::app')] class extends Component {
         {{-- Lookup column --}}
         <div class="flex flex-col gap-6 lg:col-span-4">
             <div class="relative overflow-hidden rounded-xl bg-card shadow-md">
-                <div class="h-1.5 w-full bg-gradient-to-r from-navy via-green to-navy"></div>
+                <div class="h-1.5 w-full bg-gradient-to-r from-shell via-green to-shell"></div>
                 <div class="p-6">
                     <div class="mb-5 flex items-center justify-between border-b border-haze pb-4">
                         <div>
                             <span class="block text-xs font-bold uppercase tracking-wider text-ink-soft">Candidate Query</span>
                             <span class="text-lg font-bold text-ink">General Register Dossier</span>
                         </div>
-                        <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-mist text-navy">
+                        <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-mist text-shell">
                             <x-portal-icon name="identification" class="h-5 w-5" />
                         </span>
                     </div>
@@ -170,7 +170,7 @@ new #[Layout('layouts::app')] class extends Component {
                                 required
                                 autocomplete="off"
                                 placeholder="35202-1234567-1 or GR 42"
-                                class="w-full rounded-lg border border-line bg-mist px-4 py-3 text-sm font-semibold tabular text-ink shadow-sm transition-[color,background-color,border-color,box-shadow] placeholder:font-normal placeholder:text-line focus:bg-card focus:outline-none focus:ring-2 focus:ring-navy"
+                                class="w-full rounded-lg border border-line bg-mist px-4 py-3 text-sm font-semibold tabular text-ink shadow-sm transition-[color,background-color,border-color,box-shadow] placeholder:font-normal placeholder:text-line focus:bg-card focus:outline-none focus:ring-2 focus:ring-shell"
                             />
                         </div>
                         <div>
@@ -179,7 +179,7 @@ new #[Layout('layouts::app')] class extends Component {
                                 <select
                                     id="year"
                                     wire:model="year"
-                                    class="w-full cursor-pointer appearance-none rounded-lg border border-line bg-mist px-4 py-3 pr-10 text-sm text-ink shadow-sm transition-[color,background-color,border-color,box-shadow] focus:bg-card focus:outline-none focus:ring-2 focus:ring-navy"
+                                    class="w-full cursor-pointer appearance-none rounded-lg border border-line bg-mist px-4 py-3 pr-10 text-sm text-ink shadow-sm transition-[color,background-color,border-color,box-shadow] focus:bg-card focus:outline-none focus:ring-2 focus:ring-shell"
                                 >
                                     <option value="">Select year</option>
                                     @foreach ($this->years as $availableYear)
@@ -203,7 +203,7 @@ new #[Layout('layouts::app')] class extends Component {
                         </div>
                         <button
                             type="submit"
-                            class="group flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg bg-navy px-6 py-3 text-sm font-semibold text-white shadow-sm transition-[color,background-color,border-color,box-shadow] hover:bg-navy-hover"
+                            class="group flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg bg-shell px-6 py-3 text-sm font-semibold text-white shadow-sm transition-[color,background-color,border-color,box-shadow] hover:bg-shell-hover"
                         >
                             Look up results
                             <x-portal-icon name="arrow-right" class="h-4 w-4 text-glow transition-transform group-hover:translate-x-0.5" />
@@ -244,7 +244,7 @@ new #[Layout('layouts::app')] class extends Component {
                                     <div class="flex items-start gap-4">
                                         <span
                                             aria-hidden="true"
-                                            class="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-navy font-display text-2xl font-semibold text-white shadow-md"
+                                            class="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-shell font-display text-2xl font-semibold text-white shadow-md"
                                         >{{ $initials }}</span>
                                         <div>
                                             <div class="mb-1.5 flex flex-wrap items-center gap-2">
@@ -281,7 +281,7 @@ new #[Layout('layouts::app')] class extends Component {
                                     <div class="flex flex-col justify-between rounded-xl bg-mist p-4 shadow-sm">
                                         <div class="mb-2 flex items-center justify-between text-ink-soft">
                                             <span class="text-xs font-semibold uppercase tracking-wider">Total marks</span>
-                                            <x-portal-icon name="clipboard-list" class="h-5 w-5 text-navy" />
+                                            <x-portal-icon name="clipboard-list" class="h-5 w-5 text-shell" />
                                         </div>
                                         <div>
                                             <div class="flex items-baseline gap-2">
@@ -291,7 +291,7 @@ new #[Layout('layouts::app')] class extends Component {
                                             <div class="mt-2 flex items-center gap-2">
                                                 <div class="h-1.5 w-full overflow-hidden rounded-full bg-haze-deep">
                                                     <div
-                                                        class="h-1.5 rounded-full bg-navy"
+                                                        class="h-1.5 rounded-full bg-shell"
                                                         style="width: {{ min(100, round(($row['total_marks'] / $row['total_max']) * 100, 2)) }}%"
                                                     ></div>
                                                 </div>
@@ -316,7 +316,7 @@ new #[Layout('layouts::app')] class extends Component {
                                     <div class="flex flex-col justify-between rounded-xl bg-mist p-4 shadow-sm md:col-span-2">
                                         <div class="mb-2 flex items-center justify-between text-ink-soft">
                                             <span class="text-xs font-semibold uppercase tracking-wider">Positions view</span>
-                                            <x-portal-icon name="document-text" class="h-5 w-5 text-navy" />
+                                            <x-portal-icon name="document-text" class="h-5 w-5 text-shell" />
                                         </div>
                                         <p class="text-sm text-ink-soft">
                                             The school reports this year's results as positions — subject marks
@@ -327,7 +327,7 @@ new #[Layout('layouts::app')] class extends Component {
                                 <div class="flex flex-col justify-between rounded-xl bg-mist p-4 shadow-sm">
                                     <div class="mb-2 flex items-center justify-between text-ink-soft">
                                         <span class="text-xs font-semibold uppercase tracking-wider">Class position</span>
-                                        <x-portal-icon name="trophy" class="h-5 w-5 text-navy" />
+                                        <x-portal-icon name="trophy" class="h-5 w-5 text-shell" />
                                     </div>
                                     <div class="text-2xl font-bold text-ink">
                                         @if ($row['position'] !== null)
@@ -363,7 +363,7 @@ new #[Layout('layouts::app')] class extends Component {
                                 <div class="overflow-x-auto">
                                     <table class="w-full border-collapse text-left">
                                         <thead>
-                                            <tr class="bg-navy text-xs font-semibold uppercase tracking-wider text-white">
+                                            <tr class="bg-shell text-xs font-semibold uppercase tracking-wider text-white">
                                                 <th scope="col" class="px-6 py-3.5">Subject</th>
                                                 <th scope="col" class="px-4 py-3.5 text-right">Marks</th>
                                                 <th scope="col" class="px-6 py-3.5 text-center">Grade</th>
@@ -381,7 +381,7 @@ new #[Layout('layouts::app')] class extends Component {
                                                         @php
                                                             $gradeTone = match (true) {
                                                                 in_array($result['grade'], ['A+', 'A']) => 'bg-mint text-mint-ink',
-                                                                in_array($result['grade'], ['B', 'C']) => 'bg-tint text-navy',
+                                                                in_array($result['grade'], ['B', 'C']) => 'bg-tint text-shell',
                                                                 $result['grade'] === 'D' => 'bg-clay text-clay-ink',
                                                                 default => 'bg-alert-soft text-alert-ink',
                                                             };
@@ -412,7 +412,7 @@ new #[Layout('layouts::app')] class extends Component {
                 </div>
             @else
                 <div class="flex flex-col items-center justify-center rounded-xl bg-card p-12 text-center shadow-md">
-                    <span class="mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-tint text-navy shadow-inner">
+                    <span class="mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-tint text-shell shadow-inner">
                         <x-portal-icon name="document-text" class="h-10 w-10" />
                     </span>
                     <h3 class="mb-2 font-display text-2xl font-semibold text-ink">Results appear here</h3>

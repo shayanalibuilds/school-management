@@ -1,4 +1,4 @@
-<footer class="bg-navy text-white">
+<footer class="bg-shell text-white">
     <div class="mx-auto grid w-full max-w-7xl gap-10 px-4 pb-10 pt-12 sm:px-6 md:grid-cols-2 lg:grid-cols-4 lg:px-8">
         <div class="flex flex-col gap-3">
             <div class="flex items-center gap-2">

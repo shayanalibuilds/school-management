@@ -24,7 +24,7 @@ new #[Layout('layouts::app')] class extends Component {
         <div class="flex flex-wrap items-center justify-center gap-3 pt-1">
             <a
                 href="/results"
-                class="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-navy px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-navy-hover"
+                class="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-shell px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-shell-hover"
             >
                 <x-portal-icon name="academic-cap" class="h-4.5 w-4.5" />
                 Check results
@@ -47,7 +47,7 @@ new #[Layout('layouts::app')] class extends Component {
         ] as $route => [$heading, $description, $icon])
             <div class="flex flex-col rounded-xl border border-haze bg-card shadow-sm">
                 <div class="flex flex-1 flex-col gap-3 p-6">
-                    <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-tint text-navy">
+                    <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-tint text-shell">
                         <x-portal-icon name="{{ $icon === 'receipt' ? 'document-text' : $icon }}" class="h-5 w-5" />
                     </span>
                     <h2 class="text-lg font-bold text-ink">{{ $heading }}</h2>
