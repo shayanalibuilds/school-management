@@ -70,7 +70,7 @@ it('builds signed jazzcash checkout fields', function (): void {
     App\Models\PaymentSetting::factory()->jazzcash()->create();
     $payment = Payment::factory()->create(['provider' => App\Enums\PaymentProvider::JazzCash, 'amount' => 2500, 'status' => PaymentStatus::Pending]);
 
-    $fields = new JazzCashService()->buildCheckoutFields($payment);
+    $fields = (new JazzCashService())->buildCheckoutFields($payment);
 
     expect($fields['pp_Version'])->toBe('1.1')
         ->and($fields['pp_Amount'])->toBe('250000')
@@ -78,7 +78,7 @@ it('builds signed jazzcash checkout fields', function (): void {
         ->and($fields)->toHaveKey('pp_SecureHash')
         ->and($fields['ppmpf_1'])->toBe($payment->getKey());
 
-    $hash = new JazzCashService()->hashFields(collect($fields)->except('pp_SecureHash')->all());
+    $hash = (new JazzCashService())->hashFields(collect($fields)->except('pp_SecureHash')->all());
 
     expect($hash)->toBe($fields['pp_SecureHash']);
 });

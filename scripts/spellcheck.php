@@ -24,6 +24,12 @@ const FALLBACK_BIN = '/home/z/.local/bin/aspell';
 
 $root = dirname(__DIR__);
 
+// Runs as a standalone script: pull in the composer autoloader so the
+// symfony/polyfill-php84 functions (mb_trim, mb_ltrim) exist on PHP 8.3.
+if (is_file($autoload = $root.'/vendor/autoload.php')) {
+    require $autoload;
+}
+
 $files = collectFiles($root);
 [$wordsByFile, $originals, $linesByFile] = extractWords($root, $files);
 

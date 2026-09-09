@@ -1579,8 +1579,20 @@ parameters:
 			path: routes/console.php
 
 		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:get\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: tests/Feature/AcademicCoreTest.php
+
+		-
 			message: '#^Cannot access property \$gr_no on App\\Models\\Student\|null\.$#'
 			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/AcademicCoreTest.php
+
+		-
+			message: '#^Cannot call method assertOk\(\) on mixed\.$#'
+			identifier: method.nonObject
 			count: 1
 			path: tests/Feature/AcademicCoreTest.php
 
@@ -1628,6 +1640,12 @@ parameters:
 
 		-
 			message: '#^Access to an undefined property Livewire\\Component\:\:\$classes\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/ArchiveOnDeleteTest.php
+
+		-
+			message: '#^Access to an undefined property Pest\\Mixins\\Expectation\<mixed\>\:\:\$not\.$#'
 			identifier: property.notFound
 			count: 1
 			path: tests/Feature/ArchiveOnDeleteTest.php
@@ -1693,15 +1711,15 @@ parameters:
 			path: tests/Feature/ArchiveOnDeleteTest.php
 
 		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<App\\Models\\Student\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Student\>\|null\>\:\:and\(\)$#'
-			identifier: argument.templateType
+			message: '#^Cannot call method toContain\(\) on mixed\.$#'
+			identifier: method.nonObject
 			count: 1
 			path: tests/Feature/ArchiveOnDeleteTest.php
 
 		-
 			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
 			identifier: argument.templateType
-			count: 4
+			count: 5
 			path: tests/Feature/ArchiveOnDeleteTest.php
 
 		-
@@ -1720,6 +1738,12 @@ parameters:
 			message: '#^Binary operation "\." between ''statuses\.'' and mixed results in an error\.$#'
 			identifier: binaryOp.invalid
 			count: 3
+			path: tests/Feature/AttendanceTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:artisan\(\)\.$#'
+			identifier: method.notFound
+			count: 1
 			path: tests/Feature/AttendanceTest.php
 
 		-
@@ -1783,6 +1807,24 @@ parameters:
 			path: tests/Feature/AttendanceUpsertTest.php
 
 		-
+			message: '#^Access to an undefined property Pest\\Mixins\\Expectation\<string\|null\>\:\:\$not\.$#'
+			identifier: property.notFound
+			count: 5
+			path: tests/Feature/BrandPaletteTest.php
+
+		-
+			message: '#^Cannot access property \$not on mixed\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: tests/Feature/BrandPaletteTest.php
+
+		-
+			message: '#^Cannot call method toContain\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 7
+			path: tests/Feature/BrandPaletteTest.php
+
+		-
 			message: '#^Parameter \#1 \$haystack of function str_contains expects string, string\|false given\.$#'
 			identifier: argument.type
 			count: 2
@@ -1811,6 +1853,24 @@ parameters:
 			identifier: method.nonObject
 			count: 1
 			path: tests/Feature/ClassSubjectLinkTest.php
+
+		-
+			message: '#^Access to an undefined property Pest\\Mixins\\Expectation\<string\|null\>\:\:\$not\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/CustomViewsTest.php
+
+		-
+			message: '#^Cannot access property \$not on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Feature/CustomViewsTest.php
+
+		-
+			message: '#^Cannot call method toContain\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: tests/Feature/CustomViewsTest.php
 
 		-
 			message: '#^Cannot access property \$email on App\\Models\\Staff\|null\.$#'
@@ -1879,7 +1939,7 @@ parameters:
 			path: tests/Feature/DirectImportTest.php
 
 		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\<0, max\>\>\:\:and\(\)$#'
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\<0, max\>\|null\>\:\:and\(\)$#'
 			identifier: argument.templateType
 			count: 1
 			path: tests/Feature/DirectImportTest.php
@@ -2031,7 +2091,13 @@ parameters:
 		-
 			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<string\>\:\:and\(\)$#'
 			identifier: argument.templateType
-			count: 2
+			count: 1
+			path: tests/Feature/ExamResultPublishingTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<string\|null\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 1
 			path: tests/Feature/ExamResultPublishingTest.php
 
 		-
@@ -2089,7 +2155,7 @@ parameters:
 			path: tests/Feature/ExamSettingsTest.php
 
 		-
-			message: '#^Parameter \#1 \$key of method Pest\\Mixins\\Expectation\<array\<string, array\<string, string\>\>\>\:\:toHaveKey\(\) expects int\|string, mixed given\.$#'
+			message: '#^Parameter \#1 \$key of method Pest\\Mixins\\Expectation\<mixed\>\:\:toHaveKey\(\) expects int\|string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: tests/Feature/ExamSettingsTest.php
@@ -2107,6 +2173,12 @@ parameters:
 			path: tests/Feature/ExamSettingsTest.php
 
 		-
+			message: '#^Access to an undefined property Pest\\Mixins\\Expectation\<mixed\>\:\:\$not\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/FinanceTest.php
+
+		-
 			message: '#^Cannot access property \$credentials on App\\Models\\PaymentSetting\|null\.$#'
 			identifier: property.nonObject
 			count: 1
@@ -2114,6 +2186,12 @@ parameters:
 
 		-
 			message: '#^Cannot call method getRawOriginal\(\) on App\\Models\\PaymentSetting\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Feature/FinanceTest.php
+
+		-
+			message: '#^Cannot call method toContain\(\) on mixed\.$#'
 			identifier: method.nonObject
 			count: 1
 			path: tests/Feature/FinanceTest.php
@@ -2221,7 +2299,7 @@ parameters:
 			path: tests/Feature/OfflineNotificationsTest.php
 
 		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\<0, max\>\>\:\:and\(\)$#'
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\<0, max\>\|null\>\:\:and\(\)$#'
 			identifier: argument.templateType
 			count: 1
 			path: tests/Feature/OfflineNotificationsTest.php
@@ -2233,8 +2311,20 @@ parameters:
 			path: tests/Feature/Pages/HomeTest.php
 
 		-
+			message: '#^Access to an undefined property Pest\\Mixins\\Expectation\<mixed\>\:\:\$not\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Feature/ParentStudentsRelationTest.php
+
+		-
 			message: '#^Cannot access property \$students on App\\Models\\StudentParent\|null\.$#'
 			identifier: property.nonObject
+			count: 2
+			path: tests/Feature/ParentStudentsRelationTest.php
+
+		-
+			message: '#^Cannot call method toContain\(\) on mixed\.$#'
+			identifier: method.nonObject
 			count: 2
 			path: tests/Feature/ParentStudentsRelationTest.php
 
@@ -2245,7 +2335,7 @@ parameters:
 			path: tests/Feature/ParentsGuardiansTest.php
 
 		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<App\\Models\\StudentParent\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\StudentParent\>\|null\>\:\:and\(\)$#'
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
 			identifier: argument.templateType
 			count: 1
 			path: tests/Feature/ParentsGuardiansTest.php
@@ -2311,7 +2401,7 @@ parameters:
 			path: tests/Feature/StudentWizardTest.php
 
 		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<string\>\:\:and\(\)$#'
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<string\|null\>\:\:and\(\)$#'
 			identifier: argument.templateType
 			count: 1
 			path: tests/Feature/StudentWizardTest.php
@@ -2353,7 +2443,7 @@ parameters:
 			path: tests/Feature/TableBulkActionsTest.php
 
 		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<App\\Models\\Student\|Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Student\>\|null\>\:\:and\(\)$#'
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
 			identifier: argument.templateType
 			count: 1
 			path: tests/Feature/TableBulkActionsTest.php
