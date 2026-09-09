@@ -289,12 +289,6 @@ parameters:
 			path: app/Filament/Resources/StaffAssignmentRequests/Tables/StaffAssignmentRequestsTable.php
 
 		-
-			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\AssignmentRequestStatus\:\:Pending will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
-			count: 2
-			path: app/Filament/Resources/StaffAssignmentRequests/Tables/StaffAssignmentRequestsTable.php
-
-		-
 			message: '#^Cannot cast mixed to string\.$#'
 			identifier: cast.string
 			count: 1
@@ -531,13 +525,13 @@ parameters:
 		-
 			message: '#^Cannot access property \$value on string\.$#'
 			identifier: property.nonObject
-			count: 5
+			count: 4
 			path: app/Http/Controllers/ExportController.php
 
 		-
 			message: '#^Cannot call method toDateString\(\) on string\.$#'
 			identifier: method.nonObject
-			count: 6
+			count: 5
 			path: app/Http/Controllers/ExportController.php
 
 		-
@@ -547,7 +541,7 @@ parameters:
 			path: app/Http/Controllers/ExportController.php
 
 		-
-			message: '#^Method App\\Http\\Controllers\\ExportController\:\:exporters\(\) should return array\<string, array\{callable\(\)\: Illuminate\\Database\\Eloquent\\Collection\<int, mixed\>, list\<string\>, callable\(mixed\)\: list\<string\>\}\> but returns array\{students\: array\{Closure\(\)\: Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Student\>, array\{''gr_no'', ''name'', ''class'', ''joining_date'', ''leaving_date'', ''status''\}, Closure\(App\\Models\\Student\)\: array\{string\|null, string, string\|null, mixed, mixed, mixed\}\}, staff\: array\{Closure\(\)\: Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Staff\>, array\{''name'', ''cnic'', ''email'', ''phone'', ''joining_date'', ''leaving_date'', ''status''\}, Closure\(App\\Models\\Staff\)\: array\{string, string, string\|null, string\|null, mixed, mixed, mixed\}\}, attendance\: array\{Closure\(\)\: Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Attendance\>, array\{''student_gr_no'', ''student_name'', ''class'', ''date'', ''status'', ''marked_by''\}, Closure\(App\\Models\\Attendance\)\: array\{string\|null, string\|null, string\|null, mixed, mixed, string\|null\}\}, exam\-results\: array\{Closure\(\)\: Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\ExamResult\>, array\{''student_gr_no'', ''student_name'', ''class'', ''subject'', ''year'', ''marks'', ''total_marks'', ''grade'', ''status'', ''published_at''\}, Closure\(App\\Models\\ExamResult\)\: array\{string\|null, string\|null, string\|null, string\|null, int\<0, max\>, float, float, string, mixed, mixed\}\}, fees\: array\{Closure\(\)\: Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Fee\>, array\{''student_gr_no'', ''student_name'', ''class'', ''fee'', ''year'', ''amount'', ''amount_paid'', ''status'', ''due_date''\}, Closure\(App\\Models\\Fee\)\: array\{string\|null, string\|null, string\|null, string\|null, int\<0, max\>, float, float, mixed, mixed\}\}, payments\: array\{Closure\(\)\: Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Payment\>, array\{''reference'', ''student_gr_no'', ''student_name'', ''fee'', ''amount'', ''provider'', ''status'', ''payer_name'', ''paid_at''\}, Closure\(App\\Models\\Payment\)\: array\{string\|null, string\|null, string\|null, string\|null, numeric\-string, ''easypaisa''\|''jazzcash'', ''completed''\|''failed''\|''pending'', string\|null, string\|null\}\}, payrolls\: array\{Closure\(\)\: Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Payroll\>, array\{''staff_name'', ''staff_cnic'', ''month'', ''amount'', ''status'', ''paid_at''\}, Closure\(App\\Models\\Payroll\)\: array\{string\|null, string\|null, string, numeric\-string, ''paid''\|''pending'', string\|null\}\}, expenses\: array\{Closure\(\)\: Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Expense\>, array\{''name'', ''description'', ''amount'', ''recurrence''\}, Closure\(App\\Models\\Expense\)\: array\{string, string\|null, numeric\-string, ''daily''\|''monthly''\|''one_time''\|''weekly''\|''yearly''\}\}, parents\: array\{Closure\(\)\: Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\StudentParent\>, array\{''name'', ''cnic'', ''phone'', ''occupation'', ''children''\}, Closure\(App\\Models\\StudentParent\)\: array\{string, string, string, string\|null, string\}\}, guardians\: array\{Closure\(\)\: Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Guardian\>, array\{''name'', ''cnic'', ''phone'', ''relation'', ''students''\}, Closure\(App\\Models\\Guardian\)\: array\{string, string, string, string\|null, string\}\}\}\.$#'
+			message: '#^Method App\\Http\\Controllers\\ExportController\:\:exporters\(\) should return array\<string, array\{callable\(\)\: Illuminate\\Database\\Eloquent\\Collection\<int, mixed\>, list\<string\>, callable\(mixed\)\: list\<string\>\}\> but returns array\{students\: array\{Closure\(\)\: Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Student\>, array\{''gr_no'', ''name'', ''class'', ''joining_date'', ''leaving_date'', ''status''\}, Closure\(App\\Models\\Student\)\: array\{string\|null, string, string\|null, mixed, mixed, mixed\}\}, staff\: array\{Closure\(\)\: Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Staff\>, array\{''name'', ''cnic'', ''email'', ''phone'', ''joining_date'', ''leaving_date'', ''status''\}, Closure\(App\\Models\\Staff\)\: array\{string, string, string\|null, string\|null, mixed, mixed, mixed\}\}, attendance\: array\{Closure\(\)\: Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Attendance\>, array\{''student_gr_no'', ''student_name'', ''class'', ''date'', ''status'', ''marked_by''\}, Closure\(App\\Models\\Attendance\)\: array\{string\|null, string\|null, string\|null, mixed, mixed, string\|null\}\}, exam\-results\: array\{Closure\(\)\: Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\ExamResult\>, array\{''student_gr_no'', ''student_name'', ''class'', ''subject'', ''year'', ''marks'', ''total_marks'', ''grade'', ''status'', ''published_at''\}, Closure\(App\\Models\\ExamResult\)\: array\{string\|null, string\|null, string\|null, string\|null, int\<0, max\>, float, float, string, mixed, mixed\}\}, fees\: array\{Closure\(\)\: Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Fee\>, array\{''student_gr_no'', ''student_name'', ''class'', ''fee'', ''year'', ''amount'', ''amount_paid'', ''status'', ''due_date''\}, Closure\(App\\Models\\Fee\)\: array\{string\|null, string\|null, string\|null, string\|null, int\<0, max\>, numeric\-string, numeric\-string, ''paid''\|''partial''\|''unpaid'', string\|null\}\}, payments\: array\{Closure\(\)\: Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Payment\>, array\{''reference'', ''student_gr_no'', ''student_name'', ''fee'', ''amount'', ''provider'', ''status'', ''payer_name'', ''paid_at''\}, Closure\(App\\Models\\Payment\)\: array\{string\|null, string\|null, string\|null, string\|null, numeric\-string, ''easypaisa''\|''jazzcash'', ''completed''\|''failed''\|''pending'', string\|null, string\|null\}\}, payrolls\: array\{Closure\(\)\: Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Payroll\>, array\{''staff_name'', ''staff_cnic'', ''month'', ''amount'', ''status'', ''paid_at''\}, Closure\(App\\Models\\Payroll\)\: array\{string\|null, string\|null, string, numeric\-string, ''paid''\|''pending'', string\|null\}\}, expenses\: array\{Closure\(\)\: Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Expense\>, array\{''name'', ''description'', ''amount'', ''recurrence''\}, Closure\(App\\Models\\Expense\)\: array\{string, string\|null, numeric\-string, ''daily''\|''monthly''\|''one_time''\|''weekly''\|''yearly''\}\}, parents\: array\{Closure\(\)\: Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\StudentParent\>, array\{''name'', ''cnic'', ''phone'', ''occupation'', ''children''\}, Closure\(App\\Models\\StudentParent\)\: array\{string, string, string, string\|null, string\}\}, guardians\: array\{Closure\(\)\: Illuminate\\Database\\Eloquent\\Collection\<int, App\\Models\\Guardian\>, array\{''name'', ''cnic'', ''phone'', ''relation'', ''students''\}, Closure\(App\\Models\\Guardian\)\: array\{string, string, string, string\|null, string\}\}\}\.$#'
 			identifier: return.type
 			count: 1
 			path: app/Http/Controllers/ExportController.php
@@ -1081,25 +1075,13 @@ parameters:
 			path: app/Models/Fee.php
 
 		-
-			message: '#^Property App\\Models\\Fee\:\:\$paid_at \(string\|null\) does not accept Carbon\\CarbonImmutable\|string\.$#'
+			message: '#^Property App\\Models\\Fee\:\:\$amount_paid \(numeric\-string\) does not accept float\.$#'
 			identifier: assign.propertyType
 			count: 1
 			path: app/Models/Fee.php
 
 		-
-			message: '#^Property App\\Models\\Fee\:\:\$status \(string\) does not accept App\\Enums\\FeeStatus\:\:Paid\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: app/Models/Fee.php
-
-		-
-			message: '#^Property App\\Models\\Fee\:\:\$status \(string\) does not accept App\\Enums\\FeeStatus\:\:Partial\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: app/Models/Fee.php
-
-		-
-			message: '#^Property App\\Models\\Fee\:\:\$status \(string\) does not accept App\\Enums\\FeeStatus\:\:Unpaid\.$#'
+			message: '#^Property App\\Models\\Fee\:\:\$paid_at \(Illuminate\\Support\\Carbon\|null\) does not accept Carbon\\CarbonImmutable\|Illuminate\\Support\\Carbon\.$#'
 			identifier: assign.propertyType
 			count: 1
 			path: app/Models/Fee.php
@@ -1231,15 +1213,15 @@ parameters:
 			path: app/Models/StaffAssignmentRequest.php
 
 		-
-			message: '#^Strict comparison using \!\=\= between string and App\\Enums\\AssignmentRequestStatus\:\:Pending will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 2
+			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\AssignmentAction\:\:Add will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
 			path: app/Models/StaffAssignmentRequest.php
 
 		-
-			message: '#^Unreachable statement \- code above always terminates\.$#'
-			identifier: deadCode.unreachable
-			count: 2
+			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\AssignmentAction\:\:Remove will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
 			path: app/Models/StaffAssignmentRequest.php
 
 		-
@@ -2179,21 +2161,9 @@ parameters:
 			path: tests/Feature/FinanceTest.php
 
 		-
-			message: '#^Cannot access property \$value on string\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: tests/Feature/ImportExportTest.php
-
-		-
 			message: '#^Parameter \#1 \$haystack of function str_contains expects string, string\|false given\.$#'
 			identifier: argument.type
 			count: 3
-			path: tests/Feature/ImportExportTest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 1
 			path: tests/Feature/ImportExportTest.php
 
 		-
@@ -2374,6 +2344,12 @@ parameters:
 			message: '#^Cannot access property \$value on string\.$#'
 			identifier: property.nonObject
 			count: 1
+			path: tests/Feature/TableBulkActionsTest.php
+
+		-
+			message: '#^Cannot call method toDateString\(\) on Illuminate\\Support\\Carbon\|null\.$#'
+			identifier: method.nonObject
+			count: 3
 			path: tests/Feature/TableBulkActionsTest.php
 
 		-

@@ -6,9 +6,12 @@ namespace App\Filament\Staff\Resources\MyRequests\Tables;
 
 use App\Enums\AssignmentAction;
 use App\Enums\AssignmentRequestStatus;
+use App\Models\StaffAssignmentRequest;
+use Filament\Actions\BulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
 
 final class MyRequestsTable
 {
@@ -34,6 +37,7 @@ final class MyRequestsTable
                         AssignmentRequestStatus::Pending => 'warning',
                         AssignmentRequestStatus::Approved => 'success',
                         AssignmentRequestStatus::Rejected => 'danger',
+                        AssignmentRequestStatus::Withdrawn => 'gray',
                     })
                     ->sortable(),
                 TextColumn::make('admin_note')
@@ -53,6 +57,36 @@ final class MyRequestsTable
             ])
             ->recordActions([
                 //
+            ])
+            ->toolbarActions([
+                // A teacher can quietly pull back requests the admin has not
+                // reviewed yet. Nothing in the school is ever deleted: the
+                // request keeps its row and shows as Withdrawn.
+                BulkAction::make('withdraw')
+                    ->label('Withdraw')
+                    ->icon('heroicon-m-arrow-uturn-left')
+                    ->color('danger')
+                    ->requiresConfirmation()
+                    ->modalDescription('Unreviewed requests are marked as withdrawn. Requests that were already approved or rejected stay untouched.')
+                    ->modalSubmitActionLabel('Withdraw')
+                    ->action(
+                        /** @param Collection<int, StaffAssignmentRequest> $records */
+                        function (Collection $records): void {
+                            foreach ($records as $record) {
+                                if (! $record instanceof StaffAssignmentRequest) {
+                                    continue;
+                                }
+
+                                $isOwnPending = $record->staff_id === auth('staff')->id()
+                                    && $record->status === AssignmentRequestStatus::Pending;
+
+                                if ($isOwnPending) {
+                                    $record->update(['status' => AssignmentRequestStatus::Withdrawn]);
+                                }
+                            }
+                        },
+                    )
+                    ->deselectRecordsAfterCompletion(),
             ]);
     }
 }

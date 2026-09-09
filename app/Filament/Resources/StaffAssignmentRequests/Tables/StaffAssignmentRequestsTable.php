@@ -43,6 +43,7 @@ final class StaffAssignmentRequestsTable
                         AssignmentRequestStatus::Pending => 'warning',
                         AssignmentRequestStatus::Approved => 'success',
                         AssignmentRequestStatus::Rejected => 'danger',
+                        AssignmentRequestStatus::Withdrawn => 'gray',
                     })
                     ->sortable(),
                 TextColumn::make('reason')
