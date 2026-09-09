@@ -60,7 +60,7 @@ final class AttendanceChart extends ChartWidget
                 [
                     'label' => 'Present %',
                     'data' => $data->values()->all(),
-                    'backgroundColor' => '#2563eb',
+                    'backgroundColor' => '#23e7ba',
                 ],
             ],
             'labels' => $labels->all(),

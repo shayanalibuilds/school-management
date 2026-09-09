@@ -66,8 +66,8 @@ final class StudentPerformanceChart extends ChartWidget
                 [
                     'label' => 'Average %',
                     'data' => $data->values()->all(),
-                    'borderColor' => '#2563eb',
-                    'backgroundColor' => '#2563eb',
+                    'borderColor' => '#23e7ba',
+                    'backgroundColor' => '#23e7ba',
                     'fill' => false,
                     'spanGaps' => true,
                 ],

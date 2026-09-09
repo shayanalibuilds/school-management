@@ -24,19 +24,19 @@
         @filamentStyles
         <style>
             /* Filament's asset pipeline registers its default amber as the
-               named primary palette; the public web uses the school's blue. */
+               named primary palette; the public web uses the school's green. */
             :root {
-                --primary-50: #eff6ff;
-                --primary-100: #dbeafe;
-                --primary-200: #bfdbfe;
-                --primary-300: #93c5fd;
-                --primary-400: #60a5fa;
-                --primary-500: #3b82f6;
-                --primary-600: #2563eb;
-                --primary-700: #1d4ed8;
-                --primary-800: #1e40af;
-                --primary-900: #1e3a8a;
-                --primary-950: #172554;
+                --primary-50: #f1fdfb;
+                --primary-100: #e0faf4;
+                --primary-200: #c2f4e9;
+                --primary-300: #96eeda;
+                --primary-400: #4ff8d2;
+                --primary-500: #23e7ba;
+                --primary-600: #0f7861;
+                --primary-700: #13725d;
+                --primary-800: #135d4c;
+                --primary-900: #124e41;
+                --primary-950: #0a2f26;
             }
         </style>
     </head>
@@ -44,7 +44,7 @@
     <body class="min-h-screen bg-paper font-sans text-ink antialiased">
         <a
             href="#main"
-            class="sr-only z-50 rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+            class="sr-only z-50 rounded-lg bg-shell px-4 py-2 text-sm font-semibold text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
         >
             Skip to content
         </a>

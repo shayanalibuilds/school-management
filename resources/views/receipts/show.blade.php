@@ -9,20 +9,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400..700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --paper: #faf8ff;
+            --paper: #f7fafa;
             --card: #ffffff;
-            --mist: #f2f3ff;
-            --tint: #eaedff;
-            --haze: #e2e7ff;
-            --haze-deep: #dae2fd;
-            --ink: #131b2e;
-            --ink-soft: #45474d;
-            --line: #c6c6cd;
-            --navy: #121b2f;
-            --steel: #5f6980;
-            --green: #006c48;
-            --mint: #95f3c2;
-            --mint-ink: #00714c;
+            --mist: #eef3f4;
+            --tint: #e2ecee;
+            --haze: #d8e5e8;
+            --haze-deep: #ccdde1;
+            --ink: #0d1318;
+            --ink-soft: #39464d;
+            --line: #c4d2d6;
+            --shell: #0d1318;
+            --steel: #566b73;
+            --green: #0f7861;
+            --mint: #b2f5e0;
+            --mint-ink: #08513f;
             --clay: #ffdbca;
             --clay-ink: #763300;
             --alert: #ba1a1a;
@@ -79,7 +79,7 @@
             border: 1px solid color-mix(in srgb, var(--line) 40%, transparent);
             border-radius: 8px;
             padding: 36px 40px 32px;
-            box-shadow: 0 1px 2px rgb(19 27 46 / 6%), 0 8px 24px rgb(19 27 46 / 6%);
+            box-shadow: 0 1px 2px rgb(13 19 24 / 6%), 0 8px 24px rgb(13 19 24 / 6%);
         }
         .tri-strip {
             height: 6px;
@@ -91,7 +91,7 @@
         .tri-strip span { flex: 1; }
         .tri-strip .s1 { background: var(--green); }
         .tri-strip .s2 { background: var(--clay); }
-        .tri-strip .s3 { background: var(--navy); }
+        .tri-strip .s3 { background: var(--shell); }
 
         /* Letterhead */
         .letterhead {
@@ -105,7 +105,7 @@
         .crest-row { display: flex; gap: 14px; align-items: flex-start; }
         .crest {
             width: 56px; height: 56px; border-radius: 8px;
-            background: var(--navy); color: #98f5c5;
+            background: var(--shell); color: #4ff8d2;
             display: flex; align-items: center; justify-content: center;
             flex-shrink: 0;
         }
@@ -212,7 +212,7 @@
             margin-bottom: 26px;
         }
         table.items thead tr {
-            background: var(--navy);
+            background: var(--shell);
             color: var(--card);
         }
         table.items th {
@@ -283,14 +283,14 @@
             align-items: center;
             gap: 8px;
             padding: 11px 26px;
-            background: var(--navy);
+            background: var(--shell);
             color: #fff;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             transition: background-color 150ms ease;
         }
-        .print-row button:hover { background: #283044; }
+        .print-row button:hover { background: #1b252d; }
 
         @media print {
             @page { size: A4 portrait; margin: 1.2cm; }

@@ -3,7 +3,7 @@
          right-aligned row instead of squishing on small phones. -->
     <div class="mx-auto flex min-h-16 w-full max-w-7xl flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 py-2 sm:px-6 md:h-16 md:flex-nowrap md:py-0 lg:px-8">
         <a href="/" class="flex min-w-0 items-center gap-3">
-            <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-navy text-white shadow-sm">
+            <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-shell text-white shadow-sm">
                 <x-portal-icon name="academic-cap" class="h-5 w-5" />
             </span>
             <span class="min-w-0">
@@ -44,7 +44,7 @@
             </a>
             <a
                 href="/dashboard"
-                class="whitespace-nowrap rounded-lg bg-navy px-3.5 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-navy-hover sm:px-4"
+                class="whitespace-nowrap rounded-lg bg-shell px-3.5 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-shell-hover sm:px-4"
             >
                 Admin sign in
             </a>

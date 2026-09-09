@@ -13,7 +13,6 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\Support\Colors\Color;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -42,7 +41,19 @@ final class StaffPanelProvider extends PanelProvider
                 'Teaching',
             ])
             ->colors([
-                'primary' => Color::Blue,
+                'primary' => [
+                    50 => '#f1fdfb',
+                    100 => '#e0faf4',
+                    200 => '#c2f4e9',
+                    300 => '#96eeda',
+                    400 => '#4ff8d2',
+                    500 => '#23e7ba',
+                    600 => '#0f7861',
+                    700 => '#13725d',
+                    800 => '#135d4c',
+                    900 => '#124e41',
+                    950 => '#0a2f26',
+                ],
             ])
             ->discoverResources(in: app_path('Filament/Staff/Resources'), for: 'App\Filament\Staff\Resources')
             ->discoverPages(in: app_path('Filament/Staff/Pages'), for: 'App\Filament\Staff\Pages')

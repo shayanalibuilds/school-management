@@ -8,7 +8,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: system-ui, sans-serif; background: #f3f4f6; padding: 32px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
         .card { width: 340px; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 24px rgba(0,0,0,.14); background: #fff; }
-        .band { background: linear-gradient(135deg, #064e3b, #10b981); color: #fff; padding: 16px 20px; }
+        .band { background: linear-gradient(135deg, #0a2f26, #0f7861); color: #fff; padding: 16px 20px; }
         .band .school { font-size: 14px; font-weight: 700; letter-spacing: .3px; }
         .band .tag { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; opacity: .85; margin-top: 2px; }
         .body { padding: 18px 20px 20px; display: flex; gap: 14px; }

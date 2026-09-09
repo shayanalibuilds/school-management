@@ -48,12 +48,12 @@ final class SchoolProgressChart extends ChartWidget
                 [
                     'label' => 'Income (PKR)',
                     'data' => collect($months)->map(fn (string $month): float => $income[$month] ?? 0.0)->values()->all(),
-                    'backgroundColor' => '#2563eb',
+                    'backgroundColor' => '#23e7ba',
                 ],
                 [
                     'label' => 'Estimated spending (PKR)',
                     'data' => collect($months)->map(fn (string $month): float => $spending[$month] ?? 0.0)->values()->all(),
-                    'backgroundColor' => '#ef4444',
+                    'backgroundColor' => '#e0953c',
                 ],
             ],
             'labels' => $labels,

@@ -3,42 +3,41 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /*
- * Public portal design tokens — extracted from the institutional registry
- * mockups (Newsreader + Plus Jakarta Sans, violet-tinted surfaces, navy
- * primary containers, green verification accents, sharp 4px/8px radii).
+ * Public portal design tokens (Newsreader + Plus Jakarta Sans, slate-tinted
+ * surfaces, deep-slate primary containers, green accents, sharp 4px/8px radii).
  */
 @theme {
     --font-sans: 'Plus Jakarta Sans', 'Segoe UI', system-ui, ui-sans-serif, sans-serif;
     --font-display: 'Newsreader', Georgia, 'Times New Roman', serif;
 
     /* Surfaces */
-    --color-paper: #faf8ff;
+    --color-paper: #f7fafa;
     --color-card: #ffffff;
-    --color-mist: #f2f3ff;
-    --color-tint: #eaedff;
-    --color-haze: #e2e7ff;
-    --color-haze-deep: #dae2fd;
+    --color-mist: #eef3f4;
+    --color-tint: #e2ecee;
+    --color-haze: #d8e5e8;
+    --color-haze-deep: #ccdde1;
 
     /* Ink */
-    --color-ink: #131b2e;
-    --color-ink-soft: #45474d;
-    --color-line: #c6c6cd;
+    --color-ink: #0d1318;
+    --color-ink-soft: #39464d;
+    --color-line: #c4d2d6;
 
-    /* Muted text: #5f6980 keeps 12px captions above the 4.5:1 AA bar on
-       white and paper (the old #7a849c measured 3.74:1). Use -bright on
-       navy surfaces, where the darker tone would fall back under the bar. */
-    --color-steel: #5f6980;
-    --color-steel-bright: #a3adc4;
+    /* Muted text: #566b73 keeps 12px captions above the 4.5:1 AA bar on
+       white and paper. Use -bright on the dark shell surfaces, where the
+       darker tone would fall back under the bar. */
+    --color-steel: #566b73;
+    --color-steel-bright: #9db3ba;
 
-    /* Navy primary container (buttons, table heads, footer) */
-    --color-navy: #121b2f;
-    --color-navy-hover: #283044;
-    --color-glow: #98f5c5;
+    /* Deep-slate primary container (buttons, table heads, footer) */
+    --color-shell: #0d1318;
+    --color-shell-hover: #1b252d;
+    --color-glow: #4ff8d2;
 
     /* Green verification accent */
-    --color-green: #006c48;
-    --color-mint: #95f3c2;
-    --color-mint-ink: #00714c;
+    --color-green: #0f7861;
+    --color-mint: #b2f5e0;
+    --color-mint-ink: #08513f;
 
     /* Warning (sanctioned leave, pending dues) */
     --color-clay: #ffdbca;
