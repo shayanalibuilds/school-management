@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Pest\Rector\Set\PestSetList;
 use Rector\Config\RectorConfig;
 use Rector\TypeDeclaration\Rector\ArrowFunction\AddArrowFunctionReturnTypeRector;
 
@@ -13,9 +12,6 @@ return RectorConfig::configure()
         __DIR__.'/database',
         __DIR__.'/public',
         __DIR__.'/tests',
-    ])
-    ->withSets([
-        PestSetList::CODING_STYLE,
     ])
     ->withPreparedSets(
         deadCode: true,

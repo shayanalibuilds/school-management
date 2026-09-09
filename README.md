@@ -1,10 +1,10 @@
 # School Management System
 
 [![Laravel](https://img.shields.io/badge/Laravel-13-FF2D20?logo=laravel&logoColor=white)](https://laravel.com)
-[![PHP](https://img.shields.io/badge/PHP-8.4-777BB4?logo=php&logoColor=white)](https://www.php.net)
+[![PHP](https://img.shields.io/badge/PHP-8.3-777BB4?logo=php&logoColor=white)](https://www.php.net)
 [![Filament](https://img.shields.io/badge/Filament-v5-2563EB)](https://filamentphp.com)
 [![Livewire](https://img.shields.io/badge/Livewire-4-FB70A9?logo=livewire&logoColor=white)](https://livewire.laravel)
-[![Tests](https://img.shields.io/badge/tests-203%20passing-2EA043)](#testing)
+[![Tests](https://img.shields.io/badge/tests-255%20passing-2EA043)](#testing)
 [![License: MIT](https://img.shields.io/badge/license-MIT-2563EB.svg)](LICENSE)
 
 A complete school management system for **admins**, **teachers**, and
@@ -109,8 +109,10 @@ built-in **CSV import / export** page.
 
 ## Getting started
 
-**Requirements:** PHP 8.4 with `intl`, Composer, Bun, Node.js 22+ (used by
-the development server), SQLite.
+**Requirements:** PHP 8.3 with `intl`, Composer, Bun, Node.js 22+ (used by
+the development server), SQLite. Dependencies are pinned against PHP
+**8.3.4** — the PHP version Wasmer Edge ships for PHP apps — so the project
+deploys unchanged to Wasmer-compatible runtimes.
 
 ```bash
 git clone https://github.com/shayanalibuilds/school-management.git

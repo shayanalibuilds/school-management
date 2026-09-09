@@ -61,9 +61,9 @@ it('queues attendance writes when queue everything is on', function (): void {
     expect(Attendance::query()->count())->toBe(0);
 
     // Processing the job writes the rows and notifies every admin.
-    new SyncAttendance('admin', (string) $admin->getKey(), (string) $class->getKey(), [
+    (new SyncAttendance('admin', (string) $admin->getKey(), (string) $class->getKey(), [
         $studentId => AttendanceStatus::Present->value,
-    ])->handle();
+    ]))->handle();
 
     expect(Attendance::query()->count())->toBe(1)
         ->and($admin->notifications()->count())->toBe(1);
@@ -118,9 +118,9 @@ it('queues results saves and publishing when queue everything is on', function (
     expect(ExamResult::query()->count())->toBe(0);
 
     // Processing the save writes draft rows in the background.
-    new SyncExamResults('admin', (string) $admin->getKey(), (string) $class->getKey(), (string) $subject->getKey(), 2026, [
+    (new SyncExamResults('admin', (string) $admin->getKey(), (string) $class->getKey(), (string) $subject->getKey(), 2026, [
         $studentId => '80',
-    ])->handle();
+    ]))->handle();
 
     expect(ExamResult::query()->count())->toBe(1);
 
@@ -129,7 +129,7 @@ it('queues results saves and publishing when queue everything is on', function (
 
     Queue::assertPushed(PublishAllExamResults::class);
 
-    new PublishAllExamResults('admin', (string) $admin->getKey(), 2026)->handle();
+    (new PublishAllExamResults('admin', (string) $admin->getKey(), 2026))->handle();
 
     expect(ExamResult::query()->where('status', ExamResultStatus::Published->value)->count())->toBe(1)
         ->and(ExamResult::query()->whereNotNull('published_at')->count())->toBe(1);
