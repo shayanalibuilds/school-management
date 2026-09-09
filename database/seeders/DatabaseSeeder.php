@@ -19,6 +19,7 @@ use App\Models\Student;
 use App\Models\StudentClass;
 use App\Models\StudentParent;
 use App\Models\Subject;
+use App\Models\Teacher;
 use Illuminate\Database\Seeder;
 
 final class DatabaseSeeder extends Seeder
@@ -34,17 +35,27 @@ final class DatabaseSeeder extends Seeder
             'password' => 'password',
         ]);
 
+        // Every demo teacher exists on the roster first; their account is
+        // linked to it exactly as a real registration would be.
         $teachers = [
-            ['name' => 'Demo Teacher', 'email' => 'teacher@school.test'],
-            ['name' => 'Fatima Noor', 'email' => 'fatima@school.test'],
-            ['name' => 'Bilal Ahmed', 'email' => 'bilal@school.test'],
+            ['name' => 'Demo Teacher', 'email' => 'teacher@school.test', 'cnic' => '35202-1234567-1'],
+            ['name' => 'Fatima Noor', 'email' => 'fatima@school.test', 'cnic' => '35202-2345678-2'],
+            ['name' => 'Bilal Ahmed', 'email' => 'bilal@school.test', 'cnic' => '35202-3456789-3'],
         ];
 
-        $staff = collect($teachers)->map(fn (array $teacher): Staff => Staff::factory()->create([
-            'name' => $teacher['name'],
-            'email' => $teacher['email'],
-            'password' => 'password',
-        ]));
+        $staff = collect($teachers)->map(function (array $teacher): Staff {
+            $rosterEntry = Teacher::create([
+                'name' => $teacher['name'],
+                'cnic' => $teacher['cnic'],
+            ]);
+
+            return Staff::factory()->create([
+                'name' => $teacher['name'],
+                'email' => $teacher['email'],
+                'password' => 'password',
+                'teacher_id' => $rosterEntry->id,
+            ]);
+        });
 
         $classNames = ['Nursery', 'Prep', 'Class 1', 'Class 2', 'Class 3', 'Class 4', 'Class 5', 'Class 6'];
         $classes = collect($classNames)->map(fn (string $name): StudentClass => StudentClass::factory()->create(['name' => $name]));
