@@ -31,6 +31,7 @@ final class StaffPanelProvider extends PanelProvider
             ->path('staff')
             ->authGuard('staff')
             ->login()
+            ->registration(\App\Filament\Staff\Pages\Auth\RegisterTeacher::class)
             ->renderHook(
                 PanelsRenderHook::STYLES_BEFORE,
                 fn (): HtmlString => new HtmlString(

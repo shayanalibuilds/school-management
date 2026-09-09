@@ -943,36 +943,6 @@ parameters:
 			path: app/Importers/PayrollImporter.php
 
 		-
-			message: '#^Cannot access property \$email on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
-			identifier: property.nonObject
-			count: 2
-			path: app/Importers/StaffImporter.php
-
-		-
-			message: '#^Cannot access property \$joining_date on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
-			identifier: property.nonObject
-			count: 2
-			path: app/Importers/StaffImporter.php
-
-		-
-			message: '#^Cannot access property \$name on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
-			identifier: property.nonObject
-			count: 2
-			path: app/Importers/StaffImporter.php
-
-		-
-			message: '#^Cannot access property \$phone on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
-			identifier: property.nonObject
-			count: 2
-			path: app/Importers/StaffImporter.php
-
-		-
-			message: '#^Cannot access property \$status on Illuminate\\Database\\Eloquent\\Model\|null\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: app/Importers/StaffImporter.php
-
-		-
 			message: '#^Cannot cast mixed to string\.$#'
 			identifier: cast.string
 			count: 5

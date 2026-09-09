@@ -6,6 +6,7 @@ namespace App\Importers;
 
 use App\Enums\StaffStatus;
 use App\Models\Staff;
+use App\Models\Teacher;
 use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Models\Import;
 
@@ -70,17 +71,49 @@ final class StaffImporter extends Importer
     {
         $record = $this->getRecord();
 
-        $record->name = mb_trim((string) ($this->data['name'] ?? $record->name));
+        if (! $record instanceof Staff) {
+            return;
+        }
+
+        $rosterName = mb_trim((string) ($this->data['name'] ?? $record->name));
+
+        // The teacher roster owns names: imported name changes are filed
+        // into the roster and flow into the staff account through its sync,
+        // exactly like an edit made from the roster screen.
+        $teacher = $record->teacher;
+
+        if ($teacher === null) {
+            $teacher = Teacher::query()->firstOrNew(['cnic' => $record->cnic]);
+            $teacher->name = $rosterName;
+            $teacher->save();
+            $record->teacher_id = $teacher->id;
+
+            // A brand-new row is saved before the roster sync can observe
+            // it, so mirror the name onto the account directly.
+            $record->name = $teacher->name;
+        } elseif ($teacher->name !== $rosterName) {
+            $teacher->name = $rosterName;
+            $teacher->save();
+        }
+
         $record->email = filled($this->data['email'] ?? null)
             ? mb_trim((string) $this->data['email'])
             : $record->email;
         $record->phone = filled($this->data['phone'] ?? null)
             ? mb_trim((string) $this->data['phone'])
             : $record->phone;
-        $record->joining_date = filled($this->data['joining_date'] ?? null)
-            ? $this->data['joining_date']
+        $joiningDate = $this->data['joining_date'] ?? null;
+        $record->joining_date = filled($joiningDate) && is_string($joiningDate)
+            ? $joiningDate
             : $record->joining_date;
-        $record->status = StaffStatus::tryFrom((string) ($this->data['status'] ?? ''))
-            ?? ($record->status ?? StaffStatus::Active);
+
+        $status = StaffStatus::tryFrom((string) ($this->data['status'] ?? ''));
+
+        if ($status !== null) {
+            $record->status = $status->value;
+        } elseif (! $record->exists) {
+            // A brand-new row with no status column starts active.
+            $record->status = StaffStatus::Active->value;
+        }
     }
 }

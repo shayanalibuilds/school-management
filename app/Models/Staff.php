@@ -10,6 +10,8 @@ use Filament\Models\Contracts\HasName;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -35,6 +37,7 @@ final class Staff extends Authenticatable implements FilamentUser, HasName
         'joining_date',
         'leaving_date',
         'status',
+        'teacher_id',
     ];
 
     /**
@@ -44,6 +47,29 @@ final class Staff extends Authenticatable implements FilamentUser, HasName
         'password',
         'remember_token',
     ];
+
+    /**
+     * Set while the teacher roster is pushing a name change into a staff
+     * account. Every other path - including a crafted form submission -
+     * has the name change silently dropped.
+     */
+    private static bool $renamingFromRoster = false;
+
+    /**
+     * Run the callback with the name guard lifted, so the roster (and only
+     * the roster) can rename a staff account.
+     */
+    public static function renamingFromRoster(callable $callback): mixed
+    {
+        $previous = self::$renamingFromRoster;
+        self::$renamingFromRoster = true;
+
+        try {
+            return $callback();
+        } finally {
+            self::$renamingFromRoster = $previous;
+        }
+    }
 
     #[Override]
     public function canAccessPanel(Panel $panel): bool
@@ -58,11 +84,29 @@ final class Staff extends Authenticatable implements FilamentUser, HasName
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<StaffAssignment, $this>
+     * @return BelongsTo<Teacher, $this>
      */
-    public function assignments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function teacher(): BelongsTo
+    {
+        return $this->belongsTo(Teacher::class);
+    }
+
+    /**
+     * @return HasMany<StaffAssignment, $this>
+     */
+    public function assignments(): HasMany
     {
         return $this->hasMany(StaffAssignment::class, 'staff_id');
+    }
+
+    protected static function booted(): void
+    {
+        self::updating(function (self $staff): void {
+            if ($staff->isDirty('name') && ! self::$renamingFromRoster) {
+                $original = $staff->getOriginal('name');
+                $staff->name = is_string($original) ? $original : '';
+            }
+        });
     }
 
     /**
