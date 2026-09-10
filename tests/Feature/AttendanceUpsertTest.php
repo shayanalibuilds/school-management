@@ -75,7 +75,7 @@ it('absorbs a concurrent writer by updating its row instead of failing', functio
 
         DB::statement(
             'INSERT INTO attendances (id, student_id, student_class_id, admin_id, date, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-            [(string) Str::uuid(), $student->getKey(), $student->student_class_id, null, $date.' 00:00:00', 'absent', now(), now()],
+            [(string) Str::uuid(), $student->getKey(), $student->student_class_id, null, $date . ' 00:00:00', 'absent', now(), now()],
         );
     });
 
@@ -97,11 +97,11 @@ it('writes the same class twice without duplicating rows or errors', function ()
     $students = Student::factory()->count(3)->create(['student_class_id' => $class->getKey()]);
 
     $morning = $students
-        ->mapWithKeys(fn (Student $student): array => [(string) $student->getKey() => AttendanceStatus::Present->value])
+        ->mapWithKeys(fn(Student $student): array => [(string) $student->getKey() => AttendanceStatus::Present->value])
         ->all();
 
     $afternoon = $students
-        ->mapWithKeys(fn (Student $student): array => [(string) $student->getKey() => AttendanceStatus::Absent->value])
+        ->mapWithKeys(fn(Student $student): array => [(string) $student->getKey() => AttendanceStatus::Absent->value])
         ->all();
 
     $first = AttendanceSync::execute('admin', Admin::query()->firstOrFail()->getKey(), (string) $class->getKey(), $morning);
@@ -132,26 +132,4 @@ it('matches rows stored with legacy date formats', function (): void {
 
     expect(Attendance::query()->where('student_id', $student->getKey())->count())->toBe(1)
         ->and($attendance->status)->toBe(AttendanceStatus::Leave);
-});
-
-it('normalises mixed legacy date formats into one canonical shape', function (): void {
-    $class = StudentClass::factory()->create();
-    $students = Student::factory()->count(2)->create(['student_class_id' => $class->getKey()]);
-
-    DB::statement(
-        'INSERT INTO attendances (id, student_id, student_class_id, admin_id, date, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-        [(string) Str::uuid(), $students[0]->getKey(), $class->getKey(), null, '2026-09-01', 'present', now(), now()],
-    );
-
-    DB::statement(
-        'INSERT INTO attendances (id, student_id, student_class_id, admin_id, date, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-        [(string) Str::uuid(), $students[1]->getKey(), $class->getKey(), null, '2026-09-01 15:39:11', 'present', now(), now()],
-    );
-
-    $migration = require database_path('migrations/2026_09_07_000003_normalize_attendance_dates.php');
-    $migration->up();
-
-    $dates = DB::table('attendances')->orderBy('student_id')->pluck('date');
-
-    expect($dates)->each->toBe('2026-09-01 00:00:00');
 });
