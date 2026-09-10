@@ -6,13 +6,17 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/*
+ * Export runs (Filament exports). Forward-only and idempotent.
+ */
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
+        if (Schema::hasTable('exports')) {
+            return;
+        }
+
         Schema::create('exports', function (Blueprint $table): void {
             $table->id();
             $table->timestamp('completed_at')->nullable();
@@ -25,13 +29,5 @@ return new class extends Migration
             $table->uuid('user_id')->nullable()->index();
             $table->timestamps();
         });
-    }
-
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('exports');
     }
 };
