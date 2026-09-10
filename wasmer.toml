@@ -28,4 +28,4 @@ name = "migrate"
 module = "php/php:php"
 runner = "wasi"
 [command.annotations.wasi]
-main-args = ["/app/artisan", "migrate", "--force"]
+main-args = ["/app/artisan", "migrate", "--force", "--seed"]
