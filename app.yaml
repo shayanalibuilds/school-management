@@ -21,10 +21,3 @@ capabilities:
     requests:
       - path: /
       - path: /dashboard/login
-
-jobs:
-  - name: run-migrations
-    trigger: pre-deployment
-    action:
-      execute:
-        command: migrate
